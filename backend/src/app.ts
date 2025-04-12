@@ -1,12 +1,8 @@
-import express from 'express'
+import express from 'express';
+import { setupApp } from './core/bootstrap';
 
-const app = express()
-const PORT = 4000
+const app = express();
 
-app.get('/', (req, res) => {
-  res.send('<h1>Hello World</h1>')
-})
+setupApp(app);
 
-app.listen(PORT, () => {
-  console.log(`Server running in http://localhost:${PORT}`)
-})
+export default app;
