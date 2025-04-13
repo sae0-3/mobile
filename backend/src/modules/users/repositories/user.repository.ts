@@ -7,18 +7,11 @@ export class UserRepository extends BaseRepository {
     return await this.queryOne<User>(sql, [email]);
   }
 
-  async create(email: string, name?: string): Promise<User> {
+  async create(email: string, name?: string): Promise<User | null> {
     const sql = `
       INSERT INTO users (email, name)
       VALUES ($1, $2)
       RETURNING *`;
-
-    const user = await this.queryOne<User>(sql, [email, name || null])
-
-    if (!user) {
-      throw new Error('No se logro crear el usuario');
-    }
-
-    return user;
+    return await this.queryOne<User>(sql, [email, name || null]);
   }
 }

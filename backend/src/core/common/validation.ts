@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { ValidationError } from '../errors/app.error';
 
 export async function validateDto<T>(dto: z.ZodType<T, any, any>, data: T): Promise<void> {
   const result = dto.safeParse(data);
@@ -8,6 +9,8 @@ export async function validateDto<T>(dto: z.ZodType<T, any, any>, data: T): Prom
       .map(issue => `${issue.path.join('.')} - ${issue.message}`)
       .join(', ');
 
-    throw new Error(`Datos inválidos: ${formattedErrors}`);
+    throw new ValidationError({
+      internalMessage: `Datos inválidos: ${formattedErrors}`,
+    });
   }
 }

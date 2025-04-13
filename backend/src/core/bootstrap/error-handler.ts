@@ -8,7 +8,15 @@ export const errorHandler = (
   next: NextFunction
 ) => {
   const statusCode = err instanceof AppError ? err.statusCode : 500;
-  const message = err.message || 'Error interno del servidor';
+  const message = err instanceof AppError ? err.publicMessage : 'Error interno del servidor';
 
-  res.status(statusCode).json({ message });
+  console.error('[ERROR]', err);
+
+  res.status(statusCode).json({
+    success: false,
+    error: {
+      message,
+      code: statusCode
+    },
+  });
 };
