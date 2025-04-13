@@ -1,8 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import './global.css';
 
-export default function App() {
+export default function Home() {
   return (
     <View style={styles.container}>
       <Text className="font-bold text-red-500 text-xl">Hello World</Text>
