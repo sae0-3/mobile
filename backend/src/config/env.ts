@@ -6,4 +6,5 @@ dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 export const config = {
   PORT: process.env.PORT || 3000,
   DB_URI: process.env.DB_URI || 'postgres://postgres:1234@localhost:5432/mobile',
+  JWT_SECRET: process.env.JWT_SECRET || 'mobile-app',
 } as const;
