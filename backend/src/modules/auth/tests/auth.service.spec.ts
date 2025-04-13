@@ -1,3 +1,4 @@
+import { AppError } from '../../../core/errors/app.error';
 import { UserService } from '../../users/services/user.service';
 import { User } from '../../users/types/user.type';
 import { LoginDto } from '../dtos/login.dto';
@@ -40,9 +41,7 @@ describe('AuthService', () => {
       email: 'test@example.com',
       password: 'ValidPass123!',
     };
-
     it('registra correctamente un usuario nuevo', async () => {
-      userService.findByEmail.mockResolvedValue(null);
       userService.create.mockResolvedValue({
         id: '1',
         email: validRegisterDto.email,
@@ -50,6 +49,7 @@ describe('AuthService', () => {
         created_at: new Date(),
         updated_at: new Date()
       });
+
       authRepo.createLocal.mockResolvedValue({
         id: '1',
         user_id: '1',
@@ -61,12 +61,13 @@ describe('AuthService', () => {
 
       const result = await authService.register(validRegisterDto);
 
-      expect(userService.findByEmail).toHaveBeenCalledWith({ email: validRegisterDto.email });
       expect(userService.create).toHaveBeenCalledWith({
         email: validRegisterDto.email,
       });
+
       expect(hashUtil.hashPassword).toHaveBeenCalledWith(validRegisterDto.password);
       expect(authRepo.createLocal).toHaveBeenCalledWith('1', 'hashed_ValidPass123!');
+
       expect(result).toEqual({
         id: '1',
         user_id: '1',
@@ -79,12 +80,9 @@ describe('AuthService', () => {
     });
 
     it('lanza error si el email ya existe', async () => {
-      userService.findByEmail.mockResolvedValue({
-        id: '1',
-        email: validRegisterDto.email,
-        created_at: new Date(),
-        updated_at: new Date()
-      });
+      userService.create = jest.fn().mockRejectedValue(new AppError({
+        internalMessage: 'El usuario con email test@example.com ya existe',
+      }));
 
       await expect(authService.register(validRegisterDto))
         .rejects.toThrow(/email/i);
