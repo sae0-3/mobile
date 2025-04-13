@@ -1,6 +1,5 @@
-import { RequestHandler, response } from 'express';
+import { RequestHandler } from 'express';
 import { AuthService } from '../services/auth.service';
-import { ControllerResponse } from '../../../core/types/controller-response.type';
 import { responseBuilder } from '../../../core/common/response-builder';
 
 export class AuthController {

@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 import { AppError } from '../errors/app.error';
-import { ControllerResponse } from '../types/controller-response.type';
 import { responseBuilder } from '../common/response-builder';
 
 export const errorHandler = (
