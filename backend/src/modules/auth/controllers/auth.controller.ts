@@ -1,5 +1,7 @@
-import { RequestHandler } from 'express';
+import { RequestHandler, response } from 'express';
 import { AuthService } from '../services/auth.service';
+import { ControllerResponse } from '../../../core/types/controller-response.type';
+import { responseBuilder } from '../../../core/common/response-builder';
 
 export class AuthController {
   constructor(
@@ -8,8 +10,14 @@ export class AuthController {
 
   register: RequestHandler = async (req, res, next) => {
     try {
-      const user = await this.authService.register(req.body);
-      res.status(201).json(user);
+      const authProvider = await this.authService.register(req.body);
+      responseBuilder(res, {
+        statusCode: 201,
+        data: {
+          id: authProvider.user_id,
+          access_token: authProvider.access_token,
+        },
+      });
     } catch (error) {
       next(error);
     }
@@ -17,8 +25,11 @@ export class AuthController {
 
   login: RequestHandler = async (req, res, next) => {
     try {
-      const token = await this.authService.login(req.body);
-      res.status(200).json({ token });
+      const data = await this.authService.login(req.body);
+      responseBuilder(res, {
+        statusCode: 200,
+        data,
+      });
     } catch (error) {
       next(error);
     }

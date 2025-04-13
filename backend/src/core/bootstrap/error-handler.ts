@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { AppError } from '../errors/app.error';
+import { ControllerResponse } from '../types/controller-response.type';
+import { responseBuilder } from '../common/response-builder';
 
 export const errorHandler = (
   err: any,
@@ -12,11 +14,9 @@ export const errorHandler = (
 
   console.error('[ERROR]', err);
 
-  res.status(statusCode).json({
+  responseBuilder(res, {
     success: false,
-    error: {
-      message,
-      code: statusCode
-    },
+    statusCode,
+    message
   });
 };
