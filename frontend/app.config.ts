@@ -1,4 +1,6 @@
-{
+import 'dotenv/config';
+
+export default {
   "expo": {
     "name": "mobil-frontend",
     "slug": "mobil-frontend",
@@ -25,6 +27,9 @@
     "web": {
       "favicon": "./assets/favicon.png",
       "bundler": "metro"
-    }
+    },
+    "extra": {
+      "API_URL": process.env.API_URL,
+    },
   }
-}
+};
