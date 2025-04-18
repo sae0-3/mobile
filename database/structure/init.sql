@@ -1,19 +1,47 @@
+create type user_role as enum ('client', 'dealer', 'admin');
+create type auth_provider_type as enum ('local', 'google');
+
 create table users (
     id uuid primary key default gen_random_uuid(),
     email text unique not null,
     name text,
-    created_at timestamp default now(),
-    updated_at timestamp default now()
+    role user_role not null default 'client',
+    created_at timestamp not null default now(),
+    updated_at timestamp not null default now()
 );
 
 create table auth_providers (
     id uuid primary key default gen_random_uuid(),
     user_id uuid not null references users(id) on delete cascade,
-    provider text not null check(provider in ('local', 'google')),
+    provider auth_provider_type not null,
     provider_user_id text,
     password_hash text,
-    created_at timestamp default now(),
-    updated_at timestamp default now(),
-
+    created_at timestamp not null default now(),
+    updated_at timestamp not null default now(),
     unique(user_id, provider)
+);
+
+create table categories (
+    id uuid primary key default gen_random_uuid(),
+    name text not null,
+    created_at timestamp not null default now(),
+    updated_at timestamp not null default now(),
+    visible boolean not null default true,
+    display_order integer not null default 0
+);
+
+create table products (
+    id uuid primary key default gen_random_uuid(),
+    name text not null,
+    description text,
+    img_reference text,
+    price numeric(5, 2) not null,
+    discount numeric(5, 2) not null default 0,
+    available boolean not null default true,
+    ingredients json,
+    category_id uuid references categories(id),
+    created_at timestamp not null default now(),
+    updated_at timestamp not null default now(),
+    visible boolean not null default true,
+    display_order integer not null default 0
 );
