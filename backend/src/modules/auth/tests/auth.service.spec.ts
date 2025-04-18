@@ -46,6 +46,7 @@ describe('AuthService', () => {
         id: '1',
         email: validRegisterDto.email,
         name: validRegisterDto.name,
+        role: 'client',
         created_at: new Date(),
         updated_at: new Date()
       });
@@ -123,6 +124,7 @@ describe('AuthService', () => {
     const mockUser: User = {
       id: '1',
       email: validLoginDto.email,
+      role: 'client',
       created_at: new Date(),
       updated_at: new Date()
     };
