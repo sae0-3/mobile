@@ -36,7 +36,6 @@ create table products (
     description text,
     img_reference text,
     price numeric(5, 2) not null,
-    discount numeric(5, 2) not null default 0,
     available boolean not null default true,
     ingredients json,
     created_at timestamp not null default now(),
