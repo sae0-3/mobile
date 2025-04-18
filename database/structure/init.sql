@@ -39,9 +39,14 @@ create table products (
     discount numeric(5, 2) not null default 0,
     available boolean not null default true,
     ingredients json,
-    category_id uuid references categories(id),
     created_at timestamp not null default now(),
     updated_at timestamp not null default now(),
     visible boolean not null default true,
     display_order integer not null default 0
+);
+
+create table product_categories (
+    product_id uuid not null references products(id) on delete cascade,
+    category_id uuid not null references categories(id) on delete cascade,
+    primary key (product_id, category_id)
 );
