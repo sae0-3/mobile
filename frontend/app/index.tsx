@@ -5,6 +5,7 @@ export default function Home() {
   return (
     <View style={styles.container}>
       <Link href="/auth/register">Registrarse</Link>
+      <Link href="/auth/login">Login</Link>
     </View>
   );
 }

@@ -15,3 +15,12 @@ export type RegisterResponse = ApiResponse<{
   id: string;
   access_token: string;
 }>;
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export type LoginResponse = ApiResponse<{
+  access_token: string;
+}>;
