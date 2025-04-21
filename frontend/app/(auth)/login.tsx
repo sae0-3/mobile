@@ -1,4 +1,4 @@
-import { useRouter } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Button, Text, TextInput, View } from 'react-native';
 import { useLogin } from '../../src/hooks/useAuth';
@@ -47,13 +47,17 @@ export default function LoginScreen() {
         secureTextEntry
       />
 
-      <Button title={isPending ? 'Cargando...' : 'Entrar'} onPress={handleLogin} disabled={isPending} />
+      <Button title={isPending ? 'Cargando...' : 'Ingresar'} onPress={handleLogin} disabled={isPending} />
 
       {error && (
-        <Text className="text-blue-900 mt-4 text-center">
+        <Text className="text-red-400 mt-4 text-center">
           {error.response?.data.message || "Error al iniciar sesión"}
         </Text>
       )}
+
+      <Text className="text-center mt-4">
+        ¿No tienes una cuenta? <Link href="/register" className="text-cyan-600">Regístrate</Link>
+      </Text>
     </View>
   );
 }
