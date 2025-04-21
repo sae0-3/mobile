@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Text, TextInput, View } from 'react-native';
 import { useLogin } from '../../src/hooks/useAuth';
 import { useAuth } from '../../src/stores/auth';
@@ -8,17 +8,24 @@ export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
-  const { login } = useAuth();
+  const { isAuthenticated, login, role } = useAuth();
   const { mutate, isPending, error } = useLogin();
+
+  useEffect(() => {
+    if (isAuthenticated && role) {
+      router.replace(`/${role}/home`);
+    }
+  }, [isAuthenticated, role]);
 
   const handleLogin = () => {
     mutate({ email, password }, {
       onSuccess: (response) => {
-        login(response.data.access_token);
-        router.replace('/home');
+        const token = response.data.access_token;
+        login(token);
       }
     });
-  }
+  };
+
   return (
     <View className="flex-1 justify-center px-4">
       <Text className="text-2xl font-bold mb-6 text-center">Iniciar Sesión</Text>

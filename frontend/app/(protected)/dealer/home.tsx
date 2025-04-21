@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { Button, Text, View } from 'react-native';
-import { useAuth } from '../../src/stores/auth';
+import { useAuth } from '../../../src/stores/auth';
 
 export default function HomeScreen() {
   const { logout } = useAuth();
@@ -12,7 +12,7 @@ export default function HomeScreen() {
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Bienvenido</Text>
+      <Text>Bienvenido Delivery</Text>
       <Button title="Cerrar sesión" onPress={handleLogout} />
     </View>
   );

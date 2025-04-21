@@ -24,3 +24,11 @@ export interface LoginRequest {
 export type LoginResponse = ApiResponse<{
   access_token: string;
 }>;
+
+export interface TokenPayload {
+  id: string;
+  email: string;
+  role: 'admin' | 'dealer' | 'client';
+  iat: number;
+  exp: number;
+}
