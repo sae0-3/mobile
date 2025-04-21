@@ -2,22 +2,22 @@ import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Button, Text, TextInput, View } from 'react-native';
 import { useLogin } from '../../src/hooks/useAuth';
+import { useAuth } from '../../src/stores/auth';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
-
-  const { mutate: login, isPending, error } = useLogin();
+  const { login } = useAuth();
+  const { mutate, isPending, error } = useLogin();
 
   const handleLogin = () => {
-    login({ email, password },
-      {
-        onSuccess: () => {
-          router.replace("/menu/menu");
-        }
+    mutate({ email, password }, {
+      onSuccess: (response) => {
+        login(response.data.access_token);
+        router.replace('/home');
       }
-    );
+    });
   }
   return (
     <View className="flex-1 justify-center px-4">
@@ -40,7 +40,7 @@ export default function LoginScreen() {
         secureTextEntry
       />
 
-      <Button title={isPending ? "Cargando..." : "Entrar"} onPress={handleLogin} disabled={isPending} />
+      <Button title={isPending ? 'Cargando...' : 'Entrar'} onPress={handleLogin} disabled={isPending} />
 
       {error && (
         <Text className="text-blue-900 mt-4 text-center">

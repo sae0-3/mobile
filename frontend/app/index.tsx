@@ -1,20 +1,10 @@
-import { Link } from 'expo-router';
-import { StyleSheet, View } from 'react-native';
+import { Redirect } from 'expo-router';
+import { useAuth } from '../src/stores/auth';
 
-export default function Home() {
+export default function Index() {
+  const { isAuthenticated } = useAuth();
+
   return (
-    <View style={styles.container}>
-      <Link href="/auth/register">Registrarse</Link>
-      <Link href="/auth/login">Login</Link>
-    </View>
+    <Redirect href={isAuthenticated ? '/home' : '/login'} />
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
