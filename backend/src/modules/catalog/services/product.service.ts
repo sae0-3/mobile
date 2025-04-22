@@ -27,7 +27,11 @@ export class ProductService {
   async create(product: ProductInsertDto): Promise<Product> {
     await validateDto(ProductInsertDto, product);
 
-    const created = await this.productRepository.create(product);
+    const preparedProduct = {
+      ...product,
+      ingredients: product.ingredients ? JSON.stringify(product.ingredients) : null,
+    };
+    const created = await this.productRepository.create(preparedProduct);
 
     if (!created) {
       throw new AppError({

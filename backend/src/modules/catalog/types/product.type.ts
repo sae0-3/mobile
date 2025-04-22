@@ -17,7 +17,7 @@ export type ProductInsert = {
   price: number;
   description?: string | null;
   img_reference?: string | null;
-  ingredients?: string[] | null;
+  ingredients?: string | null;
   available?: boolean;
   visible?: boolean;
   display_order?: number;
