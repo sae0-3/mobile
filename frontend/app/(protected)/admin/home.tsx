@@ -1,19 +1,55 @@
 import { router } from 'expo-router';
-import { Button, Text, View } from 'react-native';
-import { useAuth } from '../../../src/stores/auth';
+import { LayoutGrid, Package, Store, Users } from 'lucide-react-native';
+import { FlatList, View } from 'react-native';
+import { DashboardTile } from '../../../src/components/DashboardTile';
+
+export const options = {
+  title: 'Dashboard',
+};
+
+
+const tiles = [
+  {
+    icon: { Icon: Package },
+    title: 'Productos',
+    onPress: () => router.push('/admin/products'),
+  },
+  {
+    icon: { Icon: LayoutGrid },
+    title: 'Categorías',
+    onPress: () => { },
+  },
+  {
+    icon: { Icon: Users },
+    title: 'Repartidores',
+    onPress: () => { },
+  },
+  {
+    icon: { Icon: Store },
+    title: 'Sucursales',
+    onPress: () => { },
+  },
+];
 
 export default function HomeScreen() {
-  const { logout } = useAuth();
-
-  const handleLogout = () => {
-    logout();
-    router.replace('/login');
-  };
-
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Bienvenido Administrador</Text>
-      <Button title="Cerrar sesión" onPress={handleLogout} />
+    <View>
+      <FlatList
+        data={tiles}
+        keyExtractor={({ title }) => title}
+        numColumns={1}
+        renderItem={({ item }) => (
+          <DashboardTile
+            icon={item.icon}
+            title={item.title}
+            onPress={item.onPress}
+          />
+        )}
+        contentContainerStyle={{
+          padding: 12,
+          alignItems: 'center',
+        }}
+      />
     </View>
   );
 }
