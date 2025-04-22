@@ -17,9 +17,16 @@ export default function AdminLayout() {
       />
 
       <Stack.Screen
-        name="products"
+        name="products/index"
         options={{
           title: 'Productos',
+        }}
+      />
+
+      <Stack.Screen
+        name="products/add"
+        options={{
+          title: 'Agregar Producto',
         }}
       />
     </Stack>
