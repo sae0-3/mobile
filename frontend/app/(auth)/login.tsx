@@ -1,6 +1,6 @@
 import { Link, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Pressable, Button, Text, TextInput, View } from 'react-native';
+import { Button, Text, TextInput, View } from 'react-native';
 import { useLogin } from '../../src/hooks/useAuth';
 import { useAuth } from '../../src/stores/auth';
 import { Logo } from '../../assets/Logo';
