@@ -1,9 +1,10 @@
 import { Link, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Button, Text, TextInput, View } from 'react-native';
+import { Pressable, Button, Text, TextInput, View } from 'react-native';
 import { useLogin } from '../../src/hooks/useAuth';
 import { useAuth } from '../../src/stores/auth';
-import Logo from '../../src/components/Logo';
+import { Logo } from '../../assets/Logo';
+import Container from '../../src/components/Container/ContainerBackground';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
@@ -28,11 +29,12 @@ export default function LoginScreen() {
   };
 
   return (
-    <View className="flex-1 justify-center px-4">
-      <View className='mb-32'>
-        <Logo />
+    <Container>
+      <View className="items-center justify-center mb-10">
+        <Logo width={300} height={300} />
       </View>
-      <View className='px-32'>
+
+      <View>
         <Text className="text-2xl font-bold mb-6 text-center">Iniciar Sesión</Text>
         <TextInput
           className="h-16 border border-gray-300 rounded-lg mb-4 px-3"
@@ -62,6 +64,6 @@ export default function LoginScreen() {
           ¿No tienes una cuenta? <Link href="/register" className="text-cyan-600">Regístrate</Link>
         </Text>
       </View>
-    </View>
+    </Container>
   );
 }
