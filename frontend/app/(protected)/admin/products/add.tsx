@@ -1,7 +1,7 @@
 import { router } from 'expo-router';
 import { Plus, Save, SquareX, Trash2 } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
-import { FlatList, Text, TextInput, View } from 'react-native';
+import { ScrollView, Text, TextInput, View } from 'react-native';
 import { CustomButton } from '../../../../src/components/CustomButton';
 import { FormSwitchField } from '../../../../src/components/FormSwitchField';
 import { FormTextField } from '../../../../src/components/FormTextField';
@@ -44,7 +44,10 @@ export default function AddProductScreen() {
   };
 
   return (
-    <View className="w-10/12 mx-auto my-6">
+    <ScrollView
+      className="w-10/12 mx-auto my-6"
+      showsVerticalScrollIndicator={false}
+    >
       <View className="flex gap-4">
         <FormTextField
           form={form}
@@ -112,20 +115,24 @@ export default function AddProductScreen() {
             />
           </View>
 
-          <FlatList
-            data={ingredients}
-            keyExtractor={(item, index) => `${item}-${index}`}
-            renderItem={({ item, index }) => (
-              <View className="flex-row items-center justify-between mt-4 bg-gray-100 rounded">
-                <Text>{item}</Text>
+          <ScrollView
+            className={`max-h-48 gap-2 ${ingredients.length > 0 ? 'mt-4' : ''}`}
+            nestedScrollEnabled
+          >
+            {ingredients.map((ingredient, idx) => (
+              <View
+                key={`${ingredient}-${idx}`}
+                className="flex-row items-center justify-between border-t border-t-gray-300"
+              >
+                <Text className="flex-1">{idx + 1}. {ingredient}</Text>
                 <CustomButton
                   className="p-0 bg-transparent"
                   icon={{ Icon: Trash2, color: 'red' }}
-                  onPress={() => removeIngredient(index)}
+                  onPress={() => removeIngredient(idx)}
                 />
               </View>
-            )}
-          />
+            ))}
+          </ScrollView>
         </View>
 
         <FormTextField
@@ -175,7 +182,7 @@ export default function AddProductScreen() {
           />
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
