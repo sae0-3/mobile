@@ -6,7 +6,7 @@ import FoodMemo from '../../assets/Food';
 export default function RootDecoratedLayout({ children }: { children: React.ReactNode }) {
   return (
     <View className="flex-1 relative">
-      <View className="h-full w-full absolute z-0 inset-0 opacity-35">
+      <View className="h-[100vh] w-full absolute z-0 inset-0 opacity-35">
         <View className="absolute -rotate-12">
           <CoffeMemo width="150" height="150" />
         </View>
