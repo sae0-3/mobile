@@ -29,6 +29,13 @@ export default function AdminLayout() {
           title: 'Agregar Producto',
         }}
       />
+
+      <Stack.Screen
+        name="products/[id]"
+        options={{
+          title: 'Editar Producto',
+        }}
+      />
     </Stack>
   );
 }

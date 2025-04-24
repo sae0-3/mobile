@@ -36,7 +36,7 @@ export interface ProductRequest {
   display_order?: number;
 }
 
-export interface ProductResponse {
+export interface Product {
   id: string;
   name: string;
   description: string | null;
@@ -50,7 +50,9 @@ export interface ProductResponse {
   updated_at: string;
 }
 
-export type ProductsResponse = ApiResponse<ProductResponse[]>;
+export type ProductResponse = ApiResponse<Product>;
+
+export type ProductsResponse = ApiResponse<Product[]>;
 
 export interface TokenPayload {
   id: string;

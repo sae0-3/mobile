@@ -1,9 +1,10 @@
+import { router } from 'expo-router';
 import { Check, DollarSign, Eye, EyeOff, SquarePen, X } from 'lucide-react-native';
 import { Text, View } from 'react-native';
-import { ProductResponse } from '../types/apiTypes';
+import { Product } from '../types/apiTypes';
 import { CustomButton } from './CustomButton';
 
-export const EditProductItem = ({ product }: { product: ProductResponse }) => {
+export const EditProductItem = ({ product }: { product: Product }) => {
   return (
     <View
       className="border-b border-b-gray-300 rounded flex-row justify-between py-3 items-center"
@@ -45,7 +46,7 @@ export const EditProductItem = ({ product }: { product: ProductResponse }) => {
 
       <CustomButton
         icon={{ Icon: SquarePen, size: 30 }}
-        onPress={() => { console.log(product.id) }}
+        onPress={() => { router.push(`/admin/products/${product.id}`); }}
         className=""
       />
     </View>

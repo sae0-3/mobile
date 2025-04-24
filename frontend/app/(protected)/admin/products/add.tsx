@@ -10,7 +10,7 @@ import { useForm } from '../../../../src/hooks/useForm';
 import { useCreateProduct } from '../../../../src/hooks/useProduct';
 import { makeZodValidator } from '../../../../src/utils/validator';
 
-export default function AddProducts() {
+export default function AddProductScreen() {
   const { mutate: create, isPending, isSuccess } = useCreateProduct();
   const form = useForm({
     defaultValues,

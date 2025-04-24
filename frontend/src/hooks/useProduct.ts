@@ -2,12 +2,12 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { getAll, create } from '../services/productService';
 import { useAuth } from '../stores/auth';
-import { ProductRequest, ProductsResponse } from '../types/apiTypes';
+import { ProductRequest, ProductResponse, ProductsResponse } from '../types/apiTypes';
 
 export const useGetAllProducts = () => {
   const { token } = useAuth();
 
-  return useQuery<ProductsResponse, AxiosError>({
+  return useQuery<ProductsResponse, AxiosError<ProductResponse>>({
     queryKey: ['products-admin'],
     queryFn: () => getAll(token),
   });
@@ -16,7 +16,7 @@ export const useGetAllProducts = () => {
 export const useCreateProduct = () => {
   const { token } = useAuth();
 
-  return useMutation<ProductsResponse, AxiosError<ProductsResponse>, ProductRequest>({
+  return useMutation<ProductResponse, AxiosError<ProductResponse>, ProductRequest>({
     mutationFn: (body) => create(body, token),
     onSuccess: (data) => {
       console.log(data);

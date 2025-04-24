@@ -1,6 +1,6 @@
 import axiosInstance from '../api/axios';
 import { productEnpoints } from '../api/endpoints';
-import { ProductRequest, ProductsResponse } from '../types/apiTypes';
+import { ProductRequest, ProductResponse, ProductsResponse } from '../types/apiTypes';
 
 export const getAll = async (token: string | null): Promise<ProductsResponse> => {
   const response = await axiosInstance.get<ProductsResponse>(productEnpoints.index, {
@@ -11,8 +11,8 @@ export const getAll = async (token: string | null): Promise<ProductsResponse> =>
   return response.data;
 };
 
-export const create = async (body: ProductRequest, token: string | null): Promise<ProductsResponse> => {
-  const response = await axiosInstance.post<ProductsResponse>(productEnpoints.index, body, {
+export const create = async (body: ProductRequest, token: string | null): Promise<ProductResponse> => {
+  const response = await axiosInstance.post<ProductResponse>(productEnpoints.index, body, {
     headers: {
       Authorization: `Bearer ${token}`
     }
