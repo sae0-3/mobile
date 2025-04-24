@@ -3,11 +3,6 @@ import { LayoutGrid, Package, Store, Users } from 'lucide-react-native';
 import { FlatList, View } from 'react-native';
 import { DashboardTile } from '../../../src/components/DashboardTile';
 
-export const options = {
-  title: 'Dashboard',
-};
-
-
 const tiles = [
   {
     icon: { Icon: Package },

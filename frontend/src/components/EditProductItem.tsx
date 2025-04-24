@@ -11,39 +11,35 @@ export const EditProductItem = ({ product }: { product: ProductResponse }) => {
       <View className="gap-1">
         <Text className="font-bold">{product.name}</Text>
 
-        <View className="flex-row items-center opacity-50">
+        <View className="flex-row items-center opacity-65">
           <DollarSign size="12" color="#000" />
           <Text>{product.price}</Text>
         </View>
 
-        <View className="flex-row gap-2">
-          <View className={`flex-row items-center gap-px p-1 rounded bg-${product.available ? 'green' : 'red'}-100`}>
-            {product.available ? (
-              <>
-                <Check size="12" color="#000" />
-                <Text className="text-sm">Disponible</Text>
-              </>
-            ) : (
-              <>
-                <X size="12" color="#000" />
-                <Text className="text-sm">No disponible</Text>
-              </>
-            )}
-          </View>
+        <View className="flex-row gap-2 opacity-50">
+          {product.available ? (
+            <View className="flex-row items-center gap-px p-1 rounded-3xl bg-green-100">
+              <Check size="12" color="#000" />
+              <Text className="text-sm">Disponible</Text>
+            </View>
+          ) : (
+            <View className="flex-row items-center gap-px p-1 rounded-3xl bg-red-100">
+              <X size="12" color="#000" />
+              <Text className="text-sm">No disponible</Text>
+            </View>
+          )}
 
-          <View className={`flex-row items-center gap-px p-1 rounded bg-${product.visible ? 'green' : 'red'}-100`}>
-            {product.visible ? (
-              <>
-                <Eye size="12" color="#000" />
-                <Text>Visible</Text>
-              </>
-            ) : (
-              <>
-                <EyeOff size="12" color="#000" />
-                <Text>No visible</Text>
-              </>
-            )}
-          </View>
+          {product.visible ? (
+            <View className="flex-row items-center gap-px p-1 rounded-3xl bg-green-100">
+              <Eye size="12" color="#000" />
+              <Text>Visible</Text>
+            </View>
+          ) : (
+            <View className="flex-row items-center gap-px p-1 rounded-3xl bg-red-100">
+              <EyeOff size="12" color="#000" />
+              <Text>No visible</Text>
+            </View>
+          )}
         </View>
       </View>
 
