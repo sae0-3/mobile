@@ -39,21 +39,24 @@ export default function LoginScreen() {
 
         <View className="w-10/12 mx-auto flex gap-4">
           <Text className="text-2xl font-bold mb-6 text-center">Iniciar Sesión</Text>
-          <TextInput
-            className="h-16 border border-gray-300 rounded-lg px-3"
-            placeholder="Correo electrónico"
-            value={email}
-            onChangeText={setEmail}
-            autoCapitalize="none"
-            keyboardType="email-address"
-            selectionColor="#f2c558"
-            textContentType="emailAddress"
-            importantForAutofill="yes"
-          />
 
-          <View className="relative mb-4">
+          <View className="flex-row items-center border-b border-gray-300 h-16 px-3">
+            <Feather name="mail" size={24} color="black" />
             <TextInput
-              className="h-16 border border-gray-300 rounded-lg px-3"
+              className="flex-1 ml-3"
+              placeholder="Email"
+              value={email}
+              onChangeText={setEmail}
+              selectionColor="#f2c558"
+              textContentType="emailAddress"
+              importantForAutofill="yes"
+            />
+          </View>
+
+          <View className="flex-row items-center border-b border-gray-300 h-16 px-3">
+            <Feather name="lock" size={24} color="black" />
+            <TextInput
+              className="flex-1 ml-3"
               placeholder="Contraseña"
               value={password}
               onChangeText={setPassword}
