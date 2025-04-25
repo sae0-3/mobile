@@ -12,7 +12,7 @@ const tiles = [
   {
     icon: { Icon: LayoutGrid },
     title: 'Categorías',
-    onPress: () => { },
+    onPress: () => router.push('/admin/categories'),
   },
   {
     icon: { Icon: Users },

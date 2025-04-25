@@ -6,3 +6,7 @@ export const authEndpoints = {
 export const productEnpoints = {
   index: '/catalog/products',
 };
+
+export const categoryEndpoints = {
+  index: '/catalog/categories',
+};

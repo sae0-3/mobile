@@ -23,6 +23,7 @@ export default function AdminLayout() {
         }}
       />
 
+
       <Stack.Screen
         name="products/add"
         options={{
@@ -34,6 +35,20 @@ export default function AdminLayout() {
         name="products/[id]"
         options={{
           title: 'Editar Producto',
+        }}
+      />
+
+      <Stack.Screen
+        name="categories/index"
+        options={{
+          title: 'Categorías',
+        }}
+      />
+
+      <Stack.Screen
+        name="categories/add"
+        options={{
+          title: 'Agregar Categoría',
         }}
       />
     </Stack>

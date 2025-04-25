@@ -55,6 +55,25 @@ export type ProductResponse = ApiResponse<Product>;
 
 export type ProductsResponse = ApiResponse<Product[]>;
 
+export type Category = {
+  id: string;
+  name: string;
+  visible: boolean;
+  display_order: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export type CategoriesRequest = {
+  name: string;
+  visible: boolean;
+  display_order: number;
+}
+
+export type CategoryResponse = ApiResponse<Category>;
+
+export type CategoriesResponse = ApiResponse<Category[]>;
+
 export interface TokenPayload {
   id: string;
   email: string;
