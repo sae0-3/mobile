@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Feather } from '@expo/vector-icons'
 
 import { useRegister } from '../../src/hooks/useAuth';
+import { useAuth } from '../../src/stores/auth';
+import { router } from 'expo-router';
 
 export default function RegisterScreen() {
   const [email, setEmail] = useState('');
@@ -13,6 +15,14 @@ export default function RegisterScreen() {
   const [errors, setErrors] = useState({ name: '', email: '', password: '', phoneNumber: '' })
 
   const { mutate: register, isPending, data, error } = useRegister();
+
+  const { isAuthenticated, login, role } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated && role) {
+      router.replace(`/${role}/home`)
+    }
+  }, [isAuthenticated, role])
 
   const handleInputChange = (
     setter: React.Dispatch<React.SetStateAction<string>>,
@@ -36,7 +46,12 @@ export default function RegisterScreen() {
 
     const hasErrors = Object.values(newErrors).some((e) => e !== '');
     if (hasErrors) return;
-    register({ email, password });
+    register({ email, password }, {
+      onSuccess: (response) => {
+        const token = response.data.access_token;
+        login(token);
+      }
+    });
   };
 
   return (
