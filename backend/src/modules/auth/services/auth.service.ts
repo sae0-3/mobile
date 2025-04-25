@@ -1,5 +1,5 @@
 import { validateDto } from '../../../core/common/validation';
-import { AppError, NotFoundError, UnauthorizedError, ValidationError } from '../../../core/errors/app.error';
+import { AppError, NotFoundError, UnauthorizedError } from '../../../core/errors/app.error';
 import { UserService } from '../../users/services/user.service';
 import { LoginDto } from '../dtos/login.dto';
 import { RegisterDto } from '../dtos/register.dto';
@@ -28,7 +28,8 @@ export class AuthService {
       });
     }
 
-    const token = generateToken({ user_id: user.id });
+    const payload = { id: user.id, email: user.email, role: user.role };
+    const token = generateToken(payload);
 
     return {
       ...authProvider,
@@ -62,7 +63,7 @@ export class AuthService {
       });
     }
 
-    const payload = { user_id: user.id };
+    const payload = { id: user.id, email: user.email, role: user.role };
     const token = generateToken(payload);
 
     return {

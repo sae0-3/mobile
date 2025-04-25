@@ -21,6 +21,7 @@ describe('UserService', () => {
         id: '1',
         email: 'test@example.com',
         name: 'Test User',
+        role: 'client',
         created_at: new Date(),
         updated_at: new Date()
       };
@@ -37,6 +38,7 @@ describe('UserService', () => {
         id: '1',
         email: 'noname@example.com',
         name: undefined,
+        role: 'client',
         created_at: new Date(),
         updated_at: new Date()
       };
@@ -53,6 +55,7 @@ describe('UserService', () => {
         id: '1',
         email: 'existing@example.com',
         name: 'Test User',
+        role: 'client',
         created_at: new Date(),
         updated_at: new Date()
       });
@@ -96,13 +99,15 @@ describe('UserService', () => {
 
   describe('findByEmail()', () => {
     it('debería devolver un usuario si el email existe', async () => {
-      const user = {
+      const user: User = {
         id: '1',
         email: 'test@example.com',
         name: 'Test User',
+        role: 'client',
         created_at: new Date(),
         updated_at: new Date()
       };
+
       mockUserRepository.findByEmail.mockResolvedValue(user);
 
       const result = await userService.findByEmail({ email: 'test@example.com' });
