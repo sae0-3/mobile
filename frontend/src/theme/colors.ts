@@ -1,12 +1,6 @@
-interface Colors {
-  primary: string,
-  secondary: string,
-}
-
-
-const colors: Colors= {
+const colors = {
   primary: '#FFCD3C',
   secondary: '#FAA881',
-}
+};
 
-export default colors
+export default colors;
