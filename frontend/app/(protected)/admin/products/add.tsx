@@ -5,7 +5,7 @@ import { ScrollView, Text, TextInput, View } from 'react-native';
 import { CustomButton } from '../../../../src/components/CustomButton';
 import { FormSwitchField } from '../../../../src/components/FormSwitchField';
 import { FormTextField } from '../../../../src/components/FormTextField';
-import { ProductInsertSchema, ProductUpdateSchema } from '../../../../src/dtos/productDto';
+import { ProductInsertSchema } from '../../../../src/dtos/productDto';
 import { useForm } from '../../../../src/hooks/useForm';
 import { useCreateProduct } from '../../../../src/hooks/useProduct';
 import { makeZodValidator } from '../../../../src/utils/validator';
@@ -57,7 +57,7 @@ export default function AddProductScreen() {
           inputProps={{
             placeholder: "Producto",
           }}
-          validator={makeZodValidator(ProductUpdateSchema, 'name')}
+          validator={makeZodValidator(ProductInsertSchema, 'name')}
         />
 
         <FormTextField
@@ -85,7 +85,7 @@ export default function AddProductScreen() {
             placeholder: "Descripción del producto...",
             multiline: true,
           }}
-          validator={makeZodValidator(ProductUpdateSchema, 'description')}
+          validator={makeZodValidator(ProductInsertSchema, 'description')}
         />
 
         <FormTextField
@@ -95,7 +95,7 @@ export default function AddProductScreen() {
           inputProps={{
             placeholder: 'https://example.com',
           }}
-          validator={makeZodValidator(ProductUpdateSchema, 'img_reference')}
+          validator={makeZodValidator(ProductInsertSchema, 'img_reference')}
         />
 
         <View>
@@ -143,7 +143,7 @@ export default function AddProductScreen() {
             placeholder: '0',
             keyboardType: 'numeric',
           }}
-          validator={makeZodValidator(ProductUpdateSchema, 'display_order')}
+          validator={makeZodValidator(ProductInsertSchema, 'display_order')}
           parseValue={(val) => {
             const num = parseInt(val, 10);
             if (isNaN(num)) return undefined;
