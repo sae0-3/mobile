@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { ActivityIndicator, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Feather } from '@expo/vector-icons'
 
@@ -13,6 +13,16 @@ export default function RegisterScreen() {
   const [errors, setErrors] = useState({ name: '', email: '', password: '', phoneNumber: '' })
 
   const { mutate: register, isPending, data, error } = useRegister();
+
+  const handleInputChange = (
+    setter: React.Dispatch<React.SetStateAction<string>>,
+    field: keyof typeof errors
+  ) => (text: string) => {
+    setter(text);
+    if (text.trim()) {
+      setErrors(prev => ({ ...prev, [field]: '' }));
+    }
+  }
 
   const handleRegister = () => {
     const newErrors = {
@@ -42,10 +52,7 @@ export default function RegisterScreen() {
                 className="flex-1 ml-3"
                 placeholder="Nombre"
                 value={name}
-                onChangeText={text => {
-                  setName(text);
-                  if (text.trim()) setErrors(prev => ({ ...prev, name: '' }));
-                }}
+                onChangeText={handleInputChange(setName, 'name')}
                 textContentType="name"
               />
             </View>
@@ -59,10 +66,7 @@ export default function RegisterScreen() {
                 className="flex-1 ml-3"
                 placeholder="Email"
                 value={email}
-                onChangeText={text => {
-                  setEmail(text);
-                  if (text.trim()) setErrors(prev => ({ ...prev, email: '' }));
-                }}
+                onChangeText={handleInputChange(setEmail, 'email')}
                 selectionColor="#f2c558"
                 textContentType="emailAddress"
                 importantForAutofill="yes"
@@ -78,10 +82,7 @@ export default function RegisterScreen() {
                 className="flex-1 ml-3"
                 placeholder="Contraseña"
                 value={password}
-                onChangeText={text => {
-                  setPassword(text);
-                  if (text.trim()) setErrors(prev => ({ ...prev, password: '' }));
-                }}
+                onChangeText={handleInputChange(setPassword, 'password')}
                 secureTextEntry={!showPassword}
                 selectionColor="#f2c558"
                 textContentType="password"
@@ -105,10 +106,7 @@ export default function RegisterScreen() {
                 className="flex-1 ml-3"
                 placeholder="Número de celular"
                 value={phoneNumber}
-                onChangeText={text => {
-                  setPhoneNumber(text);
-                  if (text.trim()) setErrors(prev => ({ ...prev, phoneNumber: '' }));
-                }}
+                onChangeText={handleInputChange(setPhoneNumber, 'phoneNumber')}
               />
             </View>
             {errors.phoneNumber !== '' && <Text className="text-red-500 mt-1 ml-2">{errors.phoneNumber}</Text>}
