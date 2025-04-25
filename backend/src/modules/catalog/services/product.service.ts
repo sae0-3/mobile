@@ -27,7 +27,11 @@ export class ProductService {
   async create(product: ProductInsertDto): Promise<Product> {
     await validateDto(ProductInsertDto, product);
 
-    const created = await this.productRepository.create(product);
+    const preparedProduct = {
+      ...product,
+      ingredients: product.ingredients ? JSON.stringify(product.ingredients) : null,
+    };
+    const created = await this.productRepository.create(preparedProduct);
 
     if (!created) {
       throw new AppError({
@@ -41,7 +45,11 @@ export class ProductService {
   async update(id: string, product: ProductUpdateDto): Promise<Product> {
     await validateDto(ProductUpdateDto, product);
 
-    const updated = await this.productRepository.update(id, product);
+    const preparedProduct = {
+      ...product,
+      ingredients: product.ingredients ? JSON.stringify(product.ingredients) : null,
+    };
+    const updated = await this.productRepository.update(id, preparedProduct);
 
     if (!updated) {
       throw new NotFoundError({
