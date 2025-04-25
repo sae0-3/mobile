@@ -23,4 +23,4 @@ export type ProductInsert = {
   display_order?: number;
 }
 
-export type ProductUpdate = Partial<Omit<Product, 'id' | 'created_at' | 'updated_at'>>;
+export type ProductUpdate = Partial<ProductInsert>;

@@ -45,7 +45,11 @@ export class ProductService {
   async update(id: string, product: ProductUpdateDto): Promise<Product> {
     await validateDto(ProductUpdateDto, product);
 
-    const updated = await this.productRepository.update(id, product);
+    const preparedProduct = {
+      ...product,
+      ingredients: product.ingredients ? JSON.stringify(product.ingredients) : null,
+    };
+    const updated = await this.productRepository.update(id, preparedProduct);
 
     if (!updated) {
       throw new NotFoundError({
