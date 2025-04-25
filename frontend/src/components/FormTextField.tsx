@@ -1,6 +1,6 @@
 import { Field } from '@tanstack/react-form';
-import { Asterisk } from 'lucide-react-native';
 import { Text, TextInput, type TextInputProps, View } from 'react-native';
+import { Icon } from './Icon';
 
 type FormTextFieldProps = {
   form: any;
@@ -42,7 +42,7 @@ export const FormTextField = ({
       {(field) => (
         <View className={containerClassName}>
           <Text className={labelClassName}>
-            {label}: {required && <Asterisk color="red" size={12} />}
+            {label}: {required && <Icon name="asterisk" color="red" size={12} type="MaterialCommunityIcons" />}
           </Text>
 
           <TextInput

@@ -1,6 +1,7 @@
 import {
   Feather,
   Ionicons,
+  MaterialCommunityIcons,
   MaterialIcons,
 } from '@expo/vector-icons';
 import { ViewStyle } from 'react-native';
@@ -10,7 +11,7 @@ type IconProps = {
   name: string;
   size?: number;
   color?: string;
-  type?: 'Feather' | 'Ionicons' | 'MaterialIcons';
+  type?: 'Feather' | 'Ionicons' | 'MaterialIcons' | 'MaterialCommunityIcons';
   style?: ViewStyle;
 };
 
@@ -33,6 +34,9 @@ export const Icon = ({
       break;
     case 'Feather':
       icon = <Feather {...iconProps} />;
+      break;
+    case 'MaterialCommunityIcons':
+      icon = <MaterialCommunityIcons {...iconProps} />;
       break;
   };
 

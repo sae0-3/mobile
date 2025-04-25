@@ -1,18 +1,15 @@
-import { View, ScrollView } from 'react-native';
-import { FormTextField } from '../../../../src/components/FormTextField';
-import { FormSwitchField } from '../../../../src/components/FormSwitchField';
-import { CustomButton } from '../../../../src/components/CustomButton';
-import { useForm } from '../../../../src/hooks/useForm';
-import { useCreateCategory } from '../../../../src/hooks/useCategories';
-import { CategoryInsertSchema } from '../../../../src/dtos/categoryDto';
-import { makeZodValidator } from '../../../../src/utils/validator';
-import { useEffect } from 'react';
 import { router } from 'expo-router';
-import { SquareX, Save } from 'lucide-react-native';
-
+import { useEffect } from 'react';
+import { ScrollView, View } from 'react-native';
+import { CustomButton } from '../../../../src/components/CustomButton';
+import { FormSwitchField } from '../../../../src/components/FormSwitchField';
+import { FormTextField } from '../../../../src/components/FormTextField';
+import { CategoryInsertSchema } from '../../../../src/dtos/categoryDto';
+import { useCreateCategory } from '../../../../src/hooks/useCategories';
+import { useForm } from '../../../../src/hooks/useForm';
+import { makeZodValidator } from '../../../../src/utils/validator';
 
 export default function AddCategoryScreen() {
-
   const { mutate: create, isPending, isSuccess } = useCreateCategory();
   const form = useForm({
     defaultValues,
@@ -32,7 +29,7 @@ export default function AddCategoryScreen() {
       className="w-10/12 mx-auto my-6"
       showsVerticalScrollIndicator={false}
     >
-      <View className="flex gap-4">
+      <View className="gap-4">
         <FormTextField
           form={form}
           name="name"
@@ -70,15 +67,20 @@ export default function AddCategoryScreen() {
           <CustomButton
             title="Cancelar"
             onPress={router.back}
-            icon={{ Icon: SquareX }}
-            className="w-2/5"
+            iconRight={{
+              name: 'x-square',
+            }}
+            className="w-2/5 p-2"
             disabled={isPending}
           />
+
           <CustomButton
             title="Guardar"
             onPress={form.handleSubmit}
-            icon={{ Icon: Save }}
-            className="w-2/5"
+            iconRight={{
+              name: "save",
+            }}
+            className="w-2/5 p-2"
             disabled={isPending}
           />
         </View>
@@ -91,4 +93,4 @@ const defaultValues = {
   name: '',
   display_order: 0,
   visible: true,
-}
+};

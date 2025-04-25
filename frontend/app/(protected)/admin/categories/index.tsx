@@ -1,5 +1,4 @@
 import { router } from 'expo-router';
-import { Plus } from 'lucide-react-native';
 import { ActivityIndicator, FlatList, Text, View } from 'react-native';
 import { CustomButton } from '../../../../src/components/CustomButton';
 import { EditCategoryItem } from '../../../../src/components/EditCategoryItem';
@@ -30,7 +29,10 @@ export default function CategoriesScreen() {
           <CustomButton
             title="Añadir Categoría"
             onPress={handleAdd}
-            icon={{ Icon: Plus }}
+            iconRight={{
+              name: 'plus'
+            }}
+            className="p-2"
           />
         </View>
       }

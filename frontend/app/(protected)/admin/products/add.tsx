@@ -1,5 +1,4 @@
 import { router } from 'expo-router';
-import { Plus, Save, SquareX, Trash2 } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
 import { ScrollView, Text, TextInput, View } from 'react-native';
 import { CustomButton } from '../../../../src/components/CustomButton';
@@ -45,10 +44,9 @@ export default function AddProductScreen() {
 
   return (
     <ScrollView
-      className="w-10/12 mx-auto my-6"
       showsVerticalScrollIndicator={false}
     >
-      <View className="flex gap-4">
+      <View className="gap-4 w-10/12 mx-auto my-6">
         <FormTextField
           form={form}
           name="name"
@@ -111,7 +109,10 @@ export default function AddProductScreen() {
             <CustomButton
               title="Añadir"
               onPress={addIngredient}
-              icon={{ Icon: Plus }}
+              iconRight={{
+                name: 'plus',
+              }}
+              className="p-1"
             />
           </View>
 
@@ -122,12 +123,15 @@ export default function AddProductScreen() {
             {ingredients.map((ingredient, idx) => (
               <View
                 key={`${ingredient}-${idx}`}
-                className="flex-row items-center justify-between border-t border-t-gray-300"
+                className="flex-row items-center justify-between border-t border-t-gray-300 py-2"
               >
                 <Text className="flex-1">{idx + 1}. {ingredient}</Text>
                 <CustomButton
-                  className="p-0 bg-transparent"
-                  icon={{ Icon: Trash2, color: 'red' }}
+                  className="bg-transparent"
+                  iconRight={{
+                    name: 'trash-2',
+                    color: 'red',
+                  }}
                   onPress={() => removeIngredient(idx)}
                 />
               </View>
@@ -169,15 +173,19 @@ export default function AddProductScreen() {
           <CustomButton
             title="Cancelar"
             onPress={router.back}
-            icon={{ Icon: SquareX }}
-            className="w-2/5"
+            iconRight={{
+              name: 'x-square',
+            }}
+            className="w-2/5 p-2"
             disabled={isPending}
           />
           <CustomButton
             title="Guardar"
             onPress={form.handleSubmit}
-            icon={{ Icon: Save }}
-            className="w-2/5"
+            iconRight={{
+              name: 'save',
+            }}
+            className="w-2/5 p-2"
             disabled={isPending}
           />
         </View>

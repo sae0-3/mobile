@@ -1,37 +1,46 @@
-import type { LucideIcon } from 'lucide-react-native';
 import { Text, TouchableOpacity } from 'react-native';
+import { Icon } from './Icon';
+
+type IconProps = {
+  name: string;
+  size?: number;
+  color?: string;
+  type?: 'Feather' | 'Ionicons' | 'MaterialIcons';
+};
+
+type CustomButtonProps = {
+  title?: string;
+  onPress: () => void | Promise<void>;
+  iconRight?: IconProps;
+  className?: string;
+  disabled?: boolean;
+};
 
 export const CustomButton = ({
   title,
   onPress,
-  icon,
+  iconRight,
   className,
   disabled = false,
-}: {
-  title?: string,
-  onPress: () => void,
-  icon?: {
-    Icon: LucideIcon,
-    color?: string,
-    size?: number,
-  },
-  className?: string,
-  disabled?: boolean,
-}) => {
-  const buttonStyle = `flex flex-row items-center justify-center p-2 rounded-lg ${disabled ? 'bg-gray-400' : 'bg-[#4e46e58a]'} ${className || ''}`;
-  const textStyle = `text-lg ${disabled ? 'text-gray-200' : 'text-white'}`;
-
+}: CustomButtonProps) => {
   return (
     <TouchableOpacity
       disabled={disabled}
-      className={buttonStyle}
+      className={`flex-row items-center justify-center rounded-md bg-primary disabled:opacity-40 ${className}`}
       onPress={onPress}
     >
-      {title && <Text className={textStyle}>{title}</Text>}
-      {icon && (
-        <icon.Icon
-          size={icon.size || 24}
-          color={disabled ? '#ccc' : icon.color || '#fff'}
+      {title && (
+        <Text className={`text-white text-lg`}>
+          {title}
+        </Text>
+      )}
+
+      {iconRight && (
+        <Icon
+          name={iconRight.name}
+          size={iconRight.size}
+          color={iconRight.color || '#fff'}
+          type={iconRight.type}
         />
       )}
     </TouchableOpacity>
