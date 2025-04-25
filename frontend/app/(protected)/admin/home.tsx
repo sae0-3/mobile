@@ -1,26 +1,25 @@
 import { router } from 'expo-router';
-import { LayoutGrid, Package, Store, Users } from 'lucide-react-native';
 import { FlatList, View } from 'react-native';
 import { DashboardTile } from '../../../src/components/DashboardTile';
 
 const tiles = [
   {
-    icon: { Icon: Package },
+    icon: 'package',
     title: 'Productos',
     onPress: () => router.push('/admin/products'),
   },
   {
-    icon: { Icon: LayoutGrid },
+    icon: 'grid',
     title: 'Categorías',
     onPress: () => router.push('/admin/categories'),
   },
   {
-    icon: { Icon: Users },
+    icon: 'users',
     title: 'Repartidores',
     onPress: () => { },
   },
   {
-    icon: { Icon: Store },
+    icon: 'archive',
     title: 'Sucursales',
     onPress: () => { },
   },
@@ -28,23 +27,21 @@ const tiles = [
 
 export default function HomeScreen() {
   return (
-    <View>
-      <FlatList
-        data={tiles}
-        keyExtractor={({ title }) => title}
-        numColumns={1}
-        renderItem={({ item }) => (
-          <DashboardTile
-            icon={item.icon}
-            title={item.title}
-            onPress={item.onPress}
-          />
-        )}
-        contentContainerStyle={{
-          padding: 12,
-          alignItems: 'center',
-        }}
-      />
-    </View>
+    <FlatList
+      data={tiles}
+      keyExtractor={({ title }) => title}
+      numColumns={1}
+      renderItem={({ item }) => (
+        <DashboardTile
+          icon={item.icon}
+          title={item.title}
+          onPress={item.onPress}
+        />
+      )}
+      contentContainerStyle={{
+        padding: 12,
+        alignItems: 'center',
+      }}
+    />
   );
 }

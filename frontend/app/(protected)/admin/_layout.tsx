@@ -1,17 +1,18 @@
 import { Stack } from 'expo-router';
 import { LogoutButton } from '../../../src/components/LogoutButton';
+import colors from '../../../src/theme/colors';
 
 export default function AdminLayout() {
   return (
     <Stack
       screenOptions={{
-        headerTintColor: '#4F46E5',
+        headerTintColor: colors.primary,
       }}
     >
       <Stack.Screen
         name="home"
         options={{
-          title: 'Home',
+          title: 'Inicio',
           headerRight: () => <LogoutButton />,
         }}
       />
@@ -22,7 +23,6 @@ export default function AdminLayout() {
           title: 'Productos',
         }}
       />
-
 
       <Stack.Screen
         name="products/add"
