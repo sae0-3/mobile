@@ -1,8 +1,9 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useAuth } from "../stores/auth";
-import { create, getAll } from "../services/categorieService";
+import { create, getAll, getById, update } from "../services/categorieService";
 import { CategoriesRequest, CategoriesResponse, CategoryResponse } from "../types/apiTypes";
+import { CategoryUpdateDto } from "../dtos/categoryDto";
 
 export const useGetAllCategories = () => {
   const { token } = useAuth();
@@ -25,3 +26,28 @@ export const useCreateCategory = () => {
     },
   });
 };
+
+export const useGetByIdCategory = (id: string) => {
+  const { token } = useAuth();
+  return useQuery<CategoryResponse, AxiosError<CategoryResponse>>({
+    queryKey: ['categories', 'admin', id],
+    queryFn: () => getById( id, token ),
+  });
+};
+
+export const useUpdateByIdCategory = (id: string) => {
+  const { token } = useAuth();
+  return useMutation<CategoryResponse, AxiosError<CategoryResponse>, CategoryUpdateDto>({
+    mutationFn: (body: CategoryUpdateDto) => update( id, body, token ),
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (error) => {
+      console.error(error.response?.data.message);
+    },
+  });
+};
+
+
+
+
