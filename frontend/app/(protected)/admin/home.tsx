@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { FlatList, View } from 'react-native';
+import { FlatList } from 'react-native';
 import { DashboardTile } from '../../../src/components/DashboardTile';
 
 const tiles = [
@@ -18,11 +18,11 @@ const tiles = [
     title: 'Repartidores',
     onPress: () => { },
   },
-  {
-    icon: 'archive',
-    title: 'Sucursales',
-    onPress: () => { },
-  },
+  // {
+  //   icon: 'archive',
+  //   title: 'Sucursales',
+  //   onPress: () => { },
+  // },
 ];
 
 export default function HomeScreen() {
