@@ -1,4 +1,5 @@
 import { Text, View } from 'react-native';
+import { router } from 'expo-router';
 import { Category } from '../types/apiTypes';
 import { CustomButton } from './CustomButton';
 import { Icon } from './Icon';
@@ -29,7 +30,7 @@ export const EditCategoryItem = ({ category }: { category: Category }) => {
           name: 'edit',
           size: 30,
         }}
-        onPress={() => { }}
+        onPress={() => { router.push(`/admin/categories/${category.id}`); }}
         className="p-2"
       />
     </View>

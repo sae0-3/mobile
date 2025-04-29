@@ -51,6 +51,13 @@ export default function AdminLayout() {
           title: 'Agregar Categoría',
         }}
       />
+      
+      <Stack.Screen
+        name="categories/[id]"
+        options={{
+          title: 'Editar Categoría',
+        }}
+      />
     </Stack>
   );
 }
