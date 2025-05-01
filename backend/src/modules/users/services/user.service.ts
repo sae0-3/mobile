@@ -1,36 +1,19 @@
-import { validateDto } from '../../../core/common/validation';
-import { AppError, ValidationError } from '../../../core/errors/app.error';
-import { UserDto } from '../dtos/user.dto';
+import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
 import { UserRepository } from '../repositories/user.repository';
+import { User } from '../types/user.type';
 
 export class UserService {
   constructor(
     private userRepository: UserRepository,
   ) { }
 
-  async findByEmail(data: UserDto) {
-    await validateDto(UserDto, data);
-    return this.userRepository.findByEmail(data.email);
-  }
+  async findByEmail(email: string): Promise<User | void> { }
 
-  async create(data: UserDto) {
-    await validateDto(UserDto, data);
+  async findById(id: string): Promise<User | void> { }
 
-    const existing = await this.userRepository.findByEmail(data.email);
-    if (existing) {
-      throw new ValidationError({
-        publicMessage: 'El email ya está registrado',
-        internalMessage: `Intento de registrar con email existente: ${data.email}`,
-      });
-    }
+  async create(data: CreateUserDto): Promise<User | void> { }
 
-    const user = await this.userRepository.create(data.email, data.name);
-    if (!user) {
-      throw new AppError({
-        internalMessage: `No se logro crear el usuario con la información: ${data}`,
-      });
-    }
+  async update(id: string, data: UpdateUserDto): Promise<User | void> { }
 
-    return user;
-  }
+  async delete(id: string): Promise<User | void> { }
 }

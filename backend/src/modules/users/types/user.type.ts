@@ -1,8 +1,12 @@
 export interface User {
   id: string;
   email: string;
-  name?: string;
-  role: 'client' | 'dealer' | 'admin';
-  created_at: Date;
-  updated_at: Date;
+  created_at: string;
+  updated_at: string;
 }
+
+export interface UserInsert {
+  email: string;
+}
+
+export type UserUpdate = Partial<UserInsert>;
