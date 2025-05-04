@@ -32,7 +32,8 @@
     "zod": "^3.24.3",
     "zustand": "^5.0.3",
     "expo-location": "~18.0.10",
-    "react-native-maps": "1.18.0"
+    "react-native-maps": "1.18.0",
+    "react-native-webview": "13.12.5"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

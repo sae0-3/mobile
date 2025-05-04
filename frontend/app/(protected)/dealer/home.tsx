@@ -25,15 +25,19 @@ export default function HomeScreen() {
         keyExtractor={o => o.id}
         contentContainerStyle={{ padding: 16 }}
         renderItem={({ item }) => (
-          <TouchableOpacity
-            className="bg-gray-100 p-4 rounded-lg mb-3"
-            onPress={() => router.push(`/dealer/order/${item.id}`)}
-          >
-            <Text className="font-semibold mb-1">Pedido #{item.id}</Text>
-            <Text>Cliente: {item.clientName}</Text>
-            <Text>Direccion: {item.address}</Text>
-            <Text>Telefono: {item.phone}</Text>
-          </TouchableOpacity>
+          <View className="bg-white rounded-2xl p-5 mb-6 shadow-md border border-gray-200">
+            <Text className="text-lg font-semibold text-gray-800 mb-2">Pedido #{item.id}</Text>
+            <Text className="ml-2 text-gray-700">{item.clientName}</Text>
+            <Text className="ml-2 text-gray-700">{item.address}</Text>
+            <Text className="ml-2 text-gray-700">{item.phone}</Text>
+
+            <TouchableOpacity
+              className="bg-primary py-2 rounded-xl items-center mt-3"
+              onPress={() => router.push(`/dealer/order/${item.id}`)}
+            >
+              <Text className="text-white font-bold text-lg">Aceptar</Text>
+            </TouchableOpacity>
+          </View>
         )}
       />
     </View>

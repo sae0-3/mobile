@@ -23,6 +23,13 @@ export default function DealerLayout() {
           title: 'Detalle del pedido'
         }}
       />
+
+      <Stack.Screen
+        name="delivery/[id]"
+        options={{
+          title: 'Detalles de la entrega'
+        }}
+      />
     </Stack>
   )
 }
