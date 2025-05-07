@@ -4,22 +4,34 @@ import { Dealer, DealerInsert, DealerUpdate } from '../types/dealer.type';
 export class DealerRepository extends BaseRepository {
   async findAll(): Promise<Dealer[]> {
     const sql = `
-      SELECT * FROM dealers`;
+      SELECT 
+        u.id, u.email, u.created_at, u.updated_at,
+        d.vehicle
+      FROM dealers d
+      JOIN users u ON u.id = d.user_id
+    `;
     return await this.query<Dealer>(sql);
   }
 
   async findById(id: string): Promise<Dealer | null> {
     const sql = `
-      SELECT * FROM dealers
-      WHERE user_id = $1`;
+      SELECT 
+        u.id, u.email, u.created_at, u.updated_at,
+        d.vehicle
+      FROM dealers d
+      JOIN users u ON u.id = d.user_id
+      WHERE u.id = $1
+    `;
     return await this.queryOne<Dealer>(sql, [id]);
   }
 
-  async create(user: DealerInsert): Promise<Dealer | null> {
-    return await this.insert<Dealer>('dealers', user);
+  async create(data: DealerInsert): Promise<Dealer | null> {
+    await this.insert<Dealer>('dealers', data);
+    return await this.findById(data.user_id);
   }
 
   async update(id: string, updates: DealerUpdate): Promise<Dealer | null> {
-    return await this.updateById<Dealer>('dealers', id, updates);
+    await this.updateById<Dealer>('dealers', id, updates);
+    return await this.findById(id);
   }
 }
