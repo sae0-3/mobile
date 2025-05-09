@@ -34,6 +34,7 @@ export default {
     },
     "extra": {
       "API_URL": process.env.API_URL,
+      "GOOGLE_MAPS_API_KEY": process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY,
     },
   }
 };

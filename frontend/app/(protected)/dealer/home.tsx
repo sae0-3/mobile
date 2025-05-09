@@ -1,6 +1,4 @@
 import React from 'react';
-import { router } from 'expo-router';
-
 import {
   FlatList,
   Text,
@@ -8,9 +6,9 @@ import {
   View
 } from 'react-native'
 import { useRouter } from 'expo-router'
-import type { Order } from '../../../src/types/order'
+import type { OrderBase } from '../../../src/types/apiTypes'
 
-const mockOrders: Order[] = [
+const mockOrders: OrderBase[] = [
   { id: '1', clientName: 'Juan Perez', address: 'Av. san Martin 123', items: ['Pizza', 'Ensalada'], phone: 72165841 },
   { id: '2', clientName: 'Maria Lopez', address: 'Calle Falsa 456', items: ['Hamburguesa', 'Papas fritas'], phone: 75415695 },
 ]

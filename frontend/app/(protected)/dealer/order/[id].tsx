@@ -1,47 +1,48 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ActivityIndicator, Button, TouchableOpacity } from 'react-native';
+import { View, Text, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import WebView from 'react-native-webview';
-import { Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
+import MapView, { Marker } from 'react-native-maps';
+import { Ionicons } from '@expo/vector-icons'
 import colors from '../../../../src/theme/colors';
+import { Order } from '../../../../src/types/apiTypes';
 
-const mockOrders = [
-  { id: '1', clientName: 'Juan Perez', address: 'Av. san Martin 123', phone: 72165841, lat: -17.7832, lon: -63.1821 },
-  { id: '2', clientName: 'Maria Lopez', address: 'Calle Falsa 456', phone: 75415695, lat: -17.7815, lon: -63.1817 },
+const mockOrders: Order[] = [
+  { id: '1', clientName: 'Juan Perez', address: 'Av. san Martin 123', items: ['Pizza', 'Ensalada'], phone: 72165841, latitude: -17.35299, longitude: -66.18922 },
+  { id: '2', clientName: 'Maria Lopez', address: 'Calle Falsa 456', items: ['Hamburguesa', 'Papas fritas'], phone: 75415695, latitude: -17.36667, longitude: -66.19836 },
 ];
 
-function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number) {
-  const R = 6371;
-  const dLat = (lat2 - lat1) * (Math.PI / 180);
-  const dLon = (lon2 - lon1) * (Math.PI / 180);
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(lat1 * (Math.PI / 180)) *
-    Math.cos(lat2 * (Math.PI / 180)) *
-    Math.sin(dLon / 2) * Math.sin(dLon / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return (R * c).toFixed(2);
-}
-
 export default function OrderDetailScreen() {
-  const [location, setLocation] = useState<Location.LocationObjectCoords | null>(null);
-  const [errorMsg, setErrorMsg] = useState('');
   const { id } = useLocalSearchParams();
   const router = useRouter();
+
+  const [location, setLocation] = useState<Location.LocationObjectCoords | null>(null);
+  const [errorMsg, setErrorMsg] = useState('');
+
   const order = mockOrders.find(o => o.id === id);
 
   useEffect(() => {
-    (async () => {
+    let subscriber: Location.LocationSubscription;
+
+    const getLocation = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
+        setErrorMsg('Permiso denegado para acceder a la ubicación');
         return;
       }
 
-      let loc = await Location.getCurrentPositionAsync({});
-      setLocation(loc.coords);
-    })();
+      subscriber = await Location.watchPositionAsync(
+        {
+          accuracy: Location.Accuracy.High,
+          timeInterval: 5000,
+          distanceInterval: 2,
+        },
+        (loc) => setLocation(loc.coords)
+      )
+    }
+    getLocation();
+
+    return () => subscriber && subscriber.remove();
   }, []);
 
   if (errorMsg) {
@@ -61,41 +62,40 @@ export default function OrderDetailScreen() {
     );
   }
 
-  const distance = calculateDistance(location.latitude, location.longitude, order.lat, order.lon);
-
-  const htmlContent = `
-<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <style>body, html { margin: 0; padding: 0; } #map { width: 100%; height: 100vh; }</style>
-</head>
-<body>
-    <div id="map"></div>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script>
-        const map = L.map('map').setView([${location.latitude}, ${location.longitude}], 18);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: ''
-        }).addTo(map);
-        L.marker([${location.latitude}, ${location.longitude}]).addTo(map);
-    </script>
-</body>
-</html>
-`;
+  const centerLat = (location.latitude + order.latitude) / 2;
+  const centerLon = (location.longitude + order.longitude) / 2;
 
   return (
     <View className="flex-1 bg-white">
-      <View style={{ flex: 8 }}>
-        <WebView
-          source={{ html: htmlContent }}
-          style={{ flex: 1 }}
-          javaScriptEnabled={true}
-        />
+      <View className="flex-1 justify-center items-center">
+        <MapView
+          style={style.map}
+          initialRegion={{
+            latitude: centerLat,
+            longitude: centerLon,
+            latitudeDelta: Math.abs(location.latitude - order.latitude) + 0.02,
+            longitudeDelta: Math.abs(location.longitude - order.longitude) + 0.02,
+          }}
+        >
+          <Marker
+            coordinate={{
+              latitude: location.latitude,
+              longitude: location.longitude
+            }}
+            title="Tu ubicación"
+            description="Ubicación actual del repartidor"
+          />
+          <Marker
+            coordinate={{
+              latitude: order.latitude,
+              longitude: order.longitude
+            }}
+            title="cliente"
+            description="Destino"
+          />
+        </MapView>
       </View>
-
-      <View style={{ flex: 2 }} className="bg-white px-6 py-4 border-t border-gray-200">
+      <View className="flex-2 bg-white px-6 py-4 border-t border-gray-200">
         <Text className="text-lg font-bold mb-2 text-gray-800">Pedido de {order.clientName}</Text>
         <View className="flex-row items-center mb-1">
           <Ionicons name="location-outline" size={20} color="#000" className="mr-2" />
@@ -104,7 +104,11 @@ export default function OrderDetailScreen() {
 
         <View className="flex-row items-center mb-3">
           <Ionicons name="walk-outline" size={20} color="#000" className="mr-2" />
-          <Text className="text-base text-gray-700">{distance} km</Text>
+
+          <Text className="text-base text-gray-700">
+            Llegarás en 5km
+          </Text>
+
         </View>
 
         <TouchableOpacity
@@ -113,9 +117,15 @@ export default function OrderDetailScreen() {
         >
           <Text className="text-white font-semibold text-base">Continuar con la entrega</Text>
         </TouchableOpacity>
-
       </View>
     </View>
-
   );
 }
+
+
+const style = StyleSheet.create({
+  map: {
+    width: '100%',
+    height: '100%',
+  },
+});

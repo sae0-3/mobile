@@ -2,8 +2,9 @@ import React from 'react';
 import { View, Text, TouchableOpacity, Linking } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Entypo, Ionicons, MaterialIcons } from '@expo/vector-icons'
+import { OrderBase } from '../../../../src/types/apiTypes';
 
-const mockOrders = [
+const mockOrders: OrderBase[] = [
   { id: '1', clientName: 'Juan Perez', address: 'Av. san Martin 123', items: ['Pizza', 'Ensalada'], phone: 72165841 },
   { id: '2', clientName: 'Maria Lopez', address: 'Calle Falsa 456', items: ['Hamburguesa', 'Papas fritas'], phone: 75415695 },
 ];
