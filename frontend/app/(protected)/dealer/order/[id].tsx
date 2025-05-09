@@ -6,6 +6,7 @@ import MapView, { Marker } from 'react-native-maps';
 import { Ionicons } from '@expo/vector-icons'
 import colors from '../../../../src/theme/colors';
 import { Order } from '../../../../src/types/apiTypes';
+import { useRouteToClient } from '../../../../src/hooks/useRouteToClient';
 
 const mockOrders: Order[] = [
   { id: '1', clientName: 'Juan Perez', address: 'Av. san Martin 123', items: ['Pizza', 'Ensalada'], phone: 72165841, latitude: -17.35299, longitude: -66.18922 },
@@ -20,6 +21,8 @@ export default function OrderDetailScreen() {
   const [errorMsg, setErrorMsg] = useState('');
 
   const order = mockOrders.find(o => o.id === id);
+
+  const travelMode: 'driving' | 'bicycling' | 'walking' = 'driving';
 
   useEffect(() => {
     let subscriber: Location.LocationSubscription;
@@ -44,6 +47,12 @@ export default function OrderDetailScreen() {
 
     return () => subscriber && subscriber.remove();
   }, []);
+
+  const origin = location ? `${location.latitude},${location.longitude}` : '';
+  const destination = order ? `${order.latitude},${order.longitude}` : '';
+
+  const { data: routeData, isLoading: isRouteLoading } = useRouteToClient({ origin, destination, mode: travelMode });
+
 
   if (errorMsg) {
     return (
@@ -104,11 +113,15 @@ export default function OrderDetailScreen() {
 
         <View className="flex-row items-center mb-3">
           <Ionicons name="walk-outline" size={20} color="#000" className="mr-2" />
-
-          <Text className="text-base text-gray-700">
-            Llegarás en 5km
-          </Text>
-
+          {isRouteLoading ? (
+            <Text className="text-base text-gray-700">Calulando ruta...</Text>
+          ) : routeData ? (
+            <Text className="text-base text-gray-700">
+              {routeData.duration} ({routeData.distance})
+            </Text>
+          ) : (
+            <Text className="text-base text-gray-700 ">No se pudo calcular la ruta</Text>
+          )}
         </View>
 
         <TouchableOpacity
