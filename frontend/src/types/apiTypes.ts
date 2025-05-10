@@ -81,3 +81,23 @@ export interface TokenPayload {
   iat: number;
   exp: number;
 }
+
+export interface Coordinates {
+  latitude: number;
+  longitude: number;
+}
+
+export interface TravelEstimate {
+  distance: string;
+  duration: string;
+}
+
+export interface OrderBase {
+  id: string;
+  clientName: string;
+  address: string;
+  items: string[];
+  phone: number;
+};
+
+export type Order = OrderBase & Coordinates
