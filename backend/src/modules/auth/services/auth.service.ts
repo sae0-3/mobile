@@ -1,5 +1,7 @@
 import { validateDto } from '../../../core/common/validation';
 import { AppError, NotFoundError, UnauthorizedError } from '../../../core/errors/app.error';
+import { CustomJwtPayload } from '../../../core/types/custom-jwt-payload.type';
+import { ClientService } from '../../users/services/client.service';
 import { UserService } from '../../users/services/user.service';
 import { LoginDto } from '../dtos/login.dto';
 import { RegisterDto } from '../dtos/register.dto';
@@ -11,28 +13,29 @@ export class AuthService {
   constructor(
     private authProviderRepository: AuthProviderRepository,
     private userService: UserService,
+    private clientService: ClientService,
   ) { }
 
   async register(data: RegisterDto) {
     await validateDto(RegisterDto, data);
 
     const { email, name } = data;
-    const user = await this.userService.create({ email, name });
+    const client = await this.clientService.create({ email, name });
     const passwordHash = await hashPassword(data.password);
 
-    const authProvider = await this.authProviderRepository.createLocal(user.id, passwordHash);
+    const authProvider = await this.authProviderRepository.createLocal(client.id, passwordHash);
     if (!authProvider) {
       throw new AppError({
         publicMessage: 'Error al registrar usuario',
-        internalMessage: `No se pudo crear el proveedor de autenticación para el usuario con ID ${user.id}`,
+        internalMessage: `No se pudo crear el proveedor de autenticación para el usuario con ID ${client.id}`,
       });
     }
 
-    const payload = { id: user.id, email: user.email, role: user.role };
+    const payload: CustomJwtPayload = { id: client.id, email: client.email, role: 'client' };
     const token = generateToken(payload);
 
     return {
-      ...authProvider,
+      ...payload,
       access_token: token,
     };
   }
@@ -40,7 +43,7 @@ export class AuthService {
   async login(data: LoginDto) {
     await validateDto(LoginDto, data);
 
-    const user = await this.userService.findByEmail({ email: data.email });
+    const user = await this.userService.findByEmail(data.email);
     if (!user) {
       throw new NotFoundError({
         publicMessage: 'Usuario no encontrado',
@@ -63,10 +66,12 @@ export class AuthService {
       });
     }
 
-    const payload = { id: user.id, email: user.email, role: user.role };
+    const { role } = await this.userService.getRoleById(user.id);
+    const payload: CustomJwtPayload = { id: user.id, email: user.email, role };
     const token = generateToken(payload);
 
     return {
+      ...payload,
       access_token: token,
     };
   }

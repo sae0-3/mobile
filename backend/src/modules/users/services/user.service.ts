@@ -2,7 +2,7 @@ import { validateDto } from '../../../core/common/validation';
 import { AppError, NotFoundError } from '../../../core/errors/app.error';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
 import { UserRepository } from '../repositories/user.repository';
-import { User } from '../types/user.type';
+import { User, UserRole } from '../types/user.type';
 
 export class UserService {
   constructor(
@@ -123,5 +123,26 @@ export class UserService {
     }
 
     return deleted;
+  }
+
+  async getRoleById(id: string): Promise<UserRole> {
+    if (!id) {
+      throw new NotFoundError({
+        publicMessage: 'El id proporcionado no es válido',
+        internalMessage: 'El id esta vacío',
+      });
+    }
+
+    const user = await this.userRepository.findById(id);
+
+    if (!user) {
+      throw new NotFoundError({
+        publicMessage: 'Usuario no encontrado',
+      });
+    }
+
+    const role = await this.userRepository.getRoleById(id) as UserRole;
+
+    return role;
   }
 }

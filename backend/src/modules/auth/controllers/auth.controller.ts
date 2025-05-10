@@ -9,13 +9,11 @@ export class AuthController {
 
   register: RequestHandler = async (req, res, next) => {
     try {
-      const authProvider = await this.authService.register(req.body);
+      const data = await this.authService.register(req.body);
+
       responseBuilder(res, {
         statusCode: 201,
-        data: {
-          id: authProvider.user_id,
-          access_token: authProvider.access_token,
-        },
+        data,
       });
     } catch (error) {
       next(error);
@@ -25,6 +23,7 @@ export class AuthController {
   login: RequestHandler = async (req, res, next) => {
     try {
       const data = await this.authService.login(req.body);
+
       responseBuilder(res, {
         statusCode: 200,
         data,

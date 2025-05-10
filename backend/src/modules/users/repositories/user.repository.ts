@@ -1,5 +1,5 @@
 import { BaseRepository } from '../../../core/common/base.repository';
-import { User, UserInsert, UserUpdate } from '../types/user.type';
+import { User, UserInsert, UserRole, UserUpdate } from '../types/user.type';
 
 export class UserRepository extends BaseRepository {
   async findByEmail(email: string): Promise<User | null> {
@@ -10,7 +10,7 @@ export class UserRepository extends BaseRepository {
 
   async findById(id: string): Promise<User | null> {
     const sql = `
-      SELECT * FROM users WHERE user_id = $1`;
+      SELECT * FROM users WHERE id = $1`;
     return await this.queryOne<User>(sql, [id]);
   }
 
@@ -24,5 +24,22 @@ export class UserRepository extends BaseRepository {
 
   async delete(id: string): Promise<User | null> {
     return await this.deleteById<User>('users', id);
+  }
+
+  async getRoleById(id: string): Promise<UserRole | null> {
+    const sql = `
+      SELECT
+        CASE
+            WHEN a.user_id IS NOT NULL THEN 'admin'
+            WHEN c.user_id IS NOT NULL THEN 'client'
+            WHEN d.user_id IS NOT NULL THEN 'dealer'
+        END AS role
+      FROM users u
+        LEFT JOIN admins a ON u.id = a.user_id
+        LEFT JOIN clients c ON u.id = c.user_id
+        LEFT JOIN dealers d ON u.id = d.user_id
+      WHERE u.id = $1;
+    `;
+    return await this.queryOne<UserRole>(sql, [id]);
   }
 }

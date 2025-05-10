@@ -16,7 +16,6 @@ export const RegisterDto = z.object({
   name: z.string()
     .max(100, 'Nombre muy largo')
     .min(1, 'Nombre Vacio')
-    .optional(),
 });
 
 export type RegisterDto = z.infer<typeof RegisterDto>;

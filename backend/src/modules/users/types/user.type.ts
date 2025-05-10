@@ -10,3 +10,7 @@ export interface UserInsert {
 }
 
 export type UserUpdate = Partial<UserInsert>;
+
+export interface UserRole {
+  role: 'client' | 'dealer' | 'admin';
+}
