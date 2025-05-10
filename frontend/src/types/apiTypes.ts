@@ -8,7 +8,7 @@ export interface ApiResponse<T> {
 export interface RegisterRequest {
   email: string;
   password: string;
-  name?: string;
+  name: string;
   phoneNumber?: string;
 }
 

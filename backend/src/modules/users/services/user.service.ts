@@ -1,36 +1,148 @@
 import { validateDto } from '../../../core/common/validation';
-import { AppError, ValidationError } from '../../../core/errors/app.error';
-import { UserDto } from '../dtos/user.dto';
+import { AppError, NotFoundError } from '../../../core/errors/app.error';
+import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
 import { UserRepository } from '../repositories/user.repository';
+import { User, UserRole } from '../types/user.type';
 
 export class UserService {
   constructor(
     private userRepository: UserRepository,
   ) { }
 
-  async findByEmail(data: UserDto) {
-    await validateDto(UserDto, data);
-    return this.userRepository.findByEmail(data.email);
-  }
-
-  async create(data: UserDto) {
-    await validateDto(UserDto, data);
-
-    const existing = await this.userRepository.findByEmail(data.email);
-    if (existing) {
-      throw new ValidationError({
-        publicMessage: 'El email ya está registrado',
-        internalMessage: `Intento de registrar con email existente: ${data.email}`,
+  async findByEmail(email: string): Promise<User> {
+    if (!email) {
+      throw new NotFoundError({
+        publicMessage: 'El email proporcionado no es válido',
+        internalMessage: 'El email esta vacío',
       });
     }
 
-    const user = await this.userRepository.create(data.email, data.name);
+    const user = await this.userRepository.findByEmail(email);
+
     if (!user) {
-      throw new AppError({
-        internalMessage: `No se logro crear el usuario con la información: ${data}`,
+      throw new NotFoundError({
+        publicMessage: 'Usuario no encontrado',
       });
     }
 
     return user;
+  }
+
+  async findById(id: string): Promise<User> {
+    if (!id) {
+      throw new NotFoundError({
+        publicMessage: 'El id proporcionado no es válido',
+        internalMessage: 'El id esta vacío',
+      });
+    }
+
+    const user = await this.userRepository.findById(id);
+
+    if (!user) {
+      throw new NotFoundError({
+        publicMessage: 'Usuario no encontrado',
+      });
+    }
+
+    return user;
+  }
+
+  async create(data: CreateUserDto): Promise<User> {
+    await validateDto(CreateUserDto, data);
+
+    const user = await this.userRepository.findByEmail(data.email);
+
+    if (user) {
+      throw new AppError({
+        publicMessage: 'El email ya fue registrado',
+      });
+    }
+
+    const created = await this.userRepository.create(data);
+
+    if (!created) {
+      throw new AppError({
+        internalMessage: 'Error en la creación del usuario',
+      });
+    }
+
+    return created;
+  }
+
+  async update(id: string, data: UpdateUserDto): Promise<User> {
+    if (!id) {
+      throw new NotFoundError({
+        publicMessage: 'El id proporcionado no es válido',
+        internalMessage: 'El id esta vacío',
+      });
+    }
+
+    await validateDto(UpdateUserDto, data);
+
+    const user = await this.userRepository.findById(id);
+
+    if (!user) {
+      throw new NotFoundError({
+        publicMessage: 'Usuario no encontrado',
+      });
+    }
+
+    const updated = await this.userRepository.update(id, data);
+
+    if (!updated) {
+      throw new AppError({
+        internalMessage: 'Error en la actualización del usuario',
+      });
+    }
+
+    return updated;
+  }
+
+  async delete(id: string): Promise<User> {
+    if (!id) {
+      throw new NotFoundError({
+        publicMessage: 'El id proporcionado no es válido',
+        internalMessage: 'El id esta vacío',
+      });
+    }
+
+    const user = await this.userRepository.findById(id);
+
+    if (!user) {
+      throw new NotFoundError({
+        publicMessage: 'Usuario no encontrado',
+      });
+    }
+
+    const deleted = await this.userRepository.delete(id);
+
+    if (!deleted) {
+      throw new AppError({
+        internalMessage: 'Error en la eliminación del usuario',
+      });
+    }
+
+    return deleted;
+  }
+
+  async getRoleById(id: string): Promise<UserRole> {
+    if (!id) {
+      throw new NotFoundError({
+        publicMessage: 'El id proporcionado no es válido',
+        internalMessage: 'El id esta vacío',
+      });
+    }
+
+    const user = await this.userRepository.findById(id);
+
+    if (!user) {
+      throw new NotFoundError({
+        publicMessage: 'Usuario no encontrado',
+      });
+    }
+
+    const role = await this.userRepository.getRoleById(id) as UserRole;
+
+    return role;
   }
 }

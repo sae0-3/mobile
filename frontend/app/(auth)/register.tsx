@@ -46,7 +46,7 @@ export default function RegisterScreen() {
 
     const hasErrors = Object.values(newErrors).some((e) => e !== '');
     if (hasErrors) return;
-    register({ email, password }, {
+    register({ email, password, name }, {
       onSuccess: (response) => {
         const token = response.data.access_token;
         login(token);

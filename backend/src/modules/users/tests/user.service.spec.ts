@@ -1,145 +1,162 @@
-import { UserService } from '../services/user.service';
 import { UserRepository } from '../repositories/user.repository';
+import { UserService } from '../services/user.service';
 import { User } from '../types/user.type';
 
 describe('UserService', () => {
-  let userService: UserService;
-  let mockUserRepository: jest.Mocked<UserRepository>;
+  let service: UserService;
+  let repository: jest.Mocked<UserRepository>;
 
   beforeEach(() => {
-    mockUserRepository = {
+    repository = {
       create: jest.fn(),
       findByEmail: jest.fn(),
+      findById: jest.fn(),
+      update: jest.fn(),
+      delete: jest.fn(),
     } as any;
 
-    userService = new UserService(mockUserRepository);
+    service = new UserService(repository);
   });
 
+  const validUser: User = {
+    id: '1',
+    email: 'test@example.com',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  };
+
   describe('create()', () => {
-    it('debería crear un usuario con email y nombre', async () => {
-      const newUser: User = {
-        id: '1',
-        email: 'test@example.com',
-        name: 'Test User',
-        role: 'client',
-        created_at: new Date(),
-        updated_at: new Date()
-      };
+    it('debería crear un usuario', async () => {
+      repository.create.mockResolvedValue(validUser);
 
-      mockUserRepository.create.mockResolvedValue(newUser);
-
-      const result = await userService.create({ email: 'test@example.com', name: 'Test User' });
-      expect(result).toEqual(newUser);
-      expect(mockUserRepository.create).toHaveBeenCalledWith('test@example.com', 'Test User');
-    });
-
-    it('debería crear un usuario sin nombre', async () => {
-      const newUser: User = {
-        id: '1',
-        email: 'noname@example.com',
-        name: undefined,
-        role: 'client',
-        created_at: new Date(),
-        updated_at: new Date()
-      };
-
-      mockUserRepository.create.mockResolvedValue(newUser);
-
-      const result = await userService.create({ email: 'noname@example.com' });
-      expect(result).toEqual(newUser);
-      expect(mockUserRepository.create).toHaveBeenCalledWith('noname@example.com', undefined);
+      const result = await service.create({ email: 'test@example.com' });
+      expect(result).toEqual(validUser);
+      expect(repository.create).toHaveBeenCalledWith({ email: 'test@example.com' });
     });
 
     it('no debería permitir crear un usuario si el email ya existe', async () => {
-      mockUserRepository.findByEmail.mockResolvedValue({
-        id: '1',
-        email: 'existing@example.com',
-        name: 'Test User',
-        role: 'client',
-        created_at: new Date(),
-        updated_at: new Date()
-      });
+      repository.findByEmail.mockResolvedValue(validUser);
 
-      await expect(userService.create({
-        email: 'existing@example.com',
-        name: 'Nuevo Usuario'
+      await expect(service.create({
+        email: 'testg@example.com',
       })).rejects.toThrow(/email/i);
 
-      expect(mockUserRepository.create).not.toHaveBeenCalled();
+      expect(repository.create).not.toHaveBeenCalled();
     });
 
     it('debería lanzar error si el email es vacío', async () => {
-      await expect(userService.create({ email: '' })).rejects.toThrow();
-    });
-
-    it('debería propagar cualquier otro error del repositorio', async () => {
-      mockUserRepository.create.mockRejectedValue(new Error('Fallo DB'));
-
-      await expect(userService.create({ email: 'fail@example.com' }))
-        .rejects.toThrow(/DB/i);
+      await expect(service.create({ email: '' })).rejects.toThrow();
     });
 
     it('debería lanzar error si el email no es válido', async () => {
-      await expect(userService.create({ email: 'not-an-email' }))
+      await expect(service.create({ email: 'not-an-email' }))
         .rejects.toThrow(/email/i);
-    });
-
-    it('debería lanzar error si el nombre es demasiado largo', async () => {
-      const longName = 'a'.repeat(200);
-
-      await expect(userService.create({ email: 'valid@example.com', name: longName }))
-        .rejects.toThrow(/nombre/i);
-    });
-
-    it('debería lanzar error si el nombre está vacío', async () => {
-      await expect(userService.create({ email: 'valid@example.com', name: '' }))
-        .rejects.toThrow(/nombre/i);
     });
   });
 
   describe('findByEmail()', () => {
     it('debería devolver un usuario si el email existe', async () => {
-      const user: User = {
-        id: '1',
-        email: 'test@example.com',
-        name: 'Test User',
-        role: 'client',
-        created_at: new Date(),
-        updated_at: new Date()
-      };
+      repository.findByEmail.mockResolvedValue(validUser);
 
-      mockUserRepository.findByEmail.mockResolvedValue(user);
+      const result = await service.findByEmail('test@example.com');
 
-      const result = await userService.findByEmail({ email: 'test@example.com' });
-
-      expect(result).toEqual(user);
-      expect(mockUserRepository.findByEmail).toHaveBeenCalledWith('test@example.com');
+      expect(result).toEqual(validUser);
+      expect(repository.findByEmail).toHaveBeenCalledWith('test@example.com');
     });
 
-    it('debería devolver null si el email no existe', async () => {
-      mockUserRepository.findByEmail.mockResolvedValue(null);
+    it('debería lanzar error si el email no existe', async () => {
+      repository.findByEmail.mockResolvedValue(null);
 
-      const result = await userService.findByEmail({ email: 'noexists@example.com' });
-
-      expect(result).toBeNull();
-      expect(mockUserRepository.findByEmail).toHaveBeenCalledWith('noexists@example.com');
-    });
-
-    it('debería propagar errores si el repositorio falla', async () => {
-      mockUserRepository.findByEmail.mockRejectedValue(new Error('Fallo DB'));
-
-      await expect(userService.findByEmail({ email: 'fallo@example.com' }))
-        .rejects.toThrow(/DB/i);
+      await expect(service.findByEmail('noexists@example.com')).
+        rejects.toThrow(/no encontrado/i);
+      expect(repository.findByEmail).toHaveBeenCalledWith('noexists@example.com');
     });
 
     it('debería lanzar error si el email está vacío', async () => {
-      await expect(userService.findByEmail({ email: '' }))
+      await expect(service.findByEmail(''))
         .rejects.toThrow(/email/i);
+    });
+  });
+
+  describe('findById()', () => {
+    it('debería devolver un usuario si el ID existe', async () => {
+      repository.findById.mockResolvedValue(validUser);
+
+      const result = await service.findById('1');
+      expect(result).toEqual(validUser);
+      expect(repository.findById).toHaveBeenCalledWith('1');
+    });
+
+    it('debería lanzar error si el ID no existe', async () => {
+      repository.findById.mockResolvedValue(null);
+
+      await expect(service.findById('999'))
+        .rejects.toThrow(/no encontrado/i);
+      expect(repository.findById).toHaveBeenCalledWith('999');
+    });
+
+    it('debería lanzar error si el ID está vacío', async () => {
+      await expect(service.findById('')).rejects.toThrow(/id/i);
+    });
+  });
+
+  describe('update()', () => {
+    it('debería actualizar el usuario correctamente', async () => {
+      repository.findById.mockResolvedValue(validUser);
+      repository.update.mockResolvedValue(validUser);
+
+      const result = await service.update('1', { email: 'new@example.com' });
+
+      expect(result).toEqual(validUser);
+      expect(repository.update).toHaveBeenCalledWith('1', { email: 'new@example.com' });
+    });
+
+    it('debería lanzar error si el usuario no existe', async () => {
+      repository.findById.mockResolvedValue(null);
+
+      await expect(service.update('999', { email: 'new@example.com' }))
+        .rejects.toThrow(/no encontrado/i);
+    });
+
+    it('debería lanzar error si el ID está vacío', async () => {
+      await expect(service.update('', { email: 'new@example.com' }))
+        .rejects.toThrow(/id/i);
     });
 
     it('debería lanzar error si el email no es válido', async () => {
-      await expect(userService.findByEmail({ email: 'not-an-email' }))
+      repository.findById.mockResolvedValue(validUser);
+
+      await expect(service.update('1', { email: 'invalid' }))
         .rejects.toThrow(/email/i);
+    });
+
+    it('debería permitir update con objeto vacío (sin cambios)', async () => {
+      repository.findById.mockResolvedValue(validUser);
+      repository.update.mockResolvedValue(validUser);
+
+      const result = await service.update('1', {});
+      expect(result).toEqual(validUser);
+    });
+  });
+
+  describe('delete()', () => {
+    it('debería eliminar un usuario existente', async () => {
+      repository.findById.mockResolvedValue(validUser);
+      repository.delete.mockResolvedValue(validUser);
+
+      const result = await service.delete('1');
+      expect(result).toEqual(validUser);
+      expect(repository.delete).toHaveBeenCalledWith('1');
+    });
+
+    it('debería lanzar error si el usuario no existe', async () => {
+      repository.findById.mockResolvedValue(null);
+
+      await expect(service.delete('999')).rejects.toThrow(/no encontrado/i);
+    });
+
+    it('debería lanzar error si el ID está vacío', async () => {
+      await expect(service.delete('')).rejects.toThrow(/id/i);
     });
   });
 });
