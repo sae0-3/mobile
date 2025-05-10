@@ -1,4 +1,3 @@
--- create type user_role as enum ('client', 'dealer', 'admin');
 create type auth_provider_type as enum ('local', 'google');
 create type order_status as enum ('pending', 'in_progress', 'delivered', 'cancelled');
 create type vehicle_type as enum ('motorcycle', 'bicycle', 'car');
@@ -6,7 +5,6 @@ create type vehicle_type as enum ('motorcycle', 'bicycle', 'car');
 create table users (
     id uuid primary key default gen_random_uuid(),
     email text unique not null,
---    role user_role not null default 'client',
     created_at timestamp not null default now(),
     updated_at timestamp not null default now()
 );
@@ -87,13 +85,12 @@ create table product_categories (
 
 create table orders (
     id uuid primary key default gen_random_uuid(),
-    user_id uuid not null references users(id) on delete set null,
-    branch_id uuid not null references branches(id),
-    delivery_id uuid references users(id),
+    client_id uuid not null references clients(user_id) on delete set null,
+    delivery_id uuid references dealers(user_id),
     status order_status not null default 'pending',
     created_at timestamp not null default now(),
-    total numeric(10,2) not null,
-    delivery_address text not null
+    updated_at timestamp not null default now(),
+    total numeric(10,2) not null
 );
 
 create table order_details (
@@ -101,7 +98,6 @@ create table order_details (
     order_id uuid not null references orders(id) on delete cascade,
     product_id uuid not null references products(id),
     quantity int not null,
-    unit_price numeric(10,2) not null,
     subtotal numeric(10,2) not null
 );
 
