@@ -7,20 +7,6 @@ export class AdminController {
     private adminService: AdminService,
   ) { }
 
-  insert: RequestHandler = async (req, res, next) => {
-    try {
-      const admin = req.body;
-      const data = await this.adminService.create(admin);
-
-      responseBuilder(res, {
-        statusCode: 201,
-        data
-      });
-    } catch (error) {
-      next(error);
-    }
-  }
-
   deleteById: RequestHandler = async (req, res, next) => {
     try {
       const id = req.params.id;

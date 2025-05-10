@@ -28,17 +28,6 @@ export class ClientController {
     }
   }
 
-  insert: RequestHandler = async (req, res, next) => {
-    try {
-      const dealer = req.body;
-      const data = await this.clientService.create(dealer);
-
-      responseBuilder(res, { statusCode: 201, data });
-    } catch (error) {
-      next(error);
-    }
-  }
-
   updateById: RequestHandler = async (req, res, next) => {
     try {
       const id = req.params.id;
