@@ -38,6 +38,7 @@ export class DealerService {
 
     const created = await this.dealerRepository.create({
       user_id: user.id,
+      name: data.name,
       vehicle: data.vehicle,
     });
 

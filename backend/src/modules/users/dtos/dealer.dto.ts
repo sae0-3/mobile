@@ -5,6 +5,10 @@ export const CreateDealerDto = z.object({
     .string()
     .email(),
 
+  name: z
+    .string()
+    .min(1),
+
   vehicle: z
     .enum(['motorcycle', 'bicycle', 'car']),
 });
