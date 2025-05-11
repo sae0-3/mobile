@@ -7,7 +7,8 @@ export class CategoryRepository extends BaseRepository {
     const sql = `
       SELECT * FROM categories
       WHERE ${isClient ? 'visible = true' : 'TRUE'}
-      ORDER BY display_order`;
+      ORDER BY display_order DESC
+    `;
     return await this.query<Category>(sql);
   }
 
@@ -16,7 +17,7 @@ export class CategoryRepository extends BaseRepository {
       SELECT * FROM categories
       WHERE id = $1
         AND ${isClient ? 'visible = true' : 'TRUE'}
-      `;
+    `;
     return await this.queryOne<Category>(sql, [id]);
   }
 
@@ -27,7 +28,8 @@ export class CategoryRepository extends BaseRepository {
       INNER JOIN product_categories pc ON p.id = pc.product_id
       WHERE pc.category_id = $1
         AND ${isClient ? 'p.visible = true' : 'TRUE'}
-      ORDER BY p.display_order`;
+      ORDER BY p.display_order DESC
+    `;
     return await this.query<Product>(sql, [categoryId]);
   }
 
