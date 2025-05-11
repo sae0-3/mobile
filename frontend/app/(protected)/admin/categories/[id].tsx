@@ -1,17 +1,15 @@
+import { router, useLocalSearchParams } from 'expo-router';
+import { useEffect } from 'react';
 import { ScrollView, View } from 'react-native';
 import { CustomButton } from '../../../../src/components/CustomButton';
 import { FormSwitchField } from '../../../../src/components/FormSwitchField';
 import { FormTextField } from '../../../../src/components/FormTextField';
 import { CategoryUpdateSchema } from '../../../../src/dtos/categoryDto';
-import { useForm } from '../../../../src/hooks/useForm';
 import { useGetByIdCategory, useUpdateByIdCategory } from '../../../../src/hooks/useCategories';
+import { useForm } from '../../../../src/hooks/useForm';
 import { makeZodValidator } from '../../../../src/utils/validator';
-import { useLocalSearchParams, router } from 'expo-router';
-import { useEffect } from 'react';
-
 
 export default function EditCategoryScreen() {
-
   const { id } = useLocalSearchParams();
   const { data, isLoading, isError, error } = useGetByIdCategory(id.toString());
   const category = data?.data;
@@ -26,7 +24,7 @@ export default function EditCategoryScreen() {
 
   useEffect(() => {
     if (isSuccess) {
-      router.navigate('/admin/categories');
+      router.back();
     }
   }, [isSuccess]);
 

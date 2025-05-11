@@ -31,7 +31,7 @@ export default function EditProductScreen() {
 
   useEffect(() => {
     if (isSuccess) {
-      router.navigate('/admin/products');
+      router.back();
     }
   }, [isSuccess]);
 

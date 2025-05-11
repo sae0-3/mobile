@@ -22,7 +22,7 @@ export default function AddProductScreen() {
 
   useEffect(() => {
     if (isSuccess) {
-      router.navigate('/admin/products');
+      router.back();
     }
   }, [isSuccess])
 

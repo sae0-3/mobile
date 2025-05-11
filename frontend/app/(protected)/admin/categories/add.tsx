@@ -20,7 +20,7 @@ export default function AddCategoryScreen() {
 
   useEffect(() => {
     if (isSuccess) {
-      router.navigate('/admin/categories');
+      router.back();
     }
   }, [isSuccess])
 
