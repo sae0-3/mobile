@@ -1,21 +1,32 @@
-import { ZodObject, ZodRawShape } from 'zod';
+import { z } from 'zod';
 
-export const validateField = <T extends ZodRawShape>(
-  schema: ZodObject<T>,
-  fieldName: keyof T,
-  value: unknown
-): string => {
-  const fieldSchema = schema.shape[fieldName];
-  const result = fieldSchema.safeParse(value);
-  if (!result.success) {
-    return result.error.errors[0].message;
+export const FloatFromString = z.preprocess((val) => {
+  if (typeof val === 'string') {
+    const trimmed = val.trim();
+    if (trimmed === '') return undefined;
+
+    const parsed = parseFloat(trimmed);
+    return isNaN(parsed) ? undefined : parsed;
   }
-  return '';
-};
 
-export const makeZodValidator = <T extends ZodRawShape>(
-  schema: ZodObject<T>,
-  fieldName: keyof T
-) => {
-  return (value: unknown) => validateField(schema, fieldName, value);
-};
+  return val;
+}, z.number({
+  required_error: 'Campo obligatorio',
+  invalid_type_error: 'Debe ser un número válido',
+}).positive('Debe ser un número positivo'));
+
+export const IntFromString = z.preprocess((val) => {
+  if (typeof val === 'string') {
+    const trimmed = val.trim();
+    if (trimmed === '') return undefined;
+
+    const parsed = parseInt(trimmed, 10);
+    return isNaN(parsed) ? undefined : parsed;
+  }
+
+  return val;
+}, z.number({
+  required_error: 'Campo obligatorio',
+  invalid_type_error: 'Debe ser un número entero válido',
+}).int()
+);

@@ -1,18 +1,33 @@
+import { useForm } from '@tanstack/react-form';
 import { Link, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { Feather } from '@expo/vector-icons'
+import { KeyboardAvoidingView, Platform, Text, View } from 'react-native';
+import { Logo } from '../../assets/Logo';
+import { CustomButton } from '../../src/components/CustomButton';
+import { FormTextField } from '../../src/components/FormTextField';
+import { Icon } from '../../src/components/Icon';
 import { useLogin } from '../../src/hooks/useAuth';
 import { useAuth } from '../../src/stores/auth';
-import { Logo } from '../../assets/Logo';
 
 export default function LoginScreen() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const { isAuthenticated, login, role } = useAuth();
   const { mutate, isPending, error } = useLogin();
+  const form = useForm({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+    onSubmit: async ({ value }) => {
+      mutate(value, {
+        onSuccess: (response) => {
+          const token = response.data.access_token;
+          login(token);
+        }
+      });
+    },
+  });
 
   useEffect(() => {
     if (isAuthenticated && role) {
@@ -20,19 +35,9 @@ export default function LoginScreen() {
     }
   }, [isAuthenticated, role]);
 
-  const handleLogin = () => {
-    if (!email || !password) return;
-    mutate({ email, password }, {
-      onSuccess: (response) => {
-        const token = response.data.access_token;
-        login(token);
-      }
-    });
-  };
-
   return (
     <KeyboardAvoidingView className="flex-1" enabled={true} behavior={Platform.OS === "ios" ? "padding" : "height"}>
-      <View className='flex-1 justify-center '>
+      <View className="flex-1 justify-center" >
         <View className="items-center justify-center mb-10 mt-10">
           <Logo width="180" height="180" />
         </View>
@@ -41,50 +46,48 @@ export default function LoginScreen() {
           <Text className="text-2xl font-bold mb-6 text-center">Iniciar Sesión</Text>
 
           <View className="flex-row items-center border-b border-gray-300 h-16 px-3">
-            <Feather name="mail" size={24} color="black" />
-            <TextInput
+            <Icon name="mail" color="black" />
+            <FormTextField
+              form={form}
               className="flex-1 ml-3"
-              placeholder="Email"
-              value={email}
-              onChangeText={setEmail}
-              selectionColor="#f2c558"
-              textContentType="emailAddress"
-              importantForAutofill="yes"
+              name="email"
+              inputProps={{
+                placeholder: 'Correo Electrónico',
+                textContentType: 'emailAddress',
+                keyboardType: 'email-address',
+                importantForAutofill: 'yes',
+                autoCapitalize: 'none',
+              }}
             />
           </View>
 
           <View className="flex-row items-center border-b border-gray-300 h-16 px-3">
-            <Feather name="lock" size={24} color="black" />
-            <TextInput
+            <Icon name="lock" color="black" />
+            <FormTextField
+              form={form}
+              name="password"
               className="flex-1 ml-3"
-              placeholder="Contraseña"
-              value={password}
-              onChangeText={setPassword}
               secureTextEntry={!showPassword}
-              selectionColor="#f2c558"
-              textContentType="password"
-              importantForAutofill="yes"
-              autoCapitalize="none"
+              inputProps={{
+                placeholder: 'Contraseña',
+                textContentType: 'password',
+                autoCapitalize: 'none',
+              }}
             />
-            <TouchableOpacity
+            <CustomButton
+              className="bg-transparent py-2"
               onPress={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-5 "
-            >
-              <Feather name={showPassword ? "eye-off" : "eye"} size={24} color="#9ca3af" />
-            </TouchableOpacity>
+              iconRight={{ name: showPassword ? 'eye' : 'eye-off', color: '#9ca3af' }}
+            />
           </View>
 
-          <TouchableOpacity
-            onPress={handleLogin}
+          <CustomButton
+            title="Ingresar"
+            onPress={form.handleSubmit}
             disabled={isPending}
-            className={`h-12 rounded-lg justify-center items-center ${isPending ? 'bg-gray-300' : 'bg-[#f2c558]'}`}
-          >
-            {isPending ? (
-              <ActivityIndicator size="small" color="#fff" />
-            ) : (
-              <Text className="text-white font-semibold text-base">Ingresar</Text>
-            )}
-          </TouchableOpacity>
+            className="h-12"
+            loading={isPending}
+          />
 
           {error && (
             <Text className="text-red-500 text-center">
@@ -93,7 +96,7 @@ export default function LoginScreen() {
           )}
 
           <Text className="text-center">
-            ¿No tienes una cuenta? <Link href="/register" className="text-cyan-600">Regístrate</Link>
+            ¿No tienes una cuenta? <Link href="/register" className="text-primary">Regístrate</Link>
           </Text>
         </View>
       </View>

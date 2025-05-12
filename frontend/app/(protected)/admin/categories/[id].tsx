@@ -1,3 +1,4 @@
+import { useForm } from '@tanstack/react-form';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect } from 'react';
 import { ScrollView, View } from 'react-native';
@@ -6,19 +7,20 @@ import { FormSwitchField } from '../../../../src/components/FormSwitchField';
 import { FormTextField } from '../../../../src/components/FormTextField';
 import { CategoryUpdateSchema } from '../../../../src/dtos/categoryDto';
 import { useGetByIdCategory, useUpdateByIdCategory } from '../../../../src/hooks/useCategories';
-import { useForm } from '../../../../src/hooks/useForm';
-import { makeZodValidator } from '../../../../src/utils/validator';
 
 export default function EditCategoryScreen() {
   const { id } = useLocalSearchParams();
   const { data, isLoading, isError, error } = useGetByIdCategory(id.toString());
   const category = data?.data;
   const { mutate: update, isPending, isSuccess } = useUpdateByIdCategory(id.toString());
-
   const form = useForm({
     defaultValues: category,
-    onSubmit: async (data: any) => {
-      update(data);
+    onSubmit: async ({ value }) => {
+      const parsed = CategoryUpdateSchema.parse(value);
+      update(parsed);
+    },
+    validators: {
+      onChange: CategoryUpdateSchema, // TODO
     },
   });
 
@@ -36,29 +38,35 @@ export default function EditCategoryScreen() {
         <FormTextField
           form={form}
           name="name"
-          label="Nombre"
-          validator={makeZodValidator(CategoryUpdateSchema, 'name')}
+          labelProps={{
+            title: 'Nombre',
+            className: 'text-base font-semibold mb-1',
+          }}
+          inputProps={{
+            className: 'border border-gray-300 rounded-md px-3 py-2 bg-white',
+          }}
         />
 
         <FormTextField
           form={form}
           name="display_order"
-          label="Orden de visualización"
-          inputProps={{
-            keyboardType: 'numeric',
+          labelProps={{
+            title: 'Orden de visualización',
+            className: 'text-base font-semibold mb-1',
           }}
-          validator={makeZodValidator(CategoryUpdateSchema, 'display_order')}
-          parseValue={(val) => {
-            const num = parseInt(val, 10);
-            if (isNaN(num)) return undefined;
-            return num
+          inputProps={{
+            className: 'border border-gray-300 rounded-md px-3 py-2 bg-white',
+            keyboardType: 'number-pad',
           }}
         />
 
         <FormSwitchField
           form={form}
           name="visible"
-          label="Visible"
+          labelProps={{
+            title: 'Visible',
+            className: 'text-base font-semibold mb-1',
+          }}
         />
 
         <View className="flex flex-row justify-between">

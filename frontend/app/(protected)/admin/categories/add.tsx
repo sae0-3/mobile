@@ -1,21 +1,24 @@
+import { useForm } from '@tanstack/react-form';
 import { router } from 'expo-router';
 import { useEffect } from 'react';
 import { ScrollView, View } from 'react-native';
 import { CustomButton } from '../../../../src/components/CustomButton';
 import { FormSwitchField } from '../../../../src/components/FormSwitchField';
 import { FormTextField } from '../../../../src/components/FormTextField';
-import { CategoryInsertSchema } from '../../../../src/dtos/categoryDto';
+import { CategoryInsertSchema, defaultValues } from '../../../../src/dtos/categoryDto';
 import { useCreateCategory } from '../../../../src/hooks/useCategories';
-import { useForm } from '../../../../src/hooks/useForm';
-import { makeZodValidator } from '../../../../src/utils/validator';
 
 export default function AddCategoryScreen() {
   const { mutate: create, isPending, isSuccess } = useCreateCategory();
   const form = useForm({
     defaultValues,
-    onSubmit: (data: any) => {
-      create(data);
-    }
+    onSubmit: async ({ value }) => {
+      const parsed = CategoryInsertSchema.parse(value);
+      create(parsed);
+    },
+    validators: {
+      onChange: CategoryInsertSchema, // TODO
+    },
   });
 
   useEffect(() => {
@@ -33,34 +36,38 @@ export default function AddCategoryScreen() {
         <FormTextField
           form={form}
           name="name"
-          label="Nombre"
+          labelProps={{
+            title: 'Nombre',
+            className: 'text-base font-semibold mb-1',
+          }}
           required
           inputProps={{
+            className: 'border border-gray-300 rounded-md px-3 py-2 bg-white',
             placeholder: "Categoría",
           }}
-          validator={makeZodValidator(CategoryInsertSchema, 'name')}
         />
 
         <FormTextField
           form={form}
           name="display_order"
-          label="Orden de visualización"
+          labelProps={{
+            title: 'Orden de visualización',
+            className: 'text-base font-semibold mb-1',
+          }}
           inputProps={{
+            className: 'border border-gray-300 rounded-md px-3 py-2 bg-white',
             placeholder: '0',
             keyboardType: 'numeric',
-          }}
-          validator={makeZodValidator(CategoryInsertSchema, 'display_order')}
-          parseValue={(val) => {
-            const num = parseInt(val, 10);
-            if (isNaN(num)) return undefined;
-            return num
           }}
         />
 
         <FormSwitchField
           form={form}
           name="visible"
-          label="Visible"
+          labelProps={{
+            title: 'Visible',
+            className: 'text-base font-semibold mb-1',
+          }}
         />
 
         <View className="flex flex-row justify-between">
@@ -88,9 +95,3 @@ export default function AddCategoryScreen() {
     </ScrollView>
   );
 }
-
-const defaultValues = {
-  name: '',
-  display_order: 0,
-  visible: true,
-};

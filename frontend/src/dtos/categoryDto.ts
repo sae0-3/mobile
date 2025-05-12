@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { IntFromString } from '../utils/validator';
 
 export const CategoryInsertSchema = z.object({
   name: z
@@ -6,19 +7,18 @@ export const CategoryInsertSchema = z.object({
     .min(1, { message: 'El nombre de la categoria no puede estar vacio' }),
 
   visible: z
-    .boolean()
-    .optional(),
+    .boolean(),
 
-  display_order: z
-    .number({
-      invalid_type_error: 'Debe ser un número válido',
-    })
-    .optional(
-  )
+  display_order: IntFromString,
 });
-
-export type CategoryInsertSchema = z.infer<typeof CategoryInsertSchema>;
 
 export const CategoryUpdateSchema = CategoryInsertSchema.partial();
 
+export type CategoryInsertDto = z.infer<typeof CategoryInsertSchema>;
 export type CategoryUpdateDto = z.infer<typeof CategoryUpdateSchema>;
+
+export const defaultValues: CategoryInsertDto = {
+  name: '',
+  display_order: 0,
+  visible: true,
+};

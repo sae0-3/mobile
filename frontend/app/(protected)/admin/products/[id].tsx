@@ -1,3 +1,4 @@
+import { useForm } from '@tanstack/react-form';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, Text, TextInput, View } from 'react-native';
@@ -5,9 +6,7 @@ import { CustomButton } from '../../../../src/components/CustomButton';
 import { FormSwitchField } from '../../../../src/components/FormSwitchField';
 import { FormTextField } from '../../../../src/components/FormTextField';
 import { ProductUpdateSchema } from '../../../../src/dtos/productDto';
-import { useForm } from '../../../../src/hooks/useForm';
 import { useGetByIdProduct, useUpdateByIdProduct } from '../../../../src/hooks/useProduct';
-import { makeZodValidator } from '../../../../src/utils/validator';
 
 export default function EditProductScreen() {
   const { id } = useLocalSearchParams();
@@ -16,16 +15,20 @@ export default function EditProductScreen() {
   const { mutate: update, isPending, isSuccess } = useUpdateByIdProduct(id.toString());
   const form = useForm({
     defaultValues: product,
-    onSubmit: async (data: any) => {
-      update(data);
-    }
+    onSubmit: async ({ value }) => {
+      const parsed = ProductUpdateSchema.parse(value);
+      update(parsed);
+    },
+    validators: {
+      onChange: ProductUpdateSchema, // TODO
+    },
   });
   const [newIngredient, setNewIngredient] = useState('');
-  const [ingredients, setIngredients] = useState(product?.ingredients || []);
+  const [ingredients, setIngredients] = useState<string[]>([]);
 
   useEffect(() => {
     if (product) {
-      setIngredients(product.ingredients as string[]);
+      setIngredients(product.ingredients ?? []);
     }
   }, [product]);
 
@@ -67,40 +70,52 @@ export default function EditProductScreen() {
         <FormTextField
           form={form}
           name="name"
-          label="Nombre"
-          validator={makeZodValidator(ProductUpdateSchema, 'name')}
+          labelProps={{
+            title: 'Nombre',
+            className: 'text-base font-semibold mb-1',
+          }}
+          inputProps={{
+            className: 'border border-gray-300 rounded-md px-3 py-2 bg-white',
+          }}
         />
 
         <FormTextField
           form={form}
           name="price"
-          label="Precio"
+          labelProps={{
+            title: 'Precio',
+            className: 'text-base font-semibold mb-1',
+          }}
           inputProps={{
-            keyboardType: 'numeric',
+            className: 'border border-gray-300 rounded-md px-3 py-2 bg-white',
+            keyboardType: 'decimal-pad',
           }}
-          parseValue={(val) => {
-            const num = parseFloat(val);
-            if (isNaN(num)) return undefined;
-            return Number(num.toFixed(2));
-          }}
-          validator={makeZodValidator(ProductUpdateSchema, 'price')}
         />
 
         <FormTextField
           form={form}
           name="description"
-          label="Descripción"
+          labelProps={{
+            title: 'Descripción',
+            className: 'text-base font-semibold mb-1',
+          }}
           inputProps={{
+            className: 'border border-gray-300 rounded-md px-3 py-2 bg-white',
             multiline: true,
           }}
-          validator={makeZodValidator(ProductUpdateSchema, 'description')}
         />
 
         <FormTextField
           form={form}
           name="img_reference"
-          label="Imagen (URL)"
-          validator={makeZodValidator(ProductUpdateSchema, 'img_reference')}
+          labelProps={{
+            title: 'Imagen (URL)',
+            className: 'text-base font-semibold mb-1',
+          }}
+          inputProps={{
+            className: 'border border-gray-300 rounded-md px-3 py-2 bg-white',
+            keyboardType: 'url',
+          }}
         />
 
         <View>
@@ -149,15 +164,13 @@ export default function EditProductScreen() {
         <FormTextField
           form={form}
           name="display_order"
-          label="Orden de visualización"
-          inputProps={{
-            keyboardType: 'numeric',
+          labelProps={{
+            title: 'Orden de visualización',
+            className: 'text-base font-semibold mb-1',
           }}
-          validator={makeZodValidator(ProductUpdateSchema, 'display_order')}
-          parseValue={(val) => {
-            const num = parseInt(val, 10);
-            if (isNaN(num)) return undefined;
-            return num
+          inputProps={{
+            className: 'border border-gray-300 rounded-md px-3 py-2 bg-white',
+            keyboardType: 'number-pad',
           }}
         />
 
@@ -165,13 +178,19 @@ export default function EditProductScreen() {
           <FormSwitchField
             form={form}
             name="available"
-            label="Disponible"
+            labelProps={{
+              title: 'Disponible',
+              className: 'text-base font-semibold mb-1',
+            }}
           />
 
           <FormSwitchField
             form={form}
             name="visible"
-            label="Visible"
+            labelProps={{
+              title: 'Visible',
+              className: 'text-base font-semibold mb-1',
+            }}
           />
         </View>
 
