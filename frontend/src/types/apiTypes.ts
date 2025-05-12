@@ -17,6 +17,33 @@ export type RegisterResponse = ApiResponse<{
   access_token: string;
 }>;
 
+export interface RegisterDealerRequest {
+  email: string;
+  name: string;
+  vehicle: 'car' | 'motorcycle' | 'bicycle';
+  password: string;
+}
+
+export type RegisterDealerResponse = ApiResponse<{
+  id: string;
+  email: string;
+  role: string;
+  access_token: string;
+}>;
+
+export interface Dealer {
+  id: string;
+  email: string;
+  name: string;
+  vehicle: 'motorcycle' | 'bicycle' | 'car';
+  created_at: string;
+  updated_at: string;
+}
+
+export type DealerRespose = ApiResponse<Dealer>;
+
+export type DealersResponse = ApiResponse<Dealer[]>;
+
 export interface LoginRequest {
   email: string;
   password: string;

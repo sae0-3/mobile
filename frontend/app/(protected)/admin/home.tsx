@@ -16,7 +16,7 @@ const tiles = [
   {
     icon: 'users',
     title: 'Repartidores',
-    onPress: () => { },
+    onPress: () => router.push('/admin/dealers'),
   },
   // {
   //   icon: 'archive',
