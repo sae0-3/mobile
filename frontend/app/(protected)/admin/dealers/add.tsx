@@ -31,9 +31,13 @@ export default function AddDealerScreen() {
       <FormTextField
         form={form}
         name="name"
-        label="Nombre"
+        labelProps={{
+          title: 'Nombre',
+          className: 'text-base font-semibold mb-1',
+        }}
         required
         inputProps={{
+          className: 'border border-gray-300 rounded-md px-3 py-2 bg-white',
           placeholder: "Repartidor",
         }}
       />
@@ -41,9 +45,13 @@ export default function AddDealerScreen() {
       <FormTextField
         form={form}
         name="email"
-        label="Correo Electrónico"
+        labelProps={{
+          title: 'Correo Electrónico',
+          className: 'text-base font-semibold mb-1',
+        }}
         required
         inputProps={{
+          className: 'border border-gray-300 rounded-md px-3 py-2 bg-white',
           placeholder: "repartidor@example.com",
         }}
       />
@@ -51,9 +59,13 @@ export default function AddDealerScreen() {
       <FormTextField
         form={form}
         name="password"
-        label="Contraseña"
+        labelProps={{
+          title: 'Contraseña',
+          className: 'text-base font-semibold mb-1',
+        }}
         required
         inputProps={{
+          className: 'border border-gray-300 rounded-md px-3 py-2 bg-white',
           placeholder: "********",
         }}
       />
@@ -61,9 +73,13 @@ export default function AddDealerScreen() {
       <FormTextField
         form={form}
         name="vehicle"
-        label="Tipo de vehículo"
+        labelProps={{
+          title: 'Tipo de vehículo',
+          className: 'text-base font-semibold mb-1',
+        }}
         required
         inputProps={{
+          className: 'border border-gray-300 rounded-md px-3 py-2 bg-white',
           placeholder: "motorcycle | bicycle | car",
         }}
       />

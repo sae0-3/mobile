@@ -7,11 +7,12 @@ import { Icon } from './Icon';
 type FormTextFieldProps = {
   form: any;
   name: string;
-  label?: string;
   required?: boolean;
-  containerClassName?: string;
-  labelClassName?: string;
-  inputClassName?: string;
+  className?: string;
+  labelProps?: {
+    title: string,
+    className?: string,
+  }
   inputProps?: Omit<TextInputProps,
     'value' |
     'onChangeText' |
@@ -23,12 +24,10 @@ type FormTextFieldProps = {
 export const FormTextField = ({
   form,
   name,
-  label,
+  labelProps,
   required = false,
-  containerClassName,
+  className,
   inputProps = {},
-  labelClassName = 'text-base font-semibold mb-1',
-  inputClassName = 'border border-gray-300 rounded-md px-3 py-2 bg-white',
   secureTextEntry = false,
 }: FormTextFieldProps) => {
   return (
@@ -37,10 +36,17 @@ export const FormTextField = ({
       name={name}
     >
       {(field) => (
-        <View className={containerClassName}>
-          {label && (
-            <Text className={labelClassName}>
-              {label}: {required && <Icon name="asterisk" color="red" size={12} type="MaterialCommunityIcons" />}
+        <View className={className}>
+          {!!labelProps && (
+            <Text className={labelProps.className}>
+              {labelProps.title}: {required && (
+                <Icon
+                  name="asterisk"
+                  color="red"
+                  size={12}
+                  type="MaterialCommunityIcons"
+                />
+              )}
             </Text>
           )}
 

@@ -36,9 +36,13 @@ export default function AddCategoryScreen() {
         <FormTextField
           form={form}
           name="name"
-          label="Nombre"
+          labelProps={{
+            title: 'Nombre',
+            className: 'text-base font-semibold mb-1',
+          }}
           required
           inputProps={{
+            className: 'border border-gray-300 rounded-md px-3 py-2 bg-white',
             placeholder: "Categoría",
           }}
         />
@@ -46,8 +50,12 @@ export default function AddCategoryScreen() {
         <FormTextField
           form={form}
           name="display_order"
-          label="Orden de visualización"
+          labelProps={{
+            title: 'Orden de visualización',
+            className: 'text-base font-semibold mb-1',
+          }}
           inputProps={{
+            className: 'border border-gray-300 rounded-md px-3 py-2 bg-white',
             placeholder: '0',
             keyboardType: 'numeric',
           }}
@@ -56,7 +64,10 @@ export default function AddCategoryScreen() {
         <FormSwitchField
           form={form}
           name="visible"
-          label="Visible"
+          labelProps={{
+            title: 'Visible',
+            className: 'text-base font-semibold mb-1',
+          }}
         />
 
         <View className="flex flex-row justify-between">

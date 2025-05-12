@@ -53,9 +53,13 @@ export default function AddProductScreen() {
         <FormTextField
           form={form}
           name="name"
-          label="Nombre"
+          labelProps={{
+            title: 'Nombre',
+            className: 'text-base font-semibold mb-1',
+          }}
           required
           inputProps={{
+            className: 'border border-gray-300 rounded-md px-3 py-2 bg-white',
             placeholder: "Producto",
           }}
         />
@@ -63,9 +67,13 @@ export default function AddProductScreen() {
         <FormTextField
           form={form}
           name="price"
-          label="Precio"
+          labelProps={{
+            title: 'Precio',
+            className: 'text-base font-semibold mb-1',
+          }}
           required
           inputProps={{
+            className: 'border border-gray-300 rounded-md px-3 py-2 bg-white',
             placeholder: '0',
             keyboardType: 'decimal-pad',
           }}
@@ -74,8 +82,12 @@ export default function AddProductScreen() {
         <FormTextField
           form={form}
           name="description"
-          label="Descripción"
+          labelProps={{
+            title: 'Descripción',
+            className: 'text-base font-semibold mb-1',
+          }}
           inputProps={{
+            className: 'border border-gray-300 rounded-md px-3 py-2 bg-white',
             placeholder: "Descripción del producto...",
             multiline: true,
           }}
@@ -84,8 +96,12 @@ export default function AddProductScreen() {
         <FormTextField
           form={form}
           name="img_reference"
-          label="Imagen (URL)"
+          labelProps={{
+            title: 'Imagen (URL)',
+            className: 'text-base font-semibold mb-1',
+          }}
           inputProps={{
+            className: 'border border-gray-300 rounded-md px-3 py-2 bg-white',
             placeholder: 'https://example.com',
             keyboardType: 'url',
           }}
@@ -137,8 +153,12 @@ export default function AddProductScreen() {
         <FormTextField
           form={form}
           name="display_order"
-          label="Orden de visualización"
+          labelProps={{
+            title: 'Orden de visualización',
+            className: 'text-base font-semibold mb-1',
+          }}
           inputProps={{
+            className: 'border border-gray-300 rounded-md px-3 py-2 bg-white',
             placeholder: '0',
             keyboardType: 'number-pad',
           }}
@@ -148,13 +168,19 @@ export default function AddProductScreen() {
           <FormSwitchField
             form={form}
             name="available"
-            label="Disponible"
+            labelProps={{
+              title: 'Disponible',
+              className: 'text-base font-semibold mb-1',
+            }}
           />
 
           <FormSwitchField
             form={form}
             name="visible"
-            label="Visible"
+            labelProps={{
+              title: 'Visible',
+              className: 'text-base font-semibold mb-1',
+            }}
           />
         </View>
 

@@ -46,7 +46,7 @@ export default function RegisterScreen() {
             <FormTextField
               form={form}
               name="name"
-              containerClassName="flex-1 ml-3"
+              className="flex-1 ml-3"
               inputProps={{
                 placeholder: 'Nombre *',
                 textContentType: 'name',
@@ -60,7 +60,7 @@ export default function RegisterScreen() {
             <FormTextField
               form={form}
               name="email"
-              containerClassName="flex-1 ml-3"
+              className="flex-1 ml-3"
               inputProps={{
                 placeholder: 'Correo Electrónico *',
                 keyboardType: 'email-address',
@@ -76,7 +76,7 @@ export default function RegisterScreen() {
             <FormTextField
               form={form}
               name="password"
-              containerClassName="flex-1 ml-3"
+              className="flex-1 ml-3"
               secureTextEntry={!showPassword}
               inputProps={{
                 placeholder: 'Contraseña *',
@@ -96,7 +96,7 @@ export default function RegisterScreen() {
             <FormTextField
               form={form}
               name="phone"
-              containerClassName="flex-1 ml-3"
+              className="flex-1 ml-3"
               inputProps={{
                 placeholder: 'Número de celular',
                 keyboardType: 'phone-pad',
