@@ -1,5 +1,6 @@
 import { Field } from '@tanstack/react-form';
 import { Text, TextInput, type TextInputProps, View } from 'react-native';
+import { FieldValidationInfo } from './FieldValidationInfo';
 import { Icon } from './Icon';
 
 type FormTextFieldProps = {
@@ -11,7 +12,6 @@ type FormTextFieldProps = {
   containerClassName?: string;
   labelClassName?: string;
   inputClassName?: string;
-  errorClassName?: string;
   inputProps?: Omit<TextInputProps,
     'value' |
     'onChangeText' |
@@ -31,7 +31,6 @@ export const FormTextField = ({
   parseValue,
   labelClassName = 'text-base font-semibold mb-1',
   inputClassName = 'border border-gray-300 rounded-md px-3 py-2 bg-white',
-  errorClassName = 'text-red-600 mt-1',
 }: FormTextFieldProps) => {
   return (
     <Field
@@ -62,11 +61,7 @@ export const FormTextField = ({
             className={inputClassName}
           />
 
-          {field.state.meta.errors?.length > 0 && (
-            <Text className={errorClassName}>
-              {field.state.meta.errors[0]}
-            </Text>
-          )}
+          <FieldValidationInfo field={field} />
         </View>
       )}
     </Field>

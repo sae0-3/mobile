@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const DealerRegisterSchema = z.object({
   name: z
     .string()
-    .min(1, { message: 'El nombre del repartidor no puede estar vacío' }),
+    .min(1, { message: 'El nombre no puede estar vacío' }),
 
   password: z
     .string()
@@ -14,7 +14,7 @@ export const DealerRegisterSchema = z.object({
 
   email: z
     .string()
-    .min(1)
+    .min(1, 'El correo no puede estar vacío')
     .email('El formato del correo no es válido'),
 
   vehicle: z
@@ -22,3 +22,5 @@ export const DealerRegisterSchema = z.object({
       message: 'El vehiculo no es una opción válida'
     }),
 });
+
+export type DealerRegisterSchema = z.infer<typeof DealerRegisterSchema>;
