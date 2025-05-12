@@ -23,8 +23,8 @@ export class AuthService {
   async registerClient(data: RegisterClientDto) {
     await validateDto(RegisterClientDto, data);
 
-    const { email, name, password } = data;
-    const client = await this.clientService.create({ email, name });
+    const { email, name, password, phone } = data;
+    const client = await this.clientService.create({ email, name, phone });
     const passwordHash = await hashPassword(password);
 
     const authProvider = await this.authProviderRepository.createLocal(client.id, passwordHash);
