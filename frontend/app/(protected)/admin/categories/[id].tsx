@@ -1,3 +1,4 @@
+import { useForm } from '@tanstack/react-form';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect } from 'react';
 import { ScrollView, View } from 'react-native';
@@ -6,19 +7,20 @@ import { FormSwitchField } from '../../../../src/components/FormSwitchField';
 import { FormTextField } from '../../../../src/components/FormTextField';
 import { CategoryUpdateSchema } from '../../../../src/dtos/categoryDto';
 import { useGetByIdCategory, useUpdateByIdCategory } from '../../../../src/hooks/useCategories';
-import { useForm } from '../../../../src/hooks/useForm';
-import { makeZodValidator } from '../../../../src/utils/validator';
 
 export default function EditCategoryScreen() {
   const { id } = useLocalSearchParams();
   const { data, isLoading, isError, error } = useGetByIdCategory(id.toString());
   const category = data?.data;
   const { mutate: update, isPending, isSuccess } = useUpdateByIdCategory(id.toString());
-
   const form = useForm({
     defaultValues: category,
-    onSubmit: async (data: any) => {
-      update(data);
+    onSubmit: async ({ value }) => {
+      const parsed = CategoryUpdateSchema.parse(value);
+      update(parsed);
+    },
+    validators: {
+      onChange: CategoryUpdateSchema, // TODO
     },
   });
 
@@ -37,7 +39,6 @@ export default function EditCategoryScreen() {
           form={form}
           name="name"
           label="Nombre"
-          validator={makeZodValidator(CategoryUpdateSchema, 'name')}
         />
 
         <FormTextField
@@ -45,13 +46,7 @@ export default function EditCategoryScreen() {
           name="display_order"
           label="Orden de visualización"
           inputProps={{
-            keyboardType: 'numeric',
-          }}
-          validator={makeZodValidator(CategoryUpdateSchema, 'display_order')}
-          parseValue={(val) => {
-            const num = parseInt(val, 10);
-            if (isNaN(num)) return undefined;
-            return num
+            keyboardType: 'number-pad',
           }}
         />
 

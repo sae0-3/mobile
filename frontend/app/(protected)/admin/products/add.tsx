@@ -1,24 +1,27 @@
+import { useForm } from '@tanstack/react-form';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ScrollView, Text, TextInput, View } from 'react-native';
 import { CustomButton } from '../../../../src/components/CustomButton';
 import { FormSwitchField } from '../../../../src/components/FormSwitchField';
 import { FormTextField } from '../../../../src/components/FormTextField';
-import { ProductInsertSchema } from '../../../../src/dtos/productDto';
-import { useForm } from '../../../../src/hooks/useForm';
+import { ProductInsertSchema, defaultValues } from '../../../../src/dtos/productDto';
 import { useCreateProduct } from '../../../../src/hooks/useProduct';
-import { makeZodValidator } from '../../../../src/utils/validator';
 
 export default function AddProductScreen() {
   const { mutate: create, isPending, isSuccess } = useCreateProduct();
   const form = useForm({
     defaultValues,
-    onSubmit: (data: any) => {
-      create(data);
+    onSubmit: async ({ value }) => {
+      const parsed = ProductInsertSchema.parse(value);
+      create(parsed);
+    },
+    validators: {
+      onChange: ProductInsertSchema, // TODO
     }
   });
   const [newIngredient, setNewIngredient] = useState('');
-  const [ingredients, setIngredients] = useState(form.getFieldValue('ingredients') as string[]);
+  const [ingredients, setIngredients] = useState<string[]>([]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -55,7 +58,6 @@ export default function AddProductScreen() {
           inputProps={{
             placeholder: "Producto",
           }}
-          validator={makeZodValidator(ProductInsertSchema, 'name')}
         />
 
         <FormTextField
@@ -65,14 +67,8 @@ export default function AddProductScreen() {
           required
           inputProps={{
             placeholder: '0',
-            keyboardType: 'numeric',
+            keyboardType: 'decimal-pad',
           }}
-          parseValue={(val) => {
-            const num = parseFloat(val);
-            if (isNaN(num)) return undefined;
-            return Number(num.toFixed(2));
-          }}
-          validator={makeZodValidator(ProductInsertSchema, 'price')}
         />
 
         <FormTextField
@@ -83,7 +79,6 @@ export default function AddProductScreen() {
             placeholder: "Descripción del producto...",
             multiline: true,
           }}
-          validator={makeZodValidator(ProductInsertSchema, 'description')}
         />
 
         <FormTextField
@@ -92,8 +87,8 @@ export default function AddProductScreen() {
           label="Imagen (URL)"
           inputProps={{
             placeholder: 'https://example.com',
+            keyboardType: 'url',
           }}
-          validator={makeZodValidator(ProductInsertSchema, 'img_reference')}
         />
 
         <View>
@@ -145,13 +140,7 @@ export default function AddProductScreen() {
           label="Orden de visualización"
           inputProps={{
             placeholder: '0',
-            keyboardType: 'numeric',
-          }}
-          validator={makeZodValidator(ProductInsertSchema, 'display_order')}
-          parseValue={(val) => {
-            const num = parseInt(val, 10);
-            if (isNaN(num)) return undefined;
-            return num
+            keyboardType: 'number-pad',
           }}
         />
 
@@ -193,14 +182,3 @@ export default function AddProductScreen() {
     </ScrollView>
   );
 }
-
-const defaultValues = {
-  name: '',
-  price: 0,
-  description: null,
-  img_reference: null,
-  ingredients: [],
-  available: true,
-  visible: true,
-  display_order: 0,
-};

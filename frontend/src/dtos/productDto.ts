@@ -1,16 +1,12 @@
 import { z } from 'zod';
+import { FloatFromString, IntFromString } from '../utils/validator';
 
 export const ProductInsertSchema = z.object({
   name: z
     .string()
     .min(1, { message: 'El nombre del producto no puede estar vacío' }),
 
-  price: z
-    .number({
-      required_error: 'El precio es obligatorio',
-      invalid_type_error: 'El precio debe ser un número válido',
-    })
-    .positive('El precio debe ser mayor que 0'),
+  price: FloatFromString,
 
   description: z
     .string()
@@ -42,16 +38,21 @@ export const ProductInsertSchema = z.object({
     .boolean()
     .optional(),
 
-  display_order: z
-    .number({
-      invalid_type_error: 'Debe ser un número válido',
-    })
-    .optional(
-  )
+  display_order: IntFromString,
 });
-
-export type ProductInsertDto = z.infer<typeof ProductInsertSchema>;
 
 export const ProductUpdateSchema = ProductInsertSchema.partial();
 
+export type ProductInsertDto = z.infer<typeof ProductInsertSchema>;
 export type ProductUpdateDto = z.infer<typeof ProductUpdateSchema>;
+
+export const defaultValues: ProductInsertDto = {
+  name: '',
+  price: 0,
+  description: null,
+  img_reference: null,
+  ingredients: [],
+  available: true,
+  visible: true,
+  display_order: 0,
+};
