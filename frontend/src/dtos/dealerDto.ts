@@ -23,4 +23,11 @@ export const DealerRegisterSchema = z.object({
     }),
 });
 
-export type DealerRegisterSchema = z.infer<typeof DealerRegisterSchema>;
+export type DealerRegisterDto = z.infer<typeof DealerRegisterSchema>;
+
+export const defaultValues: DealerRegisterDto = {
+  name: '',
+  email: '',
+  password: '',
+  vehicle: 'car',
+};

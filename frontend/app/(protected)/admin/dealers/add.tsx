@@ -3,17 +3,17 @@ import { router } from 'expo-router';
 import { useEffect } from 'react';
 import { View } from 'react-native';
 import { CustomButton } from '../../../../src/components/CustomButton';
+import { FormPickerField } from '../../../../src/components/FormMultiSelectField';
 import { FormTextField } from '../../../../src/components/FormTextField';
-import { DealerRegisterSchema } from '../../../../src/dtos/dealerDto';
+import { DealerRegisterSchema, defaultValues } from '../../../../src/dtos/dealerDto';
 import { useCreateDealer } from '../../../../src/hooks/useDealers';
-import { RegisterDealerRequest } from '../../../../src/types/apiTypes';
 
 export default function AddDealerScreen() {
   const { mutate: create, isPending, isSuccess } = useCreateDealer();
   const form = useForm({
     defaultValues,
     onSubmit: async ({ value }) => {
-      create(value as RegisterDealerRequest);
+      create(value);
     },
     validators: {
       onChange: DealerRegisterSchema,
@@ -53,6 +53,7 @@ export default function AddDealerScreen() {
         inputProps={{
           className: 'border border-gray-300 rounded-md px-3 py-2 bg-white',
           placeholder: "repartidor@example.com",
+          autoCapitalize: 'none',
         }}
       />
 
@@ -70,7 +71,7 @@ export default function AddDealerScreen() {
         }}
       />
 
-      <FormTextField
+      <FormPickerField
         form={form}
         name="vehicle"
         labelProps={{
@@ -78,10 +79,11 @@ export default function AddDealerScreen() {
           className: 'text-base font-semibold mb-1',
         }}
         required
-        inputProps={{
-          className: 'border border-gray-300 rounded-md px-3 py-2 bg-white',
-          placeholder: "motorcycle | bicycle | car",
-        }}
+        options={[
+          { label: 'Carro', value: 'car' },
+          { label: 'Motocicleta', value: 'motorcycle' },
+          { label: 'Bicicleta', value: 'bicycle' }
+        ]}
       />
 
       <View className="flex flex-row justify-between">
@@ -107,10 +109,3 @@ export default function AddDealerScreen() {
     </View>
   );
 }
-
-const defaultValues = {
-  name: '',
-  email: '',
-  password: '',
-  vehicle: '',
-};
