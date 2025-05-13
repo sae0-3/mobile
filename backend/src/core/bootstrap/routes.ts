@@ -1,5 +1,5 @@
 import { Express } from 'express';
-import authRoutes from '../../modules/auth/routes/auth.routes';
+import authRoutes from '../../modules/auth/auth.routes';
 import catalogRoutes from '../../modules/catalog/catalog.routes';
 import usersRoutes from '../../modules/users/users.routes';
 
