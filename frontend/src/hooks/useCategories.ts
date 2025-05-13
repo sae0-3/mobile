@@ -1,8 +1,8 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useAuth } from "../stores/auth";
-import { create, getAll } from "../services/categorieService";
-import { CategoriesRequest, CategoriesResponse, CategoryResponse } from "../types/apiTypes";
+import { create, getAll, getProductsByCategory } from "../services/categorieService";
+import { CategoriesRequest, CategoriesResponse, CategoryResponse, ProductsResponse } from "../types/apiTypes";
 
 export const useGetAllCategories = () => {
   const { token } = useAuth();
@@ -23,5 +23,15 @@ export const useCreateCategory = () => {
     onError: (error) => {
       console.error(error.response?.data.message);
     },
+  });
+};
+
+
+export const useProductForCategory = (categoryId: string) => {
+  const { token } = useAuth();
+  return useQuery<ProductsResponse, AxiosError<ProductsResponse>>({
+    queryKey: ['products-by-category', categoryId],
+    queryFn: () => getProductsByCategory(categoryId,token),
+    enabled: !!categoryId,
   });
 };
