@@ -3,7 +3,7 @@ import { router } from 'expo-router';
 import { useEffect } from 'react';
 import { View } from 'react-native';
 import { CustomButton } from '../../../../src/components/CustomButton';
-import { FormPickerField } from '../../../../src/components/FormMultiSelectField';
+import { FormPickerField } from '../../../../src/components/FormPickerField';
 import { FormTextField } from '../../../../src/components/FormTextField';
 import { DealerRegisterSchema, defaultValues } from '../../../../src/dtos/dealerDto';
 import { useCreateDealer } from '../../../../src/hooks/useDealers';
