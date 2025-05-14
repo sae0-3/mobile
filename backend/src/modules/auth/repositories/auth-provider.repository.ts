@@ -17,4 +17,13 @@ export class AuthProviderRepository extends BaseRepository {
     `;
     return await this.queryOne<AuthProvider>(sql, [userId]);
   }
+
+  async createGoogle(userId: string, googleId: string): Promise<AuthProvider | null> {
+    const sql = `
+      INSERT INTO auth_providers (user_id, provider, provider_user_id)
+      VALUES ($1, 'google', $2)
+      RETURNING *
+    `;
+    return await this.queryOne<AuthProvider>(sql, [userId, googleId]);
+  }
 }

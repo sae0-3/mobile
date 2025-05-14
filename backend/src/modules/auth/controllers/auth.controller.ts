@@ -58,4 +58,17 @@ export class AuthController {
       next(error);
     }
   }
+
+  loginGoogle: RequestHandler = async (req, res, next) => {
+    try {
+      const data = await this.authService.loginGoogle(req.body.access_token);
+
+      responseBuilder(res, {
+        statusCode: 200,
+        data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
