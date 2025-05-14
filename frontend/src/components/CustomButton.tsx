@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, Text, TouchableOpacity } from 'react-native';
 import { Icon } from './Icon';
 
 type IconProps = {
@@ -14,6 +14,7 @@ type CustomButtonProps = {
   iconRight?: IconProps;
   className?: string;
   disabled?: boolean;
+  loading?: boolean
 };
 
 export const CustomButton = ({
@@ -22,26 +23,33 @@ export const CustomButton = ({
   iconRight,
   className,
   disabled = false,
+  loading = false,
 }: CustomButtonProps) => {
   return (
     <TouchableOpacity
       disabled={disabled}
-      className={`flex-row items-center justify-center rounded-md bg-primary disabled:opacity-40 ${className}`}
+      className={`flex-row items-center justify-center rounded-md bg-primary disabled:opacity-80 ${className}`}
       onPress={onPress}
     >
-      {title && (
-        <Text className={`text-white text-lg`}>
-          {title}
-        </Text>
-      )}
+      {loading ? (
+        <ActivityIndicator size="small" color="#fff" />
+      ) : (
+        <>
+          {title && (
+            <Text className={`text-white text-lg`}>
+              {title}
+            </Text>
+          )}
 
-      {iconRight && (
-        <Icon
-          name={iconRight.name}
-          size={iconRight.size}
-          color={iconRight.color || '#fff'}
-          type={iconRight.type}
-        />
+          {iconRight && (
+            <Icon
+              name={iconRight.name}
+              size={iconRight.size}
+              color={iconRight.color || '#fff'}
+              type={iconRight.type}
+            />
+          )}
+        </>
       )}
     </TouchableOpacity>
   );

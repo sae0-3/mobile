@@ -51,6 +51,27 @@ export default function AdminLayout() {
           title: 'Agregar Categoría',
         }}
       />
+
+      <Stack.Screen
+        name="categories/[id]"
+        options={{
+          title: 'Editar Categoría',
+        }}
+      />
+
+      <Stack.Screen
+        name="dealers/index"
+        options={{
+          title: 'Repartidores',
+        }}
+      />
+
+      <Stack.Screen
+        name="dealers/add"
+        options={{
+          title: 'Agregar repartidor',
+        }}
+      />
     </Stack>
   );
 }

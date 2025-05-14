@@ -14,3 +14,7 @@ export const categoryEndpoints = {
 export const productForCategoryEndpoints = {
   index: (id: string) => `/catalog/categories/${id}/products`,
 };
+
+export const dealerEndpoints = {
+  index: '/users/dealers',
+};

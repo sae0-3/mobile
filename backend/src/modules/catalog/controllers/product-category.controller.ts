@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
-import { ProductCategoryService } from '../services/product-category.service';
 import { responseBuilder } from '../../../core/common/response-builder';
+import { ProductCategoryService } from '../services/product-category.service';
 
 export class ProductCategoryController {
   constructor(
@@ -28,6 +28,19 @@ export class ProductCategoryController {
       await this.productCategoryService.unlinkProductFromCategory({ product_id, category_id });
 
       responseBuilder(res, { statusCode: 204 });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  addManyCategories: RequestHandler = async (req, res, next) => {
+    try {
+      const product_id = req.params.productId;
+      const { category_ids } = req.body;
+
+      await this.productCategoryService.linkProductToCategories({ product_id, category_ids });
+
+      responseBuilder(res, { statusCode: 201 });
     } catch (error) {
       next(error);
     }

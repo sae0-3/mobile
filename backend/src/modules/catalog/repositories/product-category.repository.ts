@@ -1,5 +1,5 @@
 import { BaseRepository } from '../../../core/common/base.repository';
-import { ProductCategory } from '../types/product-category.type';
+import { ProductCategories, ProductCategory } from '../types/product-category.type';
 
 export class ProductCategoryRepository extends BaseRepository {
   async linkProductToCategory(product_category: ProductCategory): Promise<ProductCategory | null> {
@@ -12,6 +12,22 @@ export class ProductCategoryRepository extends BaseRepository {
       product_category.product_id,
       product_category.category_id
     ]);
+  }
+
+  async linkProductToCategories(product_categories: ProductCategories): Promise<ProductCategory[]> {
+    const valuesSql = product_categories.category_ids
+      .map((_, index) => `($1, $${index + 2})`)
+      .join(', ');
+
+    const sql = `
+      INSERT INTO product_categories (product_id, category_id)
+      VALUES ${valuesSql}
+      ON CONFLICT DO NOTHING
+      RETURNING *
+    `;
+
+    const params = [product_categories.product_id, ...product_categories.category_ids];
+    return await this.query<ProductCategory>(sql, params);
   }
 
   async unlinkProductFromCategory(product_category: ProductCategory): Promise<ProductCategory | null> {

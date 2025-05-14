@@ -8,7 +8,7 @@ export interface ApiResponse<T> {
 export interface RegisterRequest {
   email: string;
   password: string;
-  name?: string;
+  name: string;
   phoneNumber?: string;
 }
 
@@ -16,6 +16,33 @@ export type RegisterResponse = ApiResponse<{
   id: string;
   access_token: string;
 }>;
+
+export interface RegisterDealerRequest {
+  email: string;
+  name: string;
+  vehicle: 'car' | 'motorcycle' | 'bicycle';
+  password: string;
+}
+
+export type RegisterDealerResponse = ApiResponse<{
+  id: string;
+  email: string;
+  role: string;
+  access_token: string;
+}>;
+
+export interface Dealer {
+  id: string;
+  email: string;
+  name: string;
+  vehicle: 'motorcycle' | 'bicycle' | 'car';
+  created_at: string;
+  updated_at: string;
+}
+
+export type DealerRespose = ApiResponse<Dealer>;
+
+export type DealersResponse = ApiResponse<Dealer[]>;
 
 export interface LoginRequest {
   email: string;
@@ -81,3 +108,23 @@ export interface TokenPayload {
   iat: number;
   exp: number;
 }
+
+export interface Coordinates {
+  latitude: number;
+  longitude: number;
+}
+
+export interface TravelEstimate {
+  distance: string;
+  duration: string;
+}
+
+export interface OrderBase {
+  id: string;
+  clientName: string;
+  address: string;
+  items: string[];
+  phone: number;
+};
+
+export type Order = OrderBase & Coordinates

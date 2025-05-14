@@ -14,7 +14,7 @@ export class AuthProviderRepository extends BaseRepository {
     const sql = `
       SELECT * FROM auth_providers
       WHERE user_id = $1
-      LIMIT 1`;
+    `;
     return await this.queryOne<AuthProvider>(sql, [userId]);
   }
 }
