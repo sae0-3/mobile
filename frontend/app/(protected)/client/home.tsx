@@ -1,4 +1,4 @@
-import { Image, SafeAreaView, ScrollView, Text, View } from 'react-native';
+import { SafeAreaView, ScrollView, View } from 'react-native';
 import { Category } from '../../../src/components/Category';
 import { SliderDishItem } from '../../../src/components/SliderDishItem';
 import { useGetAllCategories } from '../../../src/hooks/useCategories';
@@ -8,21 +8,6 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView className="gap-5 py-3 px-4">
-      <View className="flex flex-row justify-between">
-        <Text className="justify-start text-black text-3xl font-normal font-['Jaro']">Pedidos</Text>
-
-        <View className="flex flex-row gap-4">
-          <Image
-            source={{ uri: 'https://cdn-icons-png.flaticon.com/128/2331/2331970.png' }}
-            className="w-14 h-14"
-          />
-          <Image
-            source={{ uri: 'https://cdn-icons-png.flaticon.com/128/3135/3135715.png' }}
-            className="w-14 h-14"
-          />
-        </View>
-      </View>
-
       <ScrollView
         showsHorizontalScrollIndicator={false}
         horizontal={true}
