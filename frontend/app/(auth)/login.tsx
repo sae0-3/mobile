@@ -8,6 +8,7 @@ import { FormTextField } from '../../src/components/FormTextField';
 import { Icon } from '../../src/components/Icon';
 import { useLogin } from '../../src/hooks/useAuth';
 import { useAuth } from '../../src/stores/auth';
+import { GoogleLoginButton } from '../../src/components/GoogleLoginButton';
 
 export default function LoginScreen() {
   const [showPassword, setShowPassword] = useState(false);
@@ -94,6 +95,8 @@ export default function LoginScreen() {
               {error.response?.data.message || "Error al iniciar sesión"}
             </Text>
           )}
+
+          <GoogleLoginButton />
 
           <Text className="text-center">
             ¿No tienes una cuenta? <Link href="/register" className="text-primary">Regístrate</Link>

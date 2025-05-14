@@ -2,8 +2,9 @@ import 'dotenv/config';
 
 export default {
   "expo": {
+    "owner": "movil_progra",
     "name": "mobil-frontend",
-    "slug": "mobil-frontend",
+    "slug": "movil",
     "scheme": "mobil-frontend",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -35,6 +36,10 @@ export default {
     "extra": {
       "API_URL": process.env.API_URL,
       "GOOGLE_MAPS_API_KEY": process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY,
+      "GOOGLE_AUTH_CLIENT": process.env.GOOGLE_AUTH_CLIENT,
+      "eas": {
+        "projectId": "b156b38d-491a-457a-94dd-5561aa15d59b"
+      },
     },
   }
 };

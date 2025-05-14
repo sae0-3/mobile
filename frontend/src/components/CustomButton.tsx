@@ -1,12 +1,5 @@
 import { ActivityIndicator, Text, TouchableOpacity } from 'react-native';
-import { Icon } from './Icon';
-
-type IconProps = {
-  name: string;
-  size?: number;
-  color?: string;
-  type?: 'Feather' | 'Ionicons' | 'MaterialIcons';
-};
+import { Icon, IconProps } from './Icon';
 
 type CustomButtonProps = {
   title?: string;
@@ -42,12 +35,7 @@ export const CustomButton = ({
           )}
 
           {iconRight && (
-            <Icon
-              name={iconRight.name}
-              size={iconRight.size}
-              color={iconRight.color || '#fff'}
-              type={iconRight.type}
-            />
+            <Icon {...iconRight} color={iconRight.color || 'white'} />
           )}
         </>
       )}
