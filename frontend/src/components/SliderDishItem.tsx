@@ -1,21 +1,19 @@
 import { ScrollView, Text, View } from 'react-native';
 import { useProductForCategory } from '../hooks/useCategories';
-import { Product } from './Product';
+import { CardProduct } from './CardProduct';
 
-type Dish = {
+type SliderDishProps = {
   id: string;
   nameCategory: string;
 }
 
-export const SliderDishItem = (dish: Dish) => {
-  const { id, nameCategory } = dish;
+export const SliderDishItem = (props: SliderDishProps) => {
+  const { id, nameCategory } = props;
   const { data } = useProductForCategory(id);
 
   return (
-    <View className="gap-2">
-      <Text
-        className="px-3 justify-start text-zinc-800 text-3xl font-normal font-['Chau_Philomene_One']"
-      >
+    <View className="gap-3">
+      <Text className="text-3xl font-bold">
         {nameCategory}
       </Text>
 
@@ -24,12 +22,14 @@ export const SliderDishItem = (dish: Dish) => {
         horizontal={true}
       >
         <View className="flex-row gap-4">
-          {data?.data.map((producto) => (
-            <Product
-              key={producto.id}
-              name={producto.name}
-              price={producto.price}
-              imgUrl={producto.img_reference || ''}
+          {data?.data.map(({ id, name, img_reference, price, available }) => (
+            <CardProduct
+              key={id}
+              id={id}
+              name={name}
+              price={price}
+              imgUrl={img_reference || ''}
+              available={available}
             />
           ))}
         </View>
