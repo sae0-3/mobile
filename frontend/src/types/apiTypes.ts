@@ -119,12 +119,40 @@ export interface TravelEstimate {
   duration: string;
 }
 
-export interface OrderBase {
-  id: string;
-  clientName: string;
-  address: string;
-  items: string[];
-  phone: number;
-};
+export interface Delivery {
+  order_id: string;
+  client_name: string;
+  client_address: string;
+  client_phone: string;
+  totol: string;
+  created_at: string;
+}
 
-export type Order = OrderBase & Coordinates
+export type DeliveryResponse = ApiResponse<Delivery[]>;
+
+export interface UpdatedOrder {
+  id: string;
+  client_id: string;
+  delivery_id: string;
+  status: 'in_progress' | 'delivered' | string;
+  created_at: string;
+  updated_at: string;
+  total: string;
+  user_address_id: string;
+}
+
+export type UpdatedOrderResponse = ApiResponse<UpdatedOrder>;
+
+export interface OrderDeliveryDetail {
+  order_id: string;
+  latitud: string;
+  longitud: string;
+  address: string;
+  client_name: string;
+  client_phone: string;
+  product_name: string;
+  quantity: number;
+  subtotal: string;
+}
+
+export type OrderDeliveryDetailResponse = ApiResponse<OrderDeliveryDetail>;

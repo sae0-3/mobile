@@ -5,22 +5,19 @@ import * as Location from 'expo-location';
 import MapView, { Marker } from 'react-native-maps';
 import { Ionicons } from '@expo/vector-icons'
 import colors from '../../../../src/theme/colors';
-import { Order } from '../../../../src/types/apiTypes';
 import { useRouteToClient } from '../../../../src/hooks/useRouteToClient';
-
-const mockOrders: Order[] = [
-  { id: '1', clientName: 'Juan Perez', address: 'Av. san Martin 123', items: ['Pizza', 'Ensalada'], phone: 72165841, latitude: -17.35299, longitude: -66.18922 },
-  { id: '2', clientName: 'Maria Lopez', address: 'Calle Falsa 456', items: ['Hamburguesa', 'Papas fritas'], phone: 75415695, latitude: -17.36667, longitude: -66.19836 },
-];
+import { useOrderDeliveryDetail } from '../../../../src/hooks/useDelivery';
 
 export default function OrderDetailScreen() {
   const { id } = useLocalSearchParams();
+  const { data, isLoading } = useOrderDeliveryDetail(id.toString());
+
+  const order = data?.data;
+
   const router = useRouter();
 
   const [location, setLocation] = useState<Location.LocationObjectCoords | null>(null);
   const [errorMsg, setErrorMsg] = useState('');
-
-  const order = mockOrders.find(o => o.id === id);
 
   const travelMode: 'driving' | 'bicycling' | 'walking' = 'driving';
 
@@ -49,7 +46,7 @@ export default function OrderDetailScreen() {
   }, []);
 
   const origin = location ? `${location.latitude},${location.longitude}` : '';
-  const destination = order ? `${order.latitude},${order.longitude}` : '';
+  const destination = order ? `${order.latitud},${order.longitud}` : '';
 
   const { data: routeData, isLoading: isRouteLoading } = useRouteToClient({ origin, destination, mode: travelMode });
 
@@ -62,7 +59,7 @@ export default function OrderDetailScreen() {
     );
   }
 
-  if (!location || !order) {
+  if (isLoading || !location || !order) {
     return (
       <View className="flex-1 justify-center items-center bg-white">
         <ActivityIndicator size="large" color={colors.primary} />
@@ -71,8 +68,8 @@ export default function OrderDetailScreen() {
     );
   }
 
-  const centerLat = (location.latitude + order.latitude) / 2;
-  const centerLon = (location.longitude + order.longitude) / 2;
+  const centerLat = (location.latitude + parseFloat(order.latitud)) / 2;
+  const centerLon = (location.longitude + parseFloat(order.longitud)) / 2;
 
   return (
     <View className="flex-1 bg-white">
@@ -82,8 +79,8 @@ export default function OrderDetailScreen() {
           initialRegion={{
             latitude: centerLat,
             longitude: centerLon,
-            latitudeDelta: Math.abs(location.latitude - order.latitude) + 0.02,
-            longitudeDelta: Math.abs(location.longitude - order.longitude) + 0.02,
+            latitudeDelta: Math.abs(location.latitude - parseFloat(order.latitud)) + 0.02,
+            longitudeDelta: Math.abs(location.longitude - parseFloat(order.longitud)) + 0.02,
           }}
         >
           <Marker
@@ -96,8 +93,8 @@ export default function OrderDetailScreen() {
           />
           <Marker
             coordinate={{
-              latitude: order.latitude,
-              longitude: order.longitude
+              latitude: parseFloat(order.latitud),
+              longitude: parseFloat(order.longitud)
             }}
             title="cliente"
             description="Destino"
@@ -105,7 +102,7 @@ export default function OrderDetailScreen() {
         </MapView>
       </View>
       <View className="flex-2 bg-white px-6 py-4 border-t border-gray-200">
-        <Text className="text-lg font-bold mb-2 text-gray-800">Pedido de {order.clientName}</Text>
+        <Text className="text-lg font-bold mb-2 text-gray-800">Pedido de {order.client_name}</Text>
         <View className="flex-row items-center mb-1">
           <Ionicons name="location-outline" size={20} color="#000" className="mr-2" />
           <Text className="text-base text-gray-700">{order.address}</Text>

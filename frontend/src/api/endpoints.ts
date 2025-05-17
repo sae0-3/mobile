@@ -14,3 +14,7 @@ export const categoryEndpoints = {
 export const dealerEndpoints = {
   index: '/users/dealers',
 };
+
+export const deliveryEndpoints = {
+  index: '/orders/delivery'
+};
