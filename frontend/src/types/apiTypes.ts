@@ -134,25 +134,36 @@ export interface UpdatedOrder {
   id: string;
   client_id: string;
   delivery_id: string;
-  status: 'in_progress' | 'delivered' | string;
+  status: 'pending' | 'in_progress' | 'delivered' | 'cancelled';
   created_at: string;
   updated_at: string;
   total: string;
   user_address_id: string;
 }
 
+export interface OrderLocation {
+  order_id: string;
+  client_name: string;
+  client_address: string;
+  latitud: string;
+  longitud: string;
+  dealer_vehicle: 'car' | 'motorcycle' | 'bicycle';
+}
+
+export type OrderLocationResponse = ApiResponse<OrderLocation>;
+
 export type UpdatedOrderResponse = ApiResponse<UpdatedOrder>;
 
 export interface OrderDeliveryDetail {
   order_id: string;
-  latitud: string;
-  longitud: string;
-  address: string;
+  total: string;
   client_name: string;
   client_phone: string;
-  product_name: string;
-  quantity: number;
-  subtotal: string;
+  products: {
+    name: string;
+    quantity: number;
+    subtotal: string;
+  }[];
 }
 
 export type OrderDeliveryDetailResponse = ApiResponse<OrderDeliveryDetail>;

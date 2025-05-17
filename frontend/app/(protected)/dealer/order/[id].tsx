@@ -6,13 +6,13 @@ import MapView, { Marker } from 'react-native-maps';
 import { Ionicons } from '@expo/vector-icons'
 import colors from '../../../../src/theme/colors';
 import { useRouteToClient } from '../../../../src/hooks/useRouteToClient';
-import { useOrderDeliveryDetail } from '../../../../src/hooks/useDelivery';
+import { useOrderLocation } from '../../../../src/hooks/useDelivery';
 
 export default function OrderDetailScreen() {
   const { id } = useLocalSearchParams();
-  const { data, isLoading } = useOrderDeliveryDetail(id.toString());
+  const { data, isLoading } = useOrderLocation(id.toString());
 
-  const order = data?.data;
+  const orderLocation = data?.data;
 
   const router = useRouter();
 
@@ -46,7 +46,7 @@ export default function OrderDetailScreen() {
   }, []);
 
   const origin = location ? `${location.latitude},${location.longitude}` : '';
-  const destination = order ? `${order.latitud},${order.longitud}` : '';
+  const destination = orderLocation ? `${orderLocation.latitud},${orderLocation.longitud}` : '';
 
   const { data: routeData, isLoading: isRouteLoading } = useRouteToClient({ origin, destination, mode: travelMode });
 
@@ -59,7 +59,7 @@ export default function OrderDetailScreen() {
     );
   }
 
-  if (isLoading || !location || !order) {
+  if (isLoading || !location || !orderLocation) {
     return (
       <View className="flex-1 justify-center items-center bg-white">
         <ActivityIndicator size="large" color={colors.primary} />
@@ -68,8 +68,8 @@ export default function OrderDetailScreen() {
     );
   }
 
-  const centerLat = (location.latitude + parseFloat(order.latitud)) / 2;
-  const centerLon = (location.longitude + parseFloat(order.longitud)) / 2;
+  const centerLat = (location.latitude + parseFloat(orderLocation.latitud)) / 2;
+  const centerLon = (location.longitude + parseFloat(orderLocation.longitud)) / 2;
 
   return (
     <View className="flex-1 bg-white">
@@ -79,8 +79,8 @@ export default function OrderDetailScreen() {
           initialRegion={{
             latitude: centerLat,
             longitude: centerLon,
-            latitudeDelta: Math.abs(location.latitude - parseFloat(order.latitud)) + 0.02,
-            longitudeDelta: Math.abs(location.longitude - parseFloat(order.longitud)) + 0.02,
+            latitudeDelta: Math.abs(location.latitude - parseFloat(orderLocation.latitud)) + 0.02,
+            longitudeDelta: Math.abs(location.longitude - parseFloat(orderLocation.longitud)) + 0.02,
           }}
         >
           <Marker
@@ -93,8 +93,8 @@ export default function OrderDetailScreen() {
           />
           <Marker
             coordinate={{
-              latitude: parseFloat(order.latitud),
-              longitude: parseFloat(order.longitud)
+              latitude: parseFloat(orderLocation.latitud),
+              longitude: parseFloat(orderLocation.longitud)
             }}
             title="cliente"
             description="Destino"
@@ -102,10 +102,10 @@ export default function OrderDetailScreen() {
         </MapView>
       </View>
       <View className="flex-2 bg-white px-6 py-4 border-t border-gray-200">
-        <Text className="text-lg font-bold mb-2 text-gray-800">Pedido de {order.client_name}</Text>
+        <Text className="text-lg font-bold mb-2 text-gray-800">Pedido de {orderLocation.client_name}</Text>
         <View className="flex-row items-center mb-1">
           <Ionicons name="location-outline" size={20} color="#000" className="mr-2" />
-          <Text className="text-base text-gray-700">{order.address}</Text>
+          <Text className="text-base text-gray-700">{orderLocation.client_address}</Text>
         </View>
 
         <View className="flex-row items-center mb-3">

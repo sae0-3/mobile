@@ -44,16 +44,14 @@ export default function DeliveryScreen() {
 
       <View className="bg-white rounded-2xl p-5 mb-6 shadow-md border border-gray-200">
         <Text className="text-lg font-semibold mb-3">Detalles del pedido</Text>
-
-        <View className="flex-row items-center mb-2">
-          <Entypo name="location-pin" size={20} color="#000" />
-          <Text className="ml-2 text-gray-700">{order.address}</Text>
-        </View>
         <View className="flex-row items-center mb-1">
           <MaterialIcons name="restaurant-menu" size={20} color="#000" />
           <Text className="ml-2 text-gray-700">Productos:</Text>
         </View>
-        <Text className="ml-8 text-gray-600">{order.product_name}</Text>
+        {order.products.map((item, index) => (
+          <Text key={index} className="ml-8 text-gray-600">{item.name} {item.quantity} {item.subtotal}</Text>
+        ))}
+        <Text className="ml-8 text-gray-600">{order.total} </Text>
       </View>
 
       <TouchableOpacity

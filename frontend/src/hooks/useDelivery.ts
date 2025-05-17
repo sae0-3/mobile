@@ -1,8 +1,8 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { accepOrder, confirmDelivery, getAll, orderDeliveryDetail } from '../services/deliveryService';
+import { accepOrder, confirmDelivery, getAll, getOrderLocation, orderDeliveryDetail } from '../services/deliveryService';
 import { useAuth } from '../stores/auth';
-import { DeliveryResponse, OrderDeliveryDetailResponse, UpdatedOrderResponse } from '../types/apiTypes';
+import { DeliveryResponse, OrderDeliveryDetailResponse, OrderLocationResponse, UpdatedOrderResponse } from '../types/apiTypes';
 import { invalidateQueries } from '../utils/invalidateQueries';
 
 export const useGetAllOrders = () => {
@@ -28,6 +28,16 @@ export const useAcceptOrder = () => {
       console.error(error.response?.data.message);
     },
   });
+}
+
+export const useOrderLocation = (orderId: string) => {
+  const { token } = useAuth();
+
+  return useQuery<OrderLocationResponse, AxiosError<OrderLocationResponse>>({
+    queryKey: ['order-location', orderId],
+    queryFn: () => getOrderLocation(orderId, token),
+    enabled: !!orderId
+  })
 }
 
 export const useOrderDeliveryDetail = (orderId: string) => {
