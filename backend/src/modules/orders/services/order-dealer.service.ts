@@ -2,7 +2,7 @@ import { validateDto } from '../../../core/common/validation';
 import { NotFoundError } from '../../../core/errors/app.error';
 import { OrderDeliveryDto } from '../dtos/order-dealer.dto';
 import { OrderRepository } from '../repositories/order-dealer.repository';
-import { AvailableOrder, Order, OrderDetail } from '../types/order-dealer.types';
+import { AvailableOrder, Order, OrderDetail, OrderLocationInfo } from '../types/order-dealer.types';
 
 export class OrderService {
   constructor(
@@ -25,6 +25,17 @@ export class OrderService {
     }
 
     return updated;
+  }
+
+  async getOrderLocation(data: OrderDeliveryDto): Promise<OrderLocationInfo> {
+    await validateDto(OrderDeliveryDto, data);
+    const info = await this.orderRepository.getOrderLocationInfo(data);
+    if (!info) {
+      throw new NotFoundError({
+        publicMessage: 'Información de ubicación del pedido no encontrada',
+      });
+    }
+    return info;
   }
 
   async getOrderDetails(id: string): Promise<OrderDetail> {

@@ -1,7 +1,7 @@
 import { NotFoundError } from '../../../core/errors/app.error';
 import { OrderRepository } from '../repositories/order-dealer.repository';
 import { OrderService } from '../services/order-dealer.service';
-import { AvailableOrder, Order, OrderDetail } from '../types/order-dealer.types';
+import { AvailableOrder, Order, OrderDetail, OrderLocationInfo } from '../types/order-dealer.types';
 import * as validation from '../../../core/common/validation';
 import { OrderDeliveryDto } from '../dtos/order-dealer.dto';
 
@@ -22,15 +22,26 @@ describe('OrderService', () => {
 
   const mockOrderDetail: OrderDetail = {
     order_id: 'order1',
-    latitud: -17.3741,
-    longitud: -66.2421,
-    address: 'address1',
+    total: 40.2,
     client_name: 'Juan Pérez',
     client_phone: '78982312',
-    product_name: 'salchipapa',
-    subtotal: 20,
-    quantity: 2,
+    products: [
+      {
+        name: 'salchipapa',
+        subtotal: 20,
+        quantity: 2,
+      }
+    ],
 
+  };
+
+  const mockLocationInfo: OrderLocationInfo = {
+    order_id: 'order1',
+    client_name: 'Juan Pérez',
+    client_address: 'Av. Siempre Viva 123',
+    latitud: -17.7856,
+    longitud: -63.1809,
+    delaer_vehicle: 'motorcycle',
   };
 
   const mockAvailableOrders: AvailableOrder[] = [
@@ -90,6 +101,24 @@ describe('OrderService', () => {
       await expect(service.accepOrder(validDto)).rejects.toThrow(NotFoundError);
     });
   });
+
+  describe('getOrderLocation()', () => {
+    it('debería retornar la información de ubicación del pedido', async () => {
+      repository.getOrderLocationInfo = jest.fn().mockResolvedValue(mockLocationInfo);
+
+      const result = await service.getOrderLocation(validDto);
+
+      expect(repository.getOrderLocationInfo).toHaveBeenCalledWith(validDto);
+      expect(result).toEqual(mockLocationInfo);
+    });
+
+    it('debería lanzar NotFoundError si no encuentra la información de ubicación', async () => {
+      repository.getOrderLocationInfo = jest.fn().mockResolvedValue(null);
+
+      await expect(service.getOrderLocation(validDto)).rejects.toThrow(NotFoundError);
+    });
+  });
+
 
   describe('getOrderDetails()', () => {
     it('debería retornar los detalles del pedido', async () => {

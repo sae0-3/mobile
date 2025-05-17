@@ -18,16 +18,36 @@ export interface AvailableOrder {
   created_at: string;
 }
 
-export interface OrderDetail {
+export interface OrderLocationInfo {
   order_id: string;
+  client_name: string;
+  client_address: string;
   latitud: number;
   longitud: number;
-  address: string;
+  delaer_vehicle: 'motorcycle' | 'bicycle' | 'car';
+}
+
+
+export interface OrderDetailRow {
+  order_id: string;
+  total: number;
   client_name: string;
   client_phone: string;
   product_name: string;
   quantity: number;
   subtotal: number;
+}
+
+export interface OrderDetail {
+  order_id: string;
+  total: number;
+  client_name: string;
+  client_phone: string;
+  products: {
+    name: string;
+    quantity: number;
+    subtotal: number;
+  }[];
 }
 
 export interface OrderDelivery {

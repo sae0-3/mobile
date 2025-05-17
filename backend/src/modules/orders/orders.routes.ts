@@ -13,6 +13,7 @@ const {
 router.use(authenticateJwt);
 orderRouter.get('/', orderController.getAllAvailableOrders);
 orderRouter.patch('/:orderId/accept', requireRole(['dealer']), orderController.accepOrder);
+orderRouter.get('/:orderId/location', orderController.getOrderLocationInfo)
 orderRouter.get('/:orderId', orderController.getOrderDetails);
 orderRouter.patch('/:orderId', requireRole(['dealer']), orderController.markOrderAsDelivered);
 

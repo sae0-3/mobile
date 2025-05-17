@@ -35,6 +35,21 @@ export class OrderController {
     }
   }
 
+  getOrderLocationInfo: RequestHandler = async (req, res, next) => {
+    try {
+      const delivery_id = req.user?.id || '';
+      const id = req.params.orderId;
+      const data = await this.orderService.getOrderLocation({ id, delivery_id });
+
+      responseBuilder(res, {
+        statusCode: 200,
+        data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   getOrderDetails: RequestHandler = async (req, res, next) => {
     try {
       const id = req.params.orderId;
