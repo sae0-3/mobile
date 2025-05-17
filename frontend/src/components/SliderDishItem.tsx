@@ -21,7 +21,7 @@ export const SliderDishItem = (props: SliderDishProps) => {
         showsHorizontalScrollIndicator={false}
         horizontal={true}
       >
-        <View className="flex-row gap-4">
+        <View className="flex-row gap-8">
           {data?.data.map(({ id, name, img_reference, price, available }) => (
             <CardProduct
               key={id}

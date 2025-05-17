@@ -1,4 +1,5 @@
 import { Image, Text, View } from 'react-native';
+import { AddToCart } from './AddToCart';
 
 type CardProductProps = {
   id: string;
@@ -9,30 +10,26 @@ type CardProductProps = {
 };
 
 export const CardProduct = (props: CardProductProps) => {
-  const { id, name, price, imgUrl, available } = props;
+  const { name, price, imgUrl, available } = props;
 
   return (
-    <View className="justify-center items-center gap-2">
+    <View className="justify-center items-center gap-3 w-60">
       <Image
         source={{ uri: imgUrl }}
-        className="h-[175px] w-[237px] rounded-xl"
+        className="h-44 w-full rounded-xl"
       />
 
       <View className="w-full gap-3">
-        <View className="flex-row justify-between">
-          <Text className="text-lg">
+        <View className="flex-row justify-between items-center">
+          <Text>
             {name}
           </Text>
-          <Text className="text-lg">
+          <Text>
             Bs {price}
           </Text>
         </View>
 
-        <View className="flex-row justify-between">
-          <Text className={`py-1 px-2 rounded-xl text-center ${available ? 'bg-green-200' : 'bg-red-200'}`}>
-            {available ? 'Disponible' : 'Agotado'}
-          </Text>
-        </View>
+        <AddToCart {...props} />
       </View>
     </View>
   );

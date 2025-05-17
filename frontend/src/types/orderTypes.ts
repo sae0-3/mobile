@@ -13,6 +13,7 @@ export type CartItem = {
 export type CartState = {
   items: CartItem[];
 
+  findItem: (productId: string) => CartItem | undefined;
   addItem: (item: Omit<CartItem, 'quantity'>, quantity?: number) => void;
   removeItem: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
