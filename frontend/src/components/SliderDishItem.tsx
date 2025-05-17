@@ -12,28 +12,36 @@ export const SliderDishItem = (props: SliderDishProps) => {
   const { data } = useProductForCategory(id);
 
   return (
-    <View className="gap-3">
+    <View className="gap-4">
       <Text className="text-3xl font-bold">
         {nameCategory}
       </Text>
 
-      <ScrollView
-        showsHorizontalScrollIndicator={false}
-        horizontal={true}
-      >
-        <View className="flex-row gap-8">
-          {data?.data.map(({ id, name, img_reference, price, available }) => (
-            <CardProduct
-              key={id}
-              id={id}
-              name={name}
-              price={price}
-              imgUrl={img_reference || ''}
-              available={available}
-            />
-          ))}
+      {data?.data.length === 0 ? (
+        <View className="items-center">
+          <Text className="text-gray-500 text-lg">
+            No existen productos en la categoría
+          </Text>
         </View>
-      </ScrollView>
+      ) : (
+        <ScrollView
+          showsHorizontalScrollIndicator={false}
+          horizontal={true}
+        >
+          <View className="flex-row gap-8">
+            {data?.data.map(({ id, name, img_reference, price, available }) => (
+              <CardProduct
+                key={id}
+                id={id}
+                name={name}
+                price={price}
+                imgUrl={img_reference || ''}
+                available={available}
+              />
+            ))}
+          </View>
+        </ScrollView>
+      )}
     </View>
   );
 };

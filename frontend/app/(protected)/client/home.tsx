@@ -28,7 +28,7 @@ export default function HomeScreen() {
           showsHorizontalScrollIndicator={false}
           horizontal={false}
         >
-          <View className="gap-4">
+          <View className="gap-6">
             {data?.data.map((categoria) => (
               <SliderDishItem
                 key={categoria.id}
