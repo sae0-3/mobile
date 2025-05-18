@@ -3,10 +3,37 @@ import { View, Text, ActivityIndicator, TouchableOpacity, StyleSheet } from 'rea
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import * as Location from 'expo-location';
 import MapView, { Marker } from 'react-native-maps';
-import { Ionicons } from '@expo/vector-icons'
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import colors from '../../../../src/theme/colors';
 import { useRouteToClient } from '../../../../src/hooks/useRouteToClient';
 import { useOrderLocation } from '../../../../src/hooks/useDelivery';
+
+
+const getTravelMode = (vehicle: string | undefined): "driving" | "bicycling" => {
+  switch (vehicle) {
+    case "car":
+      return "driving";
+    case "motorcycle":
+      return "driving";
+    case "bicycle":
+      return "bicycling";
+    default:
+      return "driving";
+  }
+};
+
+const getVehicleIconName = (vehicle: string | undefined): keyof typeof MaterialCommunityIcons.glyphMap => {
+  switch (vehicle) {
+    case "car":
+      return "car";
+    case "motorcycle":
+      return "motorbike";
+    case "bicycle":
+      return "bike";
+    default:
+      return "map-marker-path";
+  }
+};
 
 export default function OrderDetailScreen() {
   const { id } = useLocalSearchParams();
@@ -19,7 +46,7 @@ export default function OrderDetailScreen() {
   const [location, setLocation] = useState<Location.LocationObjectCoords | null>(null);
   const [errorMsg, setErrorMsg] = useState('');
 
-  const travelMode: 'driving' | 'bicycling' | 'walking' = 'driving';
+  const travelMode = getTravelMode(orderLocation?.dealer_vehicle);
 
   useEffect(() => {
     let subscriber: Location.LocationSubscription;
@@ -109,7 +136,7 @@ export default function OrderDetailScreen() {
         </View>
 
         <View className="flex-row items-center mb-3">
-          <Ionicons name="walk-outline" size={20} color="#000" className="mr-2" />
+          <MaterialCommunityIcons name={getVehicleIconName(orderLocation?.dealer_vehicle)} size={20} color="#000" style={{ marginRight: 8 }} />
           {isRouteLoading ? (
             <Text className="text-base text-gray-700">Calulando ruta...</Text>
           ) : routeData ? (
