@@ -31,6 +31,7 @@ export default function ClientTabsLayout() {
         name="orders"
         options={{
           title: 'Pedidos',
+          headerTitle: 'Pedidos Realizados',
           tabBarIcon: ({ color }) => (
             <Icon name="list" color={color} />
           ),
@@ -41,6 +42,7 @@ export default function ClientTabsLayout() {
         name="profile"
         options={{
           title: 'Perfil',
+          headerTitle: 'Información del Perfil',
           tabBarIcon: ({ color }) => (
             <Icon name="user" color={color} />
           ),

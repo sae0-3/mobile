@@ -18,3 +18,7 @@ export const productForCategoryEndpoints = {
 export const dealerEndpoints = {
   index: '/users/dealers',
 };
+
+export const clientEndpoints = {
+  index: '/users/clients',
+};

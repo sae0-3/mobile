@@ -3,6 +3,7 @@ export type AuthData = {
   token: string | null;
   rehydrated: boolean;
   role: string | null;
+  id: string | null;
 };
 
 export type AuthActions = {

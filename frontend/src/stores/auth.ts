@@ -10,13 +10,14 @@ export const useAuth = create<AuthState>()(
     (set) => ({
       isAuthenticated: false,
       token: null,
+      id: null,
       role: null,
       rehydrated: false,
       login: (token) => {
         const decoded = jwtDecode<TokenPayload>(token);
-        set({ isAuthenticated: true, token, role: decoded.role });
+        set({ isAuthenticated: true, token, role: decoded.role, id: decoded.id });
       },
-      logout: () => set({ isAuthenticated: false, token: null, role: null }),
+      logout: () => set({ isAuthenticated: false, token: null, role: null, id: null }),
     }),
     {
       name: 'auth-storage',

@@ -40,9 +40,20 @@ export interface Dealer {
   updated_at: string;
 }
 
-export type DealerRespose = ApiResponse<Dealer>;
+export interface Client {
+  id: string;
+  email: string;
+  name: string;
+  phone: string | null;
+  created_at: string;
+  updated_at: string;
+}
 
+export type DealerRespose = ApiResponse<Dealer>;
 export type DealersResponse = ApiResponse<Dealer[]>;
+
+export type ClientResponse = ApiResponse<Client>;
+export type ClientsResponse = ApiResponse<Client[]>;
 
 export interface LoginRequest {
   email: string;

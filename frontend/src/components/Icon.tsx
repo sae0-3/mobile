@@ -2,6 +2,7 @@ import {
   Feather,
   FontAwesome,
   FontAwesome5,
+  FontAwesome6,
   Ionicons,
   MaterialCommunityIcons,
   MaterialIcons,
@@ -18,6 +19,7 @@ export type IconProps = {
   | 'MaterialIcons'
   | 'MaterialCommunityIcons'
   | 'FontAwesome5'
+  | 'FontAwesome6'
   | 'FontAwesome'
   ;
   style?: ViewStyle;
@@ -48,6 +50,9 @@ export const Icon = ({
       break;
     case 'FontAwesome5':
       icon = <FontAwesome5 {...iconProps} />;
+      break;
+    case 'FontAwesome6':
+      icon = <FontAwesome6 {...iconProps} />
       break;
     case 'FontAwesome':
       icon = <FontAwesome {...iconProps} />;

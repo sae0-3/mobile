@@ -4,7 +4,7 @@ import { HeaderListOrder } from '../../../src/components/HeaderListOrder';
 import { ItemListOrder } from '../../../src/components/ItemListOrder';
 import { useCartStore } from '../../../src/stores/order';
 
-export default function OrdersScreen() {
+export default function CartScreen() {
   const { items } = useCartStore();
 
   if (items.length === 0) {
