@@ -40,7 +40,7 @@ export const AddToCart = (props: AddToCartProps) => {
   }
 
   return !!quantity ? (
-    <View className="w-full flex-row items-center justify-between">
+    <View className="flex-row items-center justify-between">
       <TouchableOpacity
         className="bg-primary items-center justify-center p-1 rounded-md"
         onPress={handleDecrement}
