@@ -9,7 +9,7 @@ export const Category = (category: CategoryProps) => {
   const { name } = category;
 
   return (
-    <View className="w-44 h-14 bg-black rounded-2xl items-center justify-center flex">
+    <View className="w-44 h-14 bg-primary rounded-2xl items-center justify-center flex">
       <Text className="text-white text-lg font-normal font-['Jaro']">
         {name}
       </Text>

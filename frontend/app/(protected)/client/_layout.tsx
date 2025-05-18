@@ -1,6 +1,4 @@
 import { Stack } from 'expo-router';
-import { HeaderClient } from '../../../src/components/HeaderClient';
-import { Logo } from '../../../src/components/Logo';
 import colors from '../../../src/theme/colors';
 
 export default function ClientLayout() {
@@ -11,23 +9,12 @@ export default function ClientLayout() {
       }}
     >
       <Stack.Screen
-        name="home"
-        options={{
-          headerTitle: () => <Logo />,
-          headerRight: () => <HeaderClient />,
-          headerBackVisible: false,
-        }}
+        name="(tabs)"
+        options={{ headerShown: false }}
       />
 
       <Stack.Screen
-        name="profile/[id]"
-        options={{
-          title: 'Información del usuario',
-        }}
-      />
-
-      <Stack.Screen
-        name="orders/index"
+        name="cart"
         options={{
           title: 'Realizar Pedido',
         }}

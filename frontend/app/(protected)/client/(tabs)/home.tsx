@@ -1,7 +1,7 @@
 import { SafeAreaView, ScrollView, View } from 'react-native';
-import { Category } from '../../../src/components/Category';
-import { SliderDishItem } from '../../../src/components/SliderDishItem';
-import { useGetAllCategories } from '../../../src/hooks/useCategories';
+import { Category } from '../../../../src/components/Category';
+import { SliderDishItem } from '../../../../src/components/SliderDishItem';
+import { useGetAllCategories } from '../../../../src/hooks/useCategories';
 
 export default function HomeScreen() {
   const { data } = useGetAllCategories();

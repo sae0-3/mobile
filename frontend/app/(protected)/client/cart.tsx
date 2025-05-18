@@ -1,8 +1,8 @@
 import { FlatList, Text, View } from 'react-native';
-import { FooterListOrder } from '../../../../src/components/FooterListOrder';
-import { HeaderListOrder } from '../../../../src/components/HeaderListOrder';
-import { ItemListOrder } from '../../../../src/components/ItemListOrder';
-import { useCartStore } from '../../../../src/stores/order';
+import { FooterListOrder } from '../../../src/components/FooterListOrder';
+import { HeaderListOrder } from '../../../src/components/HeaderListOrder';
+import { ItemListOrder } from '../../../src/components/ItemListOrder';
+import { useCartStore } from '../../../src/stores/order';
 
 export default function OrdersScreen() {
   const { items } = useCartStore();
