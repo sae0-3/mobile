@@ -25,8 +25,6 @@ export const authenticateJwt: RequestHandler = (req, res, next) => {
 export function requireRole(allowedRoles: string[]): RequestHandler {
   return (req, res, next) => {
     const user = req.user;
-    console.log(allowedRoles);
-    console.log(user?.role);
 
     if (!user || !allowedRoles.includes(user.role)) {
       throw new ForbiddenError();

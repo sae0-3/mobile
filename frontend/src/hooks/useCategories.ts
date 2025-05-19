@@ -1,9 +1,9 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { CategoryUpdateDto } from '../dtos/categoryDto';
-import { create, getAll, getById, update } from '../services/categorieService';
+import { create, getAll, getById, getProductsByCategory, update } from '../services/categorieService';
 import { useAuth } from '../stores/auth';
-import { CategoriesRequest, CategoriesResponse, CategoryResponse } from '../types/apiTypes';
+import { CategoriesRequest, CategoriesResponse, CategoryResponse, ProductsResponse } from '../types/apiTypes';
 import { invalidateQueries } from '../utils/invalidateQueries';
 
 export const useGetAllCategories = () => {
@@ -30,6 +30,15 @@ export const useCreateCategory = () => {
     onError: (error) => {
       console.error(error.response?.data.message);
     },
+  });
+};
+
+export const useProductForCategory = (categoryId: string) => {
+  const { token } = useAuth();
+  return useQuery<ProductsResponse, AxiosError<ProductsResponse>>({
+    queryKey: ['products-by-category', categoryId],
+    queryFn: () => getProductsByCategory(categoryId, token),
+    enabled: !!categoryId,
   });
 };
 
