@@ -8,7 +8,7 @@ export const useRouteToClient = ({
 }: {
   origin: string;
   destination: string;
-  mode: 'driving' | 'bicycling' | 'walking';
+  mode: 'driving' | 'bicycling';
 }) => {
   return useQuery({
     queryKey: ['route', origin, destination, mode],

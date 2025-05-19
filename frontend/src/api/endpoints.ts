@@ -19,6 +19,10 @@ export const dealerEndpoints = {
   index: '/users/dealers',
 };
 
+export const deliveryEndpoints = {
+  index: '/orders/delivery'
+};
+
 export const clientEndpoints = {
   index: '/users/clients',
 };

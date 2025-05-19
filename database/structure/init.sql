@@ -86,6 +86,7 @@ create table product_categories (
 create table orders (
     id uuid primary key default gen_random_uuid(),
     client_id uuid not null references clients(user_id) on delete set null,
+    user_address_id uuid not null references user_address(id) on delete set null,
     delivery_id uuid references dealers(user_id),
     status order_status not null default 'pending',
     created_at timestamp not null default now(),
