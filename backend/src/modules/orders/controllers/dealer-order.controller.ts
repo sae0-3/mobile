@@ -1,10 +1,10 @@
 import { RequestHandler } from 'express';
 import { responseBuilder } from '../../../core/common/response-builder';
-import { OrderService } from '../services/order-dealer.service';
+import { DealerOrderService } from '../services/dealer-order.service';
 
-export class OrderController {
+export class DealerOrderController {
   constructor(
-    private orderService: OrderService
+    private orderService: DealerOrderService
   ) { }
 
   getAllAvailableOrders: RequestHandler = async (req, res, next) => {

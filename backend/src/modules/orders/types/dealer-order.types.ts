@@ -54,4 +54,3 @@ export interface OrderDelivery {
   id: string,
   delivery_id: string;
 }
-

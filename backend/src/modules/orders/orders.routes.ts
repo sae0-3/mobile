@@ -3,20 +3,19 @@ import { authenticateJwt, requireRole } from '../../core/common/middlewares';
 import { createOrderController } from './orders.bootstrap';
 
 const router = Router();
-
-const orderRouter = Router();
+const dealerOrderRouter = Router();
 const {
-  orderController,
+  dealerOrderController,
 } = createOrderController();
 
-
 router.use(authenticateJwt);
-orderRouter.get('/', orderController.getAllAvailableOrders);
-orderRouter.patch('/:orderId/accept', requireRole(['dealer']), orderController.accepOrder);
-orderRouter.get('/:orderId/location', orderController.getOrderLocationInfo)
-orderRouter.get('/:orderId', orderController.getOrderDetails);
-orderRouter.patch('/:orderId', requireRole(['dealer']), orderController.markOrderAsDelivered);
 
-router.use('/delivery', orderRouter);
+dealerOrderRouter.get('/', dealerOrderController.getAllAvailableOrders);
+dealerOrderRouter.patch('/:orderId/accept', requireRole(['dealer']), dealerOrderController.accepOrder);
+dealerOrderRouter.get('/:orderId/location', dealerOrderController.getOrderLocationInfo)
+dealerOrderRouter.get('/:orderId', dealerOrderController.getOrderDetails);
+dealerOrderRouter.patch('/:orderId', requireRole(['dealer']), dealerOrderController.markOrderAsDelivered);
+
+router.use('/delivery', dealerOrderRouter);
 
 export default router;

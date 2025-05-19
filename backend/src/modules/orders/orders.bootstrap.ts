@@ -1,16 +1,16 @@
-import { OrderController } from './controllers/order-dealer.controller';
-import { OrderRepository } from './repositories/order-dealer.repository';
-import { OrderService } from './services/order-dealer.service';
+import { DealerOrderController } from './controllers/dealer-order.controller';
+import { DealerOrderRepository } from './repositories/dealer-order.repository';
+import { DealerOrderService } from './services/dealer-order.service';
 
 export function createOrderController() {
-  const orderRepository = new OrderRepository();
+  const dealerOrderRepository = new DealerOrderRepository();
 
-  const orderService = new OrderService(orderRepository);
+  const dealerOrderService = new DealerOrderService(dealerOrderRepository);
 
-  const controller = {
-    orderController: new OrderController(orderService),
-  }
+  const controllers = {
+    dealerOrderController: new DealerOrderController(dealerOrderService),
+  };
 
-  return controller;
+  return controllers;
 }
 

@@ -1,13 +1,13 @@
-import { NotFoundError } from '../../../core/errors/app.error';
-import { OrderRepository } from '../repositories/order-dealer.repository';
-import { OrderService } from '../services/order-dealer.service';
-import { AvailableOrder, Order, OrderDetail, OrderLocationInfo } from '../types/order-dealer.types';
 import * as validation from '../../../core/common/validation';
-import { OrderDeliveryDto } from '../dtos/order-dealer.dto';
+import { NotFoundError } from '../../../core/errors/app.error';
+import { DealerOrderDeliveryDto } from '../dtos/dealer-order.dto';
+import { DealerOrderRepository } from '../repositories/dealer-order.repository';
+import { DealerOrderService } from '../services/dealer-order.service';
+import { AvailableOrder, Order, OrderDetail, OrderLocationInfo } from '../types/dealer-order.types';
 
 describe('OrderService', () => {
-  let service: OrderService;
-  let repository: jest.Mocked<OrderRepository>;
+  let service: DealerOrderService;
+  let repository: jest.Mocked<DealerOrderRepository>;
 
   const mockOrder: Order = {
     id: 'order1',
@@ -32,7 +32,6 @@ describe('OrderService', () => {
         quantity: 2,
       }
     ],
-
   };
 
   const mockLocationInfo: OrderLocationInfo = {
@@ -55,7 +54,7 @@ describe('OrderService', () => {
     },
   ];
 
-  const validDto: OrderDeliveryDto = {
+  const validDto: DealerOrderDeliveryDto = {
     id: 'order1',
     delivery_id: 'delivery1'
   };
@@ -68,7 +67,7 @@ describe('OrderService', () => {
       markOrderAsDelivered: jest.fn(),
     } as any;
 
-    service = new OrderService(repository);
+    service = new DealerOrderService(repository);
     jest.resetAllMocks();
 
     jest.spyOn(validation, 'validateDto').mockResolvedValue(undefined);

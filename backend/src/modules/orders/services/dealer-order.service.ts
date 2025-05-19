@@ -1,20 +1,20 @@
 import { validateDto } from '../../../core/common/validation';
 import { NotFoundError } from '../../../core/errors/app.error';
-import { OrderDeliveryDto } from '../dtos/order-dealer.dto';
-import { OrderRepository } from '../repositories/order-dealer.repository';
-import { AvailableOrder, Order, OrderDetail, OrderLocationInfo } from '../types/order-dealer.types';
+import { DealerOrderDeliveryDto, DealerOrderDeliverySchema } from '../dtos/dealer-order.dto';
+import { DealerOrderRepository } from '../repositories/dealer-order.repository';
+import { AvailableOrder, Order, OrderDetail, OrderLocationInfo } from '../types/dealer-order.types';
 
-export class OrderService {
+export class DealerOrderService {
   constructor(
-    private orderRepository: OrderRepository
+    private orderRepository: DealerOrderRepository
   ) { }
 
   async getAllAvailableOrders(): Promise<AvailableOrder[]> {
     return await this.orderRepository.getAllAvailableOrders();
   }
 
-  async accepOrder(data: OrderDeliveryDto): Promise<Order> {
-    await validateDto(OrderDeliveryDto, data);
+  async accepOrder(data: DealerOrderDeliveryDto): Promise<Order> {
+    await validateDto(DealerOrderDeliverySchema, data);
 
     const updated = await this.orderRepository.accepOrder(data);
 
@@ -27,8 +27,9 @@ export class OrderService {
     return updated;
   }
 
-  async getOrderLocation(data: OrderDeliveryDto): Promise<OrderLocationInfo> {
-    await validateDto(OrderDeliveryDto, data);
+  async getOrderLocation(data: DealerOrderDeliveryDto): Promise<OrderLocationInfo> {
+    await validateDto(DealerOrderDeliverySchema, data);
+
     const info = await this.orderRepository.getOrderLocationInfo(data);
     if (!info) {
       throw new NotFoundError({
@@ -50,8 +51,8 @@ export class OrderService {
     return details;
   }
 
-  async markOrderAsDelivered(data: OrderDeliveryDto): Promise<Order> {
-    await validateDto(OrderDeliveryDto, data);
+  async markOrderAsDelivered(data: DealerOrderDeliveryDto): Promise<Order> {
+    await validateDto(DealerOrderDeliverySchema, data);
 
     const updated = await this.orderRepository.markOrderAsDelivered(data);
 

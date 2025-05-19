@@ -1,7 +1,7 @@
 import { BaseRepository } from '../../../core/common/base.repository';
-import { Order, AvailableOrder, OrderDetail, OrderDelivery, OrderDetailRow, OrderLocationInfo } from '../types/order-dealer.types';
+import { AvailableOrder, Order, OrderDelivery, OrderDetail, OrderDetailRow, OrderLocationInfo } from '../types/dealer-order.types';
 
-export class OrderRepository extends BaseRepository {
+export class DealerOrderRepository extends BaseRepository {
   async getAllAvailableOrders(): Promise<AvailableOrder[]> {
     const sql = `
       SELECT
