@@ -1,7 +1,8 @@
 import React from 'react';
-import { ActivityIndicator, FlatList, Text, View } from 'react-native'
+import { ActivityIndicator, FlatList, Text, View } from 'react-native';
 import { useGetAllOrders } from '../../../src/hooks/useDelivery';
 import { OrderCard } from '../../../src/components/OrderCard';
+import colors from '../../../src/theme/colors';
 
 export default function HomeScreen() {
   const { data, isLoading, isError, error } = useGetAllOrders();
@@ -11,7 +12,7 @@ export default function HomeScreen() {
   if (isLoading) {
     return (
       <View className="flex-1 justify-center items-center">
-        <ActivityIndicator size="large" color="#000" />
+        <ActivityIndicator size="large" color={colors.primary} />
       </View>
     )
   }

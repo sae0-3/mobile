@@ -1,10 +1,10 @@
-import { View, Text, TouchableOpacity, Linking } from "react-native"
-import { router } from "expo-router";
+import { View, Text, TouchableOpacity, Linking } from 'react-native';
+import { router } from 'expo-router';
 
-import { CustomButton } from "./CustomButton"
-import { useConfirmDelivery } from "../hooks/useDelivery";
-import { OrderDeliveryDetail } from "../types/apiTypes";
-import { Icon } from "./Icon";
+import { CustomButton } from './CustomButton';
+import { useConfirmDelivery } from '../hooks/useDelivery';
+import { OrderDeliveryDetail } from '../types/apiTypes';
+import { Icon } from './Icon';
 
 interface Props {
   order: OrderDeliveryDetail
@@ -31,12 +31,7 @@ export const DetailCard = ({ order }: Props) => {
       <View className="flex-row justify-between items-center mb-6">
         <Text className="text-2xl font-extrabold text-gray-900">{order.client_name}</Text>
         <TouchableOpacity onPress={callClient}>
-          <Icon
-            name="call"
-            size={24}
-            color="green"
-            type="Ionicons"
-          />
+          <Icon name="call" size={24} color="green" type="Ionicons" />
         </TouchableOpacity>
       </View>
 
@@ -45,12 +40,7 @@ export const DetailCard = ({ order }: Props) => {
         <Text className="text-base font-semibold text-gray-800 mb-4">
           Detalles del pedido
           {"  "}
-          <Icon
-            name="restaurant-menu"
-            size={18}
-            color="#4B5563"
-            type="MaterialIcons"
-          />
+          <Icon name="restaurant-menu" size={18} color="#4B5563" type="MaterialIcons" />
         </Text>
 
         <View className="space-y-2 mb-3">

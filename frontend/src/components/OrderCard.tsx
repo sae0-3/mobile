@@ -18,7 +18,7 @@ export const OrderCard = ({ order }: Props) => {
         router.push(`/dealer/order/${orderId}`);
       },
       onError: () => {
-        Alert.alert('Erro', 'No se pudo aceptar el pedido');
+        Alert.alert('Error', 'No se pudo aceptar el pedido');
       },
     })
   }
@@ -45,7 +45,7 @@ export const OrderCard = ({ order }: Props) => {
         onPress={() => handleAccept(order.order_id)}
         disabled={isPending}
         loading={isPending}
-        title='Aceptar pedido'
+        title="Aceptar pedido"
       />
     </View>
   )

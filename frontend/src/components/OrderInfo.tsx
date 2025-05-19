@@ -1,6 +1,7 @@
-import { View, Text, TouchableOpacity } from 'react-native';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
-
+import { View, Text } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { CustomButton } from './CustomButton';
+import { Icon } from './Icon';
 
 type Props = {
   clientName: string;
@@ -23,12 +24,12 @@ export const OrderInfo = ({
     <View className="flex-2 bg-white px-6 py-4 border-t border-gray-200">
       <Text className="text-lg font-bold mb-2 text-gray-800">Pedido de {clientName}</Text>
       <View className="flex-row items-center mb-1">
-        <Ionicons name="location-outline" size={20} color="#000" className="mr-2" />
-        <Text className="text-base text-gray-700">{clientAddress}</Text>
+        <Icon type="Ionicons" name="location-outline" size={20} color="#000" />
+        <Text className="ml-2 text-base text-gray-700">{clientAddress}</Text>
       </View>
 
       <View className="flex-row items-center mb-3">
-        <MaterialCommunityIcons name={vehicleIcon} size={20} color="#000" style={{ marginRight: 8 }} />
+        <Icon type="MaterialCommunityIcons" name={vehicleIcon} size={20} color="#000" style={{ marginRight: 8 }} />
         {isRouteLoading ? (
           <Text className="text-base text-gray-700">Calulando ruta...</Text>
         ) : routeData ? (
@@ -40,12 +41,11 @@ export const OrderInfo = ({
         )}
       </View>
 
-      <TouchableOpacity
-        className="bg-primary py-4 rounded-xl items-center"
+      <CustomButton
+        className="py-4 rounded-xl"
         onPress={onContinue}
-      >
-        <Text className="text-white font-semibold text-base">Continuar con la entrega</Text>
-      </TouchableOpacity>
+        title="Continuar con la entrega"
+      />
     </View>
   )
 }

@@ -1,6 +1,6 @@
-import { View, StyleSheet } from "react-native"
-import MapView, { Marker } from "react-native-maps";
-import { Coordinates } from "../types/apiTypes";
+import { View, StyleSheet } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
+import { Coordinates } from '../types/apiTypes';
 
 type Props = {
   mapRegion: any;

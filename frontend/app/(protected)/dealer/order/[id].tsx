@@ -1,9 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, Text, ActivityIndicator } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import * as Location from 'expo-location';
-import MapView, { Marker } from 'react-native-maps';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import colors from '../../../../src/theme/colors';
 import { useRouteToClient } from '../../../../src/hooks/useRouteToClient';
 import { useOrderLocation } from '../../../../src/hooks/useDelivery';
@@ -40,13 +37,18 @@ export default function OrderDetailScreen() {
 
   if (isLoading || !location || !orderLocation) {
     return (
-      <View className="flex-1 justify-center items-center bg-white">
+      <View className="flex-1 justify-center items-center">
         <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
   }
 
-  const mapRegion = getMapCenter(location.latitude, location.longitude, parseFloat(orderLocation.latitud), parseFloat(orderLocation.longitud));
+  const mapRegion = getMapCenter(
+    location.latitude,
+    location.longitude,
+    parseFloat(orderLocation.latitud),
+    parseFloat(orderLocation.longitud)
+  );
 
   return (
     <View className="flex-1 bg-white">

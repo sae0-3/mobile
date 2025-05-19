@@ -12,12 +12,12 @@ export default function DeliveryScreen() {
 
   const order = data?.data;
 
-  console.log(order);
-
   if (isLoading) {
     return (
-      <ActivityIndicator size="large" color={colors.primary} />
-    )
+      <View className="flex-1 justify-center items-center">
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
+    );
   }
 
   if (!order) {
@@ -31,5 +31,5 @@ export default function DeliveryScreen() {
     <DetailCard
       order={order}
     />
-  )
+  );
 }
