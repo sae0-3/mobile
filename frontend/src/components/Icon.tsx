@@ -1,6 +1,8 @@
 import {
   Feather,
+  FontAwesome,
   FontAwesome5,
+  FontAwesome6,
   Ionicons,
   MaterialCommunityIcons,
   MaterialIcons,
@@ -8,11 +10,18 @@ import {
 import { ViewStyle } from 'react-native';
 import colors from '../theme/colors';
 
-type IconProps = {
+export type IconProps = {
   name: string;
   size?: number;
   color?: string;
-  type?: 'Feather' | 'Ionicons' | 'MaterialIcons' | 'MaterialCommunityIcons' | 'FontAwesome5';
+  type?: 'Feather'
+  | 'Ionicons'
+  | 'MaterialIcons'
+  | 'MaterialCommunityIcons'
+  | 'FontAwesome5'
+  | 'FontAwesome6'
+  | 'FontAwesome'
+  ;
   style?: ViewStyle;
 };
 
@@ -41,6 +50,12 @@ export const Icon = ({
       break;
     case 'FontAwesome5':
       icon = <FontAwesome5 {...iconProps} />;
+      break;
+    case 'FontAwesome6':
+      icon = <FontAwesome6 {...iconProps} />
+      break;
+    case 'FontAwesome':
+      icon = <FontAwesome {...iconProps} />;
       break;
   };
 

@@ -2,17 +2,36 @@ import { useForm } from '@tanstack/react-form';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, Text, TextInput, View } from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
 import { CustomButton } from '../../../../src/components/CustomButton';
+import { FormMultiField } from '../../../../src/components/FormMultiField';
 import { FormSwitchField } from '../../../../src/components/FormSwitchField';
 import { FormTextField } from '../../../../src/components/FormTextField';
 import { ProductUpdateSchema } from '../../../../src/dtos/productDto';
-import { useGetByIdProduct, useUpdateByIdProduct } from '../../../../src/hooks/useProduct';
+import {
+  useGetByIdProduct,
+  useGetCategoriesLinkedByIdProduct,
+  useGetCategoriesUnlinkedByIdProduct,
+  useLinkProductToCategory,
+  useUnlinkProductToCategory,
+  useUpdateByIdProduct,
+} from '../../../../src/hooks/useProduct';
 
 export default function EditProductScreen() {
   const { id } = useLocalSearchParams();
+  const [newIngredient, setNewIngredient] = useState('');
+  const [ingredients, setIngredients] = useState<string[]>([]);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
+
   const { data, isLoading, isError, error } = useGetByIdProduct(id.toString());
-  const product = data?.data;
+  const { data: linkedCategoriesData } = useGetCategoriesLinkedByIdProduct(id.toString());
+  const { data: unlinkedCategoriesData } = useGetCategoriesUnlinkedByIdProduct(id.toString());
+  const { mutate: linkCategory } = useLinkProductToCategory(id.toString());
+  const { mutate: unlinkCategory } = useUnlinkProductToCategory(id.toString());
   const { mutate: update, isPending, isSuccess } = useUpdateByIdProduct(id.toString());
+
+  const product = data?.data;
+
   const form = useForm({
     defaultValues: product,
     onSubmit: async ({ value }) => {
@@ -23,20 +42,6 @@ export default function EditProductScreen() {
       onChange: ProductUpdateSchema, // TODO
     },
   });
-  const [newIngredient, setNewIngredient] = useState('');
-  const [ingredients, setIngredients] = useState<string[]>([]);
-
-  useEffect(() => {
-    if (product) {
-      setIngredients(product.ingredients ?? []);
-    }
-  }, [product]);
-
-  useEffect(() => {
-    if (isSuccess) {
-      router.back();
-    }
-  }, [isSuccess]);
 
   const addIngredient = () => {
     const trimmed = newIngredient.trim();
@@ -53,6 +58,18 @@ export default function EditProductScreen() {
     setIngredients(updated);
     form.setFieldValue('ingredients', updated);
   };
+
+  useEffect(() => {
+    if (product) {
+      setIngredients(product.ingredients ?? []);
+    }
+  }, [product]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      router.back();
+    }
+  }, [isSuccess]);
 
   if (isLoading) {
     return <ActivityIndicator size="large" />;
@@ -118,48 +135,27 @@ export default function EditProductScreen() {
           }}
         />
 
-        <View>
-          <Text className="text-base font-semibold mb-1">Ingredientes:</Text>
-
-          <View className="flex-row items-center gap-2">
+        <FormMultiField
+          labelProps={{
+            title: 'Ingredientes',
+            className: 'text-base font-semibold mb-1',
+          }}
+          items={ingredients.map((ingredient, idx) => ({
+            id: idx.toString(),
+            value: ingredient,
+            label: ingredient,
+          }))}
+          onDelete={(id) => removeIngredient(parseInt(id, 10))}
+          onAdd={addIngredient}
+          renderInput={() => (
             <TextInput
               className="border border-gray-300 rounded-md px-3 py-2 bg-white flex-1"
               placeholder="Nuevo ingrediente"
               value={newIngredient}
               onChangeText={setNewIngredient}
             />
-            <CustomButton
-              title="Añadir"
-              onPress={addIngredient}
-              iconRight={{
-                name: 'plus',
-              }}
-              className="p-1"
-            />
-          </View>
-
-          <ScrollView
-            className={`max-h-48 gap-2 ${ingredients.length > 0 ? 'mt-4' : ''}`}
-            nestedScrollEnabled
-          >
-            {ingredients.map((ingredient, idx) => (
-              <View
-                key={`${ingredient}-${idx}`}
-                className="flex-row items-center justify-between border-t border-t-gray-300 py-2"
-              >
-                <Text className="flex-1">{idx + 1}. {ingredient}</Text>
-                <CustomButton
-                  className="bg-transparent"
-                  iconRight={{
-                    name: 'trash-2',
-                    color: 'red',
-                  }}
-                  onPress={() => removeIngredient(idx)}
-                />
-              </View>
-            ))}
-          </ScrollView>
-        </View>
+          )}
+        />
 
         <FormTextField
           form={form}
@@ -193,6 +189,42 @@ export default function EditProductScreen() {
             }}
           />
         </View>
+
+        <FormMultiField
+          labelProps={{
+            title: 'Categorías',
+            className: 'text-base font-semibold',
+          }}
+          items={linkedCategoriesData?.data.map(category => ({
+            id: category.id,
+            value: category.id,
+            label: category.name,
+          })) || []}
+          onDelete={unlinkCategory}
+          onAdd={() => {
+            if (selectedCategoryId) {
+              linkCategory(selectedCategoryId);
+              setSelectedCategoryId(null);
+            }
+          }}
+          renderInput={() => (
+            <View className='flex-1'>
+              <RNPickerSelect
+                value={selectedCategoryId}
+                onValueChange={(value) => setSelectedCategoryId(value)}
+                items={unlinkedCategoriesData?.data.map(category => ({
+                  label: category.name,
+                  value: category.id,
+                })) || []}
+                placeholder={{ label: 'Selecciona una opción...', value: null, color: '#9ca3af' }}
+                style={{
+                  inputAndroid: { color: 'black' },
+                  inputIOS: { color: 'black' },
+                }}
+              />
+            </View>
+          )}
+        />
 
         <View className="flex flex-row justify-between">
           <CustomButton

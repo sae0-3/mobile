@@ -40,9 +40,20 @@ export interface Dealer {
   updated_at: string;
 }
 
-export type DealerRespose = ApiResponse<Dealer>;
+export interface Client {
+  id: string;
+  email: string;
+  name: string;
+  phone: string | null;
+  created_at: string;
+  updated_at: string;
+}
 
+export type DealerRespose = ApiResponse<Dealer>;
 export type DealersResponse = ApiResponse<Dealer[]>;
+
+export type ClientResponse = ApiResponse<Client>;
+export type ClientsResponse = ApiResponse<Client[]>;
 
 export interface LoginRequest {
   email: string;
@@ -167,3 +178,21 @@ export interface OrderDeliveryDetail {
 }
 
 export type OrderDeliveryDetailResponse = ApiResponse<OrderDeliveryDetail>;
+
+export interface Location {
+  id: string;
+  user_id: string;
+  address: string;
+  latitud: string | null;
+  longitud: string | null;
+  created_at: string;
+}
+
+export interface LocationRequest {
+  address: string;
+  latitud: string;
+  longitud: string;
+}
+
+export type LocationResponse = ApiResponse<Location>;
+export type LocationsResponse = ApiResponse<Location[]>;

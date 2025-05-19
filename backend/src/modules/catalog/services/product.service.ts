@@ -72,7 +72,7 @@ export class ProductService {
     return deleted;
   }
 
-  async findCategoriesByProductId(id: string, isClient: boolean): Promise<Category[]> {
-    return await this.productRepository.findCategoriesByProductId(id, isClient);
+  async findCategoriesByProductId(id: string, isClient: boolean, linked: boolean): Promise<Category[]> {
+    return await this.productRepository.findCategoriesByProductId(id, isClient, linked);
   }
 }

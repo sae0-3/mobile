@@ -40,7 +40,10 @@ export class ProductController {
     try {
       const isClient = req.user?.role === 'client';
       const id = req.params.id;
-      const data = await this.productService.findCategoriesByProductId(id, isClient);
+      const linkedParam = req.query.linked;
+
+      const linked = linkedParam === 'false' ? false : true;
+      const data = await this.productService.findCategoriesByProductId(id, isClient, linked);
 
       responseBuilder(res, {
         statusCode: 200,
