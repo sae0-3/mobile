@@ -12,10 +12,10 @@ export const FooterListOrder = () => {
       </Text>
 
       <TouchableOpacity
-        className="bg-primary rounded-lg flex-row items-center justify-center p-2"
+        className="border border-primary rounded-lg flex-row items-center justify-center p-2"
       >
-        <Text className="text-white text-lg">Continuar</Text>
-        <Icon name="chevron-right" color="white" />
+        <Text className="text-primary text-lg">Continuar</Text>
+        <Icon name="chevron-right" />
       </TouchableOpacity>
     </View>
   );

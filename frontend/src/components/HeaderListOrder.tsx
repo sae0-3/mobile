@@ -13,9 +13,9 @@ export const HeaderListOrder = () => {
 
       <TouchableOpacity
         onPress={() => clearCart()}
-        className="bg-primary p-2 rounded-lg"
+        className="border border-primary rounded-lg items-center justify-center w-12 aspect-square"
       >
-        <Icon name="restore" color="white" type="MaterialCommunityIcons" />
+        <Icon name="restore" type="MaterialCommunityIcons" />
       </TouchableOpacity>
     </View>
   );

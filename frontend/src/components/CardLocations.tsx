@@ -47,7 +47,7 @@ export const CardLocations = () => {
               </View>
 
               <TouchableOpacity
-                className="border justify-center items-center border-primary p-3 rounded-lg disabled:opacity-50"
+                className="border justify-center items-center border-primary p-2 rounded-lg disabled:opacity-50"
                 onPress={() => remove(location.id)}
                 disabled={isPending}
               >

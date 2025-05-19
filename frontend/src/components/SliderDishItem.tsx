@@ -5,14 +5,14 @@ import { CardProduct } from './CardProduct';
 type SliderDishProps = {
   id: string;
   nameCategory: string;
-}
+};
 
 export const SliderDishItem = (props: SliderDishProps) => {
   const { id, nameCategory } = props;
   const { data } = useProductForCategory(id);
 
   return (
-    <View className="gap-4">
+    <View className="gap-1">
       <Text className="text-3xl font-bold">
         {nameCategory}
       </Text>
@@ -28,7 +28,7 @@ export const SliderDishItem = (props: SliderDishProps) => {
           showsHorizontalScrollIndicator={false}
           horizontal={true}
         >
-          <View className="flex-row gap-8">
+          <View className="flex-row gap-6 p-1">
             {data?.data.map(({ id, name, img_reference, price, available }) => (
               <CardProduct
                 key={id}

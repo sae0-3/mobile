@@ -31,8 +31,10 @@ export const CardProfile = (props: CardProfileProps) => {
 
       <View className="flex-row justify-between items-center">
         <View className="gap-px">
-          <Text>Se unió en:</Text>
-          <Text>
+          <Text className="text-sm">
+            Se unió en:
+          </Text>
+          <Text className="text-sm">
             {props.created_at.toLocaleDateString('es-ES', {
               weekday: 'long',
               year: 'numeric',
@@ -43,7 +45,7 @@ export const CardProfile = (props: CardProfileProps) => {
         </View>
 
         <TouchableOpacity
-          className="border border-primary p-3 rounded-lg disabled:opacity-50"
+          className="border border-primary p-2 rounded-lg disabled:opacity-50"
           onPress={handleEditProfile}
         // disabled
         >

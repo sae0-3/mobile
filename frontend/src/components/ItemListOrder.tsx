@@ -7,14 +7,14 @@ export const ItemListOrder = (product: Product) => {
   const { getSubtotal } = useCartStore();
 
   return (
-    <View className="flex-row justify-between items-center">
+    <View className="flex-row justify-between items-center bg-gray-100 p-2 shadow-md shadow-black m-1 rounded-lg">
       <View className="gap-2">
         <Image
           source={{ uri: product.img_reference }}
-          className="h-24 aspect-square rounded-xl"
+          className="h-20 aspect-video rounded-xl"
         />
 
-        <Text className="text-center font-medium">
+        <Text className="text-center font-semibold">
           {product.name}
         </Text>
       </View>
@@ -26,7 +26,7 @@ export const ItemListOrder = (product: Product) => {
           available
         />
 
-        <Text className="text-center">
+        <Text className="text-center italic">
           Precio: Bs {getSubtotal(product.id)}
         </Text>
       </View>

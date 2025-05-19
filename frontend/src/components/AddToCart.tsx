@@ -33,7 +33,7 @@ export const AddToCart = (props: AddToCartProps) => {
 
   if (!available) {
     return (
-      <View className="bg-red-100 items-center justify-center p-2 rounded-xl opacity-50">
+      <View className="bg-red-200 items-center justify-center p-2 rounded-xl opacity-50">
         <Text>No disponible</Text>
       </View>
     );
@@ -42,32 +42,33 @@ export const AddToCart = (props: AddToCartProps) => {
   return !!quantity ? (
     <View className="flex-row items-center justify-between">
       <TouchableOpacity
-        className="bg-primary items-center justify-center p-1 rounded-md"
+        className="border border-primary items-center justify-center p-px rounded-md"
         onPress={handleDecrement}
       >
-        <Icon name='minus' color="white" />
+        <Icon name="minus" />
       </TouchableOpacity>
 
-      <Text>{cartItem?.quantity}</Text>
+      <Text className="font-medium text-lg">
+        {cartItem?.quantity}
+      </Text>
 
       <TouchableOpacity
-        className="bg-primary items-center justify-center p-1 rounded-md"
+        className="border border-primary items-center justify-center p-px rounded-md"
         onPress={handleIncrement}
       >
-        <Icon name='plus' color="white" />
+        <Icon name="plus" />
       </TouchableOpacity>
     </View>
   ) : (
     <TouchableOpacity
-      className="flex-row bg-primary items-center justify-center p-1 rounded-xl disabled:opacity-50"
+      className="flex-row border border-primary items-center justify-center p-px rounded-xl disabled:opacity-50"
       disabled={!available}
       onPress={handleAddToCart}
     >
-      <Text className="text-white">
+      <Text className="text-primary">
         Añadir
       </Text>
-
-      <Icon name='plus' color="white" />
+      <Icon name="plus" />
     </TouchableOpacity>
   );
 };

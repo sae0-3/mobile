@@ -44,7 +44,7 @@ export default function ProfileScreen() {
 
         <View className="flex-row justify-between items-center">
           <TouchableOpacity
-            className="bg-red-500 flex-row gap-2 rounded-lg p-3 items-center justify-center"
+            className="bg-red-500 flex-row gap-2 rounded-lg p-2 items-center justify-center"
             onPress={handleRemoveAccount}
           >
             <Text className="text-white font-semibold">
@@ -54,7 +54,7 @@ export default function ProfileScreen() {
           </TouchableOpacity>
 
           <TouchableOpacity
-            className="bg-primary flex-row gap-2 rounded-lg p-3 items-center justify-center"
+            className="bg-primary flex-row gap-2 rounded-lg p-2 items-center justify-center"
             onPress={handleLogout}
           >
             <Text className="text-white font-semibold">

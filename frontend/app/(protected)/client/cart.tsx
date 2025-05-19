@@ -10,7 +10,7 @@ export default function CartScreen() {
   if (items.length === 0) {
     return (
       <View className="flex-1 justify-center items-center">
-        <Text className="text-lg font-medium">
+        <Text className="text-xl text-gray-500 italic">
           No existen productos en el carrito
         </Text>
       </View>
