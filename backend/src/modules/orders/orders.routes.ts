@@ -4,8 +4,10 @@ import { createOrderController } from './orders.bootstrap';
 
 const router = Router();
 const dealerOrderRouter = Router();
+const clientOrderRouter = Router();
 const {
   dealerOrderController,
+  clientOrderController,
 } = createOrderController();
 
 router.use(authenticateJwt);
@@ -16,6 +18,13 @@ dealerOrderRouter.get('/:orderId/location', dealerOrderController.getOrderLocati
 dealerOrderRouter.get('/:orderId', dealerOrderController.getOrderDetails);
 dealerOrderRouter.patch('/:orderId', requireRole(['dealer']), dealerOrderController.markOrderAsDelivered);
 
+clientOrderRouter.use(requireRole(['client']));
+clientOrderRouter.get('/', clientOrderController.getAll);
+clientOrderRouter.post('/', clientOrderController.create);
+clientOrderRouter.get('/:orderId', clientOrderController.getById);
+clientOrderRouter.patch('/:orderId', clientOrderController.cancelById);
+
 router.use('/delivery', dealerOrderRouter);
+router.use('/client', clientOrderRouter);
 
 export default router;
