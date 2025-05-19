@@ -1,4 +1,4 @@
-export const getTravelMode = (vehicle: string | undefined): "driving" | "bicycling" => {
+export const getTravelMode = (vehicle: string | undefined): 'driving' | 'bicycling' => {
   switch (vehicle) {
     case 'car':
       return 'driving';
