@@ -25,7 +25,7 @@ export default function HomeScreen() {
         </ScrollView> */}
 
         <ScrollView
-          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
           horizontal={false}
         >
           <View className="gap-6">

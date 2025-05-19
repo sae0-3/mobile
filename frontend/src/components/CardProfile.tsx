@@ -23,9 +23,17 @@ export const CardProfile = (props: CardProfileProps) => {
           <Text>
             {props.email}
           </Text>
-          <Text>
-            {props.phone}
-          </Text>
+
+          {!!props.phone ? (
+            <Text>
+              {props.phone}
+            </Text>
+          ) : (
+            <Text className="italic text-gray-400">
+              No se registro número de celular
+            </Text>
+          )}
+
         </View>
       </View>
 
