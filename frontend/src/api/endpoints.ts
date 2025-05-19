@@ -22,3 +22,7 @@ export const dealerEndpoints = {
 export const clientEndpoints = {
   index: '/users/clients',
 };
+
+export const locationEnpoints = {
+  index: '/locations'
+};

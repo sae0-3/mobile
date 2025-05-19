@@ -45,7 +45,7 @@ export const CardProfile = (props: CardProfileProps) => {
         <TouchableOpacity
           className="border border-primary p-3 rounded-lg disabled:opacity-50"
           onPress={handleEditProfile}
-          disabled
+        // disabled
         >
           <Text className="text-primary">Editar</Text>
         </TouchableOpacity>

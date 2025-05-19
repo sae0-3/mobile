@@ -139,3 +139,21 @@ export interface OrderBase {
 };
 
 export type Order = OrderBase & Coordinates
+
+export interface Location {
+  id: string;
+  user_id: string;
+  address: string;
+  latitud: string | null;
+  longitud: string | null;
+  created_at: string;
+}
+
+export interface LocationRequest {
+  address: string;
+  latitud: string;
+  longitud: string;
+}
+
+export type LocationResponse = ApiResponse<Location>;
+export type LocationsResponse = ApiResponse<Location[]>;
