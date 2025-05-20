@@ -60,7 +60,7 @@ export const CardLocations = () => {
         </View>
       ) : (
         <View className="items-center py-4">
-          <Text className="text-gray-500">No existen ubicaciones registradas</Text>
+          <Text className="text-gray-400 italic">No existen ubicaciones registradas</Text>
         </View>
       )}
 

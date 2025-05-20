@@ -1,11 +1,33 @@
-import { FlatList, Text, View } from 'react-native';
+import { useState } from 'react';
+import { ScrollView, Text, View } from 'react-native';
 import { FooterListOrder } from '../../../src/components/FooterListOrder';
 import { HeaderListOrder } from '../../../src/components/HeaderListOrder';
 import { ItemListOrder } from '../../../src/components/ItemListOrder';
+import { ModalCartLocations } from '../../../src/components/ModalCartLocations';
+import { WarningMessage } from '../../../src/components/WarningMessage';
+import { useGetByIdClient } from '../../../src/hooks/useClients';
+import { useGetAllLocations } from '../../../src/hooks/useLocations';
+import { useAuth } from '../../../src/stores/auth';
 import { useCartStore } from '../../../src/stores/order';
 
 export default function CartScreen() {
   const { items } = useCartStore();
+  const { id } = useAuth();
+  const { data: user, isLoading: isLoadingPhone } = useGetByIdClient(String(id));
+  const { data: locations, isLoading: isLoadingLocations } = useGetAllLocations();
+  const [visibleModal, setVisibleModal] = useState(false);
+
+  const isPhoneRegistered = !!user?.data.phone;
+  const isLocationsRegistered = !!locations?.data.length;
+  const disabled = !isPhoneRegistered || !isLocationsRegistered;
+  const options = locations?.data.map((location) => ({
+    label: location.address,
+    value: location.id,
+  })) || [];
+
+  const handleContinue = () => {
+    setVisibleModal(true);
+  };
 
   if (items.length === 0) {
     return (
@@ -18,16 +40,44 @@ export default function CartScreen() {
   }
 
   return (
-    <FlatList
-      className="mx-auto w-11/12 my-6"
-      data={items}
-      keyExtractor={(item) => item.product.id}
-      ListHeaderComponent={() => <HeaderListOrder />}
-      ListFooterComponent={() => <FooterListOrder />}
-      renderItem={({ item: { product } }) => <ItemListOrder {...product} />}
-      contentContainerStyle={{
-        gap: 10,
-      }}
-    />
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+    >
+      <View className="mx-auto w-11/12 mt-4 mb-6 gap-4">
+        {!isPhoneRegistered && !isLoadingPhone && (
+          <WarningMessage
+            message="No tiene ningún número registrado"
+          />
+        )}
+
+        {!isLocationsRegistered && !isLoadingLocations && (
+          <WarningMessage
+            message="No tiene ninguna ubicación registrada"
+          />
+        )}
+
+        <HeaderListOrder />
+
+        <View className="gap-4 py-4 border-y border-y-gray-200">
+          {items.map(({ product }) => (
+            <ItemListOrder
+              key={product.id}
+              {...product}
+            />
+          ))}
+        </View>
+
+        <FooterListOrder
+          disabled={disabled}
+          handleContinue={handleContinue}
+        />
+
+        <ModalCartLocations
+          visible={visibleModal}
+          options={options}
+          onClose={() => setVisibleModal(false)}
+        />
+      </View>
+    </ScrollView>
   );
 }

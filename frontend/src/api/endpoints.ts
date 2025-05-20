@@ -20,7 +20,11 @@ export const dealerEndpoints = {
 };
 
 export const deliveryEndpoints = {
-  index: '/orders/delivery'
+  index: '/orders/delivery',
+};
+
+export const clientOrdersEndpoints = {
+  index: '/orders/client',
 };
 
 export const clientEndpoints = {
@@ -28,5 +32,5 @@ export const clientEndpoints = {
 };
 
 export const locationEnpoints = {
-  index: '/locations'
+  index: '/locations',
 };

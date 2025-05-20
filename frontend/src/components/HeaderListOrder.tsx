@@ -6,7 +6,7 @@ export const HeaderListOrder = () => {
   const { clearCart } = useCartStore();
 
   return (
-    <View className="pb-4 flex-row justify-between items-center border-b border-b-gray-200">
+    <View className="flex-row justify-between items-center">
       <Text className="font-bold text-2xl">
         Lista de productos
       </Text>
