@@ -32,6 +32,13 @@ export default function ClientLayout() {
           title: 'Realizar Pedido',
         }}
       />
+
+      <Stack.Screen
+        name="detail/index"
+        options={{
+          title: 'Detalle de producto',
+        }}
+      />
     </Stack>
   )
 }
