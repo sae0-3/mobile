@@ -1,5 +1,6 @@
 import { Stack } from 'expo-router';
 import colors from '../../../src/theme/colors';
+import { Cart } from '../../../src/components/Cart';
 
 export default function ClientLayout() {
   return (
@@ -24,6 +25,7 @@ export default function ClientLayout() {
         name="detail"
         options={{
           title: 'Detalles del producto',
+          headerRight: () => <Cart />,
         }}
       />
     </Stack>

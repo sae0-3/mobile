@@ -43,7 +43,7 @@ export default function DetailScreen() {
 
         <View className="flex-row justify-between items-center flex-wrap">
           <Text className="text-2xl font-semibold text-gray-800">{product.name}</Text>
-          <Text className="text-xl font-semibold text-yellow-500">Bs {product.price}</Text>
+          <Text className="text-xl font-semibold text-primary italic">Bs {product.price}</Text>
         </View>
 
         {!!product.description ? (
