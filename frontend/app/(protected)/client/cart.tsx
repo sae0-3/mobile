@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { FooterListOrder } from '../../../src/components/FooterListOrder';
 import { HeaderListOrder } from '../../../src/components/HeaderListOrder';
 import { ItemListOrder } from '../../../src/components/ItemListOrder';
+import { ModalCartLocations } from '../../../src/components/ModalCartLocations';
 import { WarningMessage } from '../../../src/components/WarningMessage';
 import { useGetByIdClient } from '../../../src/hooks/useClients';
 import { useGetAllLocations } from '../../../src/hooks/useLocations';
@@ -13,9 +15,19 @@ export default function CartScreen() {
   const { id } = useAuth();
   const { data: user, isLoading: isLoadingPhone } = useGetByIdClient(String(id));
   const { data: locations, isLoading: isLoadingLocations } = useGetAllLocations();
+  const [visibleModal, setVisibleModal] = useState(false);
 
   const isPhoneRegistered = !!user?.data.phone;
   const isLocationsRegistered = !!locations?.data.length;
+  const disabled = !isPhoneRegistered || !isLocationsRegistered;
+  const options = locations?.data.map((location) => ({
+    label: location.address,
+    value: location.id,
+  })) || [];
+
+  const handleContinue = () => {
+    setVisibleModal(true);
+  };
 
   if (items.length === 0) {
     return (
@@ -56,7 +68,14 @@ export default function CartScreen() {
         </View>
 
         <FooterListOrder
-          disabled={!isPhoneRegistered || !isLocationsRegistered}
+          disabled={disabled}
+          handleContinue={handleContinue}
+        />
+
+        <ModalCartLocations
+          visible={visibleModal}
+          options={options}
+          onClose={() => setVisibleModal(false)}
         />
       </View>
     </ScrollView>

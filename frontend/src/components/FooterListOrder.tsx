@@ -2,7 +2,12 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import { useCartStore } from '../stores/order';
 import { Icon } from './Icon';
 
-export const FooterListOrder = ({ disabled = false }) => {
+type FooterListOrderProps = {
+  disabled: boolean;
+  handleContinue: () => void;
+};
+
+export const FooterListOrder = (props: FooterListOrderProps) => {
   const { getTotal } = useCartStore();
 
   return (
@@ -12,8 +17,9 @@ export const FooterListOrder = ({ disabled = false }) => {
       </Text>
 
       <TouchableOpacity
-        disabled={disabled}
-        className="border border-primary rounded-lg flex-row items-center justify-center p-2 disabled:opacity-50"
+        onPress={props.handleContinue}
+        disabled={props.disabled}
+        className="border border-primary rounded-lg flex-row items-center justify-center p-2 disabled:opacity-40"
       >
         <Text className="text-primary text-lg">Continuar</Text>
         <Icon name="chevron-right" />
