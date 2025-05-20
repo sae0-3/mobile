@@ -33,7 +33,7 @@ export const AddToCart = (props: AddToCartProps) => {
 
   if (!available) {
     return (
-      <View className="bg-red-200 items-center justify-center p-2 rounded-xl opacity-50">
+      <View className="bg-red-200 items-center justify-center p-2 rounded-lg opacity-50">
         <Text>No disponible</Text>
       </View>
     );

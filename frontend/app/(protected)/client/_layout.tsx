@@ -21,9 +21,9 @@ export default function ClientLayout() {
       />
 
       <Stack.Screen
-        name="detail/index"
+        name="detail"
         options={{
-          title: 'Detalle de producto',
+          title: 'Detalles del producto',
         }}
       />
     </Stack>

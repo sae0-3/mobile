@@ -1,4 +1,5 @@
 import {
+  Entypo,
   Feather,
   FontAwesome,
   FontAwesome5,
@@ -21,6 +22,7 @@ export type IconProps = {
   | 'FontAwesome5'
   | 'FontAwesome6'
   | 'FontAwesome'
+  | 'Entypo'
   ;
   style?: ViewStyle;
 };
@@ -56,6 +58,9 @@ export const Icon = ({
       break;
     case 'FontAwesome':
       icon = <FontAwesome {...iconProps} />;
+      break;
+    case 'Entypo':
+      icon = <Entypo {...iconProps} />
       break;
   };
 
