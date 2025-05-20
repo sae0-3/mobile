@@ -1,7 +1,6 @@
+import { useRouter } from 'expo-router';
 import { Image, Pressable, Text, View } from 'react-native';
 import { AddToCart } from './AddToCart';
-import { useRouter } from 'expo-router';
-import { TouchableOpacity } from 'react-native';
 
 type CardProductProps = {
   id: string;
@@ -12,29 +11,32 @@ type CardProductProps = {
 };
 
 export const CardProduct = (props: CardProductProps) => {
-  const { name, price, imgUrl, available } = props;
+  const { name, price, imgUrl } = props;
   const router = useRouter();
 
   return (
-    <TouchableOpacity
-      onPress={() => { {
-        router.push({
-          pathname: '/client/detail',
-          params: { productId: props.id }
-        });
-      } }}
+    <Pressable
+      onPress={() => {
+        {
+          router.push({
+            pathname: '/client/detail',
+            params: { productId: props.id }
+          });
+        }
+      }}
     >
-      <View className="justify-center items-center gap-3 w-60">
+      <View className="justify-center items-center gap-4 w-60 bg-gray-100 shadow-md shadow-black rounded-xl p-2">
         <Image
           source={{ uri: imgUrl }}
           className="h-44 w-full rounded-xl"
         />
-        <View className="w-full gap-3">
-          <View className="flex-row justify-between items-center">
-            <Text>
+
+        <View className="w-full gap-2">
+          <View className="flex-row justify-between items-center flex-wrap">
+            <Text className="font-medium text-lg">
               {name}
             </Text>
-            <Text>
+            <Text className="italic">
               Bs {price}
             </Text>
           </View>
@@ -42,6 +44,6 @@ export const CardProduct = (props: CardProductProps) => {
           <AddToCart {...props} />
         </View>
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 };

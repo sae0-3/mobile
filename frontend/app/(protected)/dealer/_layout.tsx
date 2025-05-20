@@ -12,7 +12,7 @@ export default function DealerLayout() {
       <Stack.Screen
         name="home"
         options={{
-          title: 'Inicio',
+          title: 'Pedidos disponibles',
           headerRight: () => <LogoutButton />,
         }}
       />
@@ -20,16 +20,16 @@ export default function DealerLayout() {
       <Stack.Screen
         name="order/[id]"
         options={{
-          title: 'Detalle del pedido'
+          title: 'Ruta hacia el cliente'
         }}
       />
 
       <Stack.Screen
         name="delivery/[id]"
         options={{
-          title: 'Detalles de la entrega'
+          title: 'Detalle y entrega'
         }}
       />
     </Stack>
-  )
+  );
 }

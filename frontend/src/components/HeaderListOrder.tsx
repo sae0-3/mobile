@@ -6,16 +6,16 @@ export const HeaderListOrder = () => {
   const { clearCart } = useCartStore();
 
   return (
-    <View className="pb-4 flex-row justify-between items-center border-b border-b-gray-200">
+    <View className="flex-row justify-between items-center">
       <Text className="font-bold text-2xl">
         Lista de productos
       </Text>
 
       <TouchableOpacity
         onPress={() => clearCart()}
-        className="bg-primary p-2 rounded-lg"
+        className="border border-primary rounded-lg items-center justify-center w-12 aspect-square"
       >
-        <Icon name="restore" color="white" type="MaterialCommunityIcons" />
+        <Icon name="restore" type="MaterialCommunityIcons" />
       </TouchableOpacity>
     </View>
   );

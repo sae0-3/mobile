@@ -40,9 +40,20 @@ export interface Dealer {
   updated_at: string;
 }
 
-export type DealerRespose = ApiResponse<Dealer>;
+export interface Client {
+  id: string;
+  email: string;
+  name: string;
+  phone: string | null;
+  created_at: string;
+  updated_at: string;
+}
 
+export type DealerRespose = ApiResponse<Dealer>;
 export type DealersResponse = ApiResponse<Dealer[]>;
+
+export type ClientResponse = ApiResponse<Client>;
+export type ClientsResponse = ApiResponse<Client[]>;
 
 export interface LoginRequest {
   email: string;
@@ -119,12 +130,94 @@ export interface TravelEstimate {
   duration: string;
 }
 
-export interface OrderBase {
-  id: string;
-  clientName: string;
-  address: string;
-  items: string[];
-  phone: number;
-};
+export interface Delivery {
+  order_id: string;
+  client_name: string;
+  client_address: string;
+  client_phone: string;
+  totol: string;
+  created_at: string;
+}
 
-export type Order = OrderBase & Coordinates
+export type DeliveryResponse = ApiResponse<Delivery[]>;
+
+export interface UpdatedOrder {
+  id: string;
+  client_id: string;
+  delivery_id: string;
+  status: 'pending' | 'in_progress' | 'delivered' | 'cancelled';
+  created_at: string;
+  updated_at: string;
+  total: string;
+  user_address_id: string;
+}
+
+export interface OrderLocation {
+  order_id: string;
+  client_name: string;
+  client_address: string;
+  latitud: string;
+  longitud: string;
+  dealer_vehicle: 'car' | 'motorcycle' | 'bicycle';
+}
+
+export type OrderLocationResponse = ApiResponse<OrderLocation>;
+
+export type UpdatedOrderResponse = ApiResponse<UpdatedOrder>;
+
+export interface OrderDeliveryDetail {
+  order_id: string;
+  total: string;
+  client_name: string;
+  client_phone: string;
+  products: {
+    name: string;
+    quantity: number;
+    subtotal: string;
+  }[];
+}
+
+export type OrderDeliveryDetailResponse = ApiResponse<OrderDeliveryDetail>;
+
+export interface Location {
+  id: string;
+  user_id: string;
+  address: string;
+  latitud: string | null;
+  longitud: string | null;
+  created_at: string;
+}
+
+export interface LocationRequest {
+  address: string;
+  latitud: string;
+  longitud: string;
+}
+
+export type LocationResponse = ApiResponse<Location>;
+export type LocationsResponse = ApiResponse<Location[]>;
+
+export interface Order {
+  id: string;
+  client_id: string;
+  user_address_id: string;
+  delivery_id: string | null;
+  status: 'pending' | 'in_progress' | 'delivered' | 'cancelled';
+  created_at: string;
+  updated_at: string;
+  total: number;
+}
+
+export interface OrderDetailsInsert {
+  product_id: string;
+  quantity: number;
+  subtotal: number;
+}
+
+export interface OrderRequest {
+  total: number;
+  user_address_id: string;
+  items: OrderDetailsInsert[];
+}
+
+export type OrderResponse = ApiResponse<Order>;

@@ -1,55 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, Text, ActivityIndicator } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import * as Location from 'expo-location';
-import MapView, { Marker } from 'react-native-maps';
-import { Ionicons } from '@expo/vector-icons'
 import colors from '../../../../src/theme/colors';
-import { Order } from '../../../../src/types/apiTypes';
 import { useRouteToClient } from '../../../../src/hooks/useRouteToClient';
-
-const mockOrders: Order[] = [
-  { id: '1', clientName: 'Juan Perez', address: 'Av. san Martin 123', items: ['Pizza', 'Ensalada'], phone: 72165841, latitude: -17.35299, longitude: -66.18922 },
-  { id: '2', clientName: 'Maria Lopez', address: 'Calle Falsa 456', items: ['Hamburguesa', 'Papas fritas'], phone: 75415695, latitude: -17.36667, longitude: -66.19836 },
-];
+import { useOrderLocation } from '../../../../src/hooks/useDelivery';
+import { getTravelMode, getVehicleIconName } from '../../../../src/utils/travelHelpers';
+import { useCurrentLocation } from '../../../../src/hooks/useCurrentLocation';
+import { getMapCenter } from '../../../../src/utils/mapUtils';
+import { OrderMap } from '../../../../src/components/OrderMap';
+import { OrderInfo } from '../../../../src/components/OrderInfo';
 
 export default function OrderDetailScreen() {
   const { id } = useLocalSearchParams();
+  const { data, isLoading } = useOrderLocation(id.toString());
+  const { location, errorMsg } = useCurrentLocation();
   const router = useRouter();
 
-  const [location, setLocation] = useState<Location.LocationObjectCoords | null>(null);
-  const [errorMsg, setErrorMsg] = useState('');
+  const orderLocation = data?.data;
 
-  const order = mockOrders.find(o => o.id === id);
+  const travelMode = getTravelMode(orderLocation?.dealer_vehicle);
 
-  const travelMode: 'driving' | 'bicycling' | 'walking' = 'driving';
-
-  useEffect(() => {
-    let subscriber: Location.LocationSubscription;
-
-    const getLocation = async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permiso denegado para acceder a la ubicación');
-        return;
-      }
-
-      subscriber = await Location.watchPositionAsync(
-        {
-          accuracy: Location.Accuracy.High,
-          timeInterval: 5000,
-          distanceInterval: 2,
-        },
-        (loc) => setLocation(loc.coords)
-      )
-    }
-    getLocation();
-
-    return () => subscriber && subscriber.remove();
-  }, []);
 
   const origin = location ? `${location.latitude},${location.longitude}` : '';
-  const destination = order ? `${order.latitude},${order.longitude}` : '';
+  const destination = orderLocation ? `${orderLocation.latitud},${orderLocation.longitud}` : '';
 
   const { data: routeData, isLoading: isRouteLoading } = useRouteToClient({ origin, destination, mode: travelMode });
 
@@ -62,83 +35,40 @@ export default function OrderDetailScreen() {
     );
   }
 
-  if (!location || !order) {
+  if (isLoading || !location || !orderLocation) {
     return (
-      <View className="flex-1 justify-center items-center bg-white">
+      <View className="flex-1 justify-center items-center">
         <ActivityIndicator size="large" color={colors.primary} />
-        <Text>Cargando ubicación...</Text>
       </View>
     );
   }
 
-  const centerLat = (location.latitude + order.latitude) / 2;
-  const centerLon = (location.longitude + order.longitude) / 2;
+  const mapRegion = getMapCenter(
+    location.latitude,
+    location.longitude,
+    parseFloat(orderLocation.latitud),
+    parseFloat(orderLocation.longitud)
+  );
 
   return (
     <View className="flex-1 bg-white">
-      <View className="flex-1 justify-center items-center">
-        <MapView
-          style={style.map}
-          initialRegion={{
-            latitude: centerLat,
-            longitude: centerLon,
-            latitudeDelta: Math.abs(location.latitude - order.latitude) + 0.02,
-            longitudeDelta: Math.abs(location.longitude - order.longitude) + 0.02,
-          }}
-        >
-          <Marker
-            coordinate={{
-              latitude: location.latitude,
-              longitude: location.longitude
-            }}
-            title="Tu ubicación"
-            description="Ubicación actual del repartidor"
-          />
-          <Marker
-            coordinate={{
-              latitude: order.latitude,
-              longitude: order.longitude
-            }}
-            title="cliente"
-            description="Destino"
-          />
-        </MapView>
-      </View>
-      <View className="flex-2 bg-white px-6 py-4 border-t border-gray-200">
-        <Text className="text-lg font-bold mb-2 text-gray-800">Pedido de {order.clientName}</Text>
-        <View className="flex-row items-center mb-1">
-          <Ionicons name="location-outline" size={20} color="#000" className="mr-2" />
-          <Text className="text-base text-gray-700">{order.address}</Text>
-        </View>
-
-        <View className="flex-row items-center mb-3">
-          <Ionicons name="walk-outline" size={20} color="#000" className="mr-2" />
-          {isRouteLoading ? (
-            <Text className="text-base text-gray-700">Calulando ruta...</Text>
-          ) : routeData ? (
-            <Text className="text-base text-gray-700">
-              {routeData.duration} ({routeData.distance})
-            </Text>
-          ) : (
-            <Text className="text-base text-gray-700 ">No se pudo calcular la ruta</Text>
-          )}
-        </View>
-
-        <TouchableOpacity
-          className="bg-primary py-4 rounded-xl items-center"
-          onPress={() => router.push(`/dealer/delivery/${id}`)}
-        >
-          <Text className="text-white font-semibold text-base">Continuar con la entrega</Text>
-        </TouchableOpacity>
-      </View>
+      <OrderMap
+        mapRegion={mapRegion}
+        origin={location}
+        destination={{
+          latitude: parseFloat(orderLocation.latitud),
+          longitude: parseFloat(orderLocation.longitud)
+        }}
+      />
+      <OrderInfo
+        clientName={orderLocation.client_name}
+        clientAddress={orderLocation.client_address}
+        vehicleIcon={getVehicleIconName(orderLocation.dealer_vehicle)}
+        routeData={routeData}
+        isRouteLoading={isRouteLoading}
+        onContinue={() => router.push(`/dealer/delivery/${id}`)}
+      />
     </View>
   );
 }
 
-
-const style = StyleSheet.create({
-  map: {
-    width: '100%',
-    height: '100%',
-  },
-});
