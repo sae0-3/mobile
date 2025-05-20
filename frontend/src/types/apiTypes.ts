@@ -196,3 +196,28 @@ export interface LocationRequest {
 
 export type LocationResponse = ApiResponse<Location>;
 export type LocationsResponse = ApiResponse<Location[]>;
+
+export interface Order {
+  id: string;
+  client_id: string;
+  user_address_id: string;
+  delivery_id: string | null;
+  status: 'pending' | 'in_progress' | 'delivered' | 'cancelled';
+  created_at: string;
+  updated_at: string;
+  total: number;
+}
+
+export interface OrderDetailsInsert {
+  product_id: string;
+  quantity: number;
+  subtotal: number;
+}
+
+export interface OrderRequest {
+  total: number;
+  user_address_id: string;
+  items: OrderDetailsInsert[];
+}
+
+export type OrderResponse = ApiResponse<Order>;

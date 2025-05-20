@@ -1,17 +1,41 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal, Text, TouchableOpacity, View } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
+import { useCreateOrder } from '../hooks/useClientOrders';
+import { useCartStore } from '../stores/order';
 
 type ModalCartLocationsProps = {
   options: { value: string, label: string }[];
   visible: boolean;
-  onClose?: () => void;
+  onClose: () => void;
 };
 
 export const ModalCartLocations = (props: ModalCartLocationsProps) => {
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
+  const { mutate: createOrder, isPending, isSuccess } = useCreateOrder();
+  const { items: itemsCart, getTotal, getSubtotal, clearCart } = useCartStore();
+  const items = itemsCart.map(({ product, quantity }) => {
+    return {
+      product_id: product.id,
+      quantity,
+      subtotal: getSubtotal(product.id),
+    };
+  });
 
-  const handleConfirm = () => { };
+  useEffect(() => {
+    if (isSuccess) {
+      props.onClose();
+      clearCart();
+    }
+  }, [isSuccess, isPending, createOrder])
+
+  const handleConfirm = () => {
+    createOrder({
+      total: getTotal(),
+      user_address_id: String(selectedValue),
+      items,
+    });
+  };
 
   return (
     <Modal
@@ -46,7 +70,7 @@ export const ModalCartLocations = (props: ModalCartLocationsProps) => {
             <TouchableOpacity
               onPress={handleConfirm}
               className="px-4 py-2 rounded-lg border border-primary disabled:opacity-40"
-              disabled={!selectedValue}
+              disabled={!selectedValue || isPending}
             >
               <Text className="text-primary">Realizar Pedido</Text>
             </TouchableOpacity>
