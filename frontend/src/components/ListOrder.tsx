@@ -1,11 +1,13 @@
-import { Text, View } from 'react-native';
-import { OrderWithItems, Product } from '../types/apiTypes';
+import { useState } from 'react';
+import { Pressable, Text, View } from 'react-native';
+import { OrderWithItems } from '../types/apiTypes';
 import { CustomButton } from './CustomButton';
-import { Icon } from './Icon';
+import { ConfirmModal } from './ConfirmModal';
 
 export const ListOrder = ({ order }: { order: OrderWithItems }) => {
+  const [showModal, setShowModal] = useState(false);
   const orderDate = new Date(order.created_at);
-  const formattedDate = orderDate.toLocaleDateString()
+  const formattedDate = orderDate.toLocaleDateString();
   return (
     <View
       className="border-b border-b-gray-300 rounded flex-row justify-between py-3 items-center"
@@ -18,16 +20,23 @@ export const ListOrder = ({ order }: { order: OrderWithItems }) => {
           <Text>{order.total}</Text>
         </View>
       </View>
+      {showModal && (
+        <ConfirmModal
+          visible={showModal}
+          title="Cancelar pedido"
+          message="¿Estás seguro de que deseas cancelar este pedido?"
+          onConfirm={() => { setShowModal(false); }}
+          onCancel={() => setShowModal(false)}
+        />
+      )}
       <View className="flex-row gap-2">
         {order.status === "cancelled" &&
-          <CustomButton
-            onPress={() => { }}
-            iconRight={{
-              name: 'trash',
-              size: 30,
-            }}
-            className="p-2 bg-red-500"
-          />
+          <Pressable
+            className="bg-red-400 p-3 rounded-lg items-center"
+            onPress={() => setShowModal(true)}
+          >
+            <Text className="text-white font-medium">Cancelar</Text>
+          </Pressable>
         }
         <CustomButton
           onPress={() => { }}
