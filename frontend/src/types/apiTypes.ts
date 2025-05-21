@@ -208,6 +208,17 @@ export interface Order {
   total: number;
 }
 
+export interface OrderItem {
+  id: string;
+  quantity: number;
+  subtotal: number;
+  product: Product;
+}
+
+export interface OrderWithItems extends Order {
+  items: OrderItem[];
+}
+
 export interface OrderDetailsInsert {
   product_id: string;
   quantity: number;
@@ -221,3 +232,5 @@ export interface OrderRequest {
 }
 
 export type OrderResponse = ApiResponse<Order>;
+
+export type OrderWithItemsResponse = ApiResponse<OrderWithItems[]>;

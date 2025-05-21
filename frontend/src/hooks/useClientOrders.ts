@@ -1,8 +1,8 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { create } from '../services/clientOrders';
+import { create, getAll } from '../services/clientOrders';
 import { useAuth } from '../stores/auth';
-import { OrderRequest, OrderResponse } from '../types/apiTypes';
+import { OrderRequest, OrderWithItemsResponse, OrderResponse } from '../types/apiTypes';
 import { invalidateQueries } from '../utils/invalidateQueries';
 
 export const useCreateOrder = () => {
@@ -21,5 +21,14 @@ export const useCreateOrder = () => {
     onError: (error) => {
       console.error(error.response?.data.message);
     },
+  });
+};
+
+export const useGetAllOrders = () => {
+  const { token } = useAuth();
+
+  return useQuery<OrderWithItemsResponse, AxiosError>({
+    queryKey: ['orders', 'client'],
+    queryFn: () => getAll(token),
   });
 };
