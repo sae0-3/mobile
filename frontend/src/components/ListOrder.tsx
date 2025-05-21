@@ -10,7 +10,7 @@ export const ListOrder = ({ order }: { order: OrderWithItems }) => {
   const formattedDate = orderDate.toLocaleDateString();
   return (
     <View
-      className="border-b border-b-gray-300 rounded flex-row justify-between py-3 items-center"
+      className="border-b border-b-gray-300 rounded flex-row justify-between py-3 px-4 items-center"
     >
       <View className="gap-1">
         <Text className="font-bold">{formattedDate}</Text>
@@ -30,7 +30,7 @@ export const ListOrder = ({ order }: { order: OrderWithItems }) => {
         />
       )}
       <View className="flex-row gap-2">
-        {order.status === "cancelled" &&
+        {order.status === "pending" &&
           <Pressable
             className="bg-red-400 p-3 rounded-lg items-center"
             onPress={() => setShowModal(true)}
