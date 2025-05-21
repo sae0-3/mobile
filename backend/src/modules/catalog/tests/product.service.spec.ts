@@ -95,8 +95,33 @@ describe('ProductService', () => {
       const result = await service.create(validDto);
 
       expect(validateDto).toHaveBeenCalled();
-      expect(repository.create).toHaveBeenCalledWith(validDto);
+      expect(repository.create).toHaveBeenCalledWith({
+        ...validDto,
+        ingredients: null
+      });
       expect(result).toEqual(validProduct);
+    });
+
+    it('debería convertir ingredients a JSON string si está presente', async () => {
+      const dtoWithIngredients = {
+        ...validDto,
+        ingredients: ['ing1', 'ing2']
+      };
+      const expectedPrepared = {
+        ...dtoWithIngredients,
+        ingredients: '["ing1","ing2"]'
+      };
+      const productWithIngredients = {
+        ...validProduct,
+        ingredients: ['ing1', 'ing2']
+      };
+
+      repository.create.mockResolvedValue(productWithIngredients);
+
+      const result = await service.create(dtoWithIngredients);
+
+      expect(repository.create).toHaveBeenCalledWith(expectedPrepared);
+      expect(result).toEqual(productWithIngredients);
     });
 
     it('debería lanzar ValidationError si los datos son inválidos', async () => {
@@ -114,7 +139,10 @@ describe('ProductService', () => {
       repository.create.mockResolvedValue(null);
 
       await expect(service.create(validDto)).rejects.toThrow(AppError);
-      expect(repository.create).toHaveBeenCalledWith(validDto);
+      expect(repository.create).toHaveBeenCalledWith({
+        ...validDto,
+        ingredients: null
+      });
     });
   });
 
@@ -127,7 +155,10 @@ describe('ProductService', () => {
 
       const result = await service.update('1', updateData);
 
-      expect(repository.update).toHaveBeenCalledWith('1', updateData);
+      expect(repository.update).toHaveBeenCalledWith('1', {
+        ...updateData,
+        ingredients: null
+      });
       expect(result).toEqual(updatedProduct);
     });
 
@@ -137,7 +168,10 @@ describe('ProductService', () => {
       const updateData = { price: 899.99 };
 
       await expect(service.update('99', updateData)).rejects.toThrow(NotFoundError);
-      expect(repository.update).toHaveBeenCalledWith('99', updateData);
+      expect(repository.update).toHaveBeenCalledWith('99', {
+        ...updateData,
+        ingredients: null
+      });
     });
 
     it('debería lanzar ValidationError si los datos son inválidos', async () => {
@@ -151,13 +185,37 @@ describe('ProductService', () => {
       expect(repository.update).not.toHaveBeenCalled();
     });
 
+    it('debería transformar ingredients a JSON string si está presente', async () => {
+      const updateData = {
+        price: 899.99,
+        ingredients: ['nuevo', 'ingrediente']
+      };
+      const updatedProduct = {
+        ...validProduct,
+        price: 899.99,
+        ingredients: ['nuevo', 'ingrediente']
+      };
+
+      repository.update.mockResolvedValue(updatedProduct);
+
+      const result = await service.update('1', updateData);
+      expect(repository.update).toHaveBeenCalledWith('1', {
+        price: 899.99,
+        ingredients: '["nuevo","ingrediente"]'
+      });
+      expect(result).toEqual(updatedProduct);
+    });
+
     it('debería lanzar NotFoundError si el producto no existe', async () => {
       const updateData = { price: 899.99 };
 
       repository.update.mockResolvedValue(null);
 
       await expect(service.update('1', updateData)).rejects.toThrow(NotFoundError);
-      expect(repository.update).toHaveBeenCalledWith('1', updateData);
+      expect(repository.update).toHaveBeenCalledWith('1', {
+        ...updateData,
+        ingredients: null
+      });
     });
   });
 

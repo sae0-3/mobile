@@ -20,8 +20,9 @@ productRouter.put('/:id', requireRole(['admin']), productController.updateById);
 productRouter.delete('/:id', requireRole(['admin']), productController.deleteById);
 productRouter.get('/:id/categories', productController.getCategoriesById);
 
-productRouter.post('/:productId/categories/:categoryId', productCategoryController.add);
-productRouter.delete('/:productId/categories/:categoryId', productCategoryController.remove);
+productRouter.post('/:productId/categories', requireRole(['admin']), productCategoryController.addManyCategories);
+productRouter.post('/:productId/categories/:categoryId', requireRole(['admin']), productCategoryController.add);
+productRouter.delete('/:productId/categories/:categoryId', requireRole(['admin']), productCategoryController.remove);
 
 categoryRouter.get('/', categoryController.getAll);
 categoryRouter.post('/', requireRole(['admin']), categoryController.insert);

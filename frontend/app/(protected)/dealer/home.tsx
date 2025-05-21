@@ -1,19 +1,42 @@
-import { router } from 'expo-router';
-import { Button, Text, View } from 'react-native';
-import { useAuth } from '../../../src/stores/auth';
+import React from 'react';
+import { ActivityIndicator, FlatList, Text, View } from 'react-native';
+import { useGetAllOrders } from '../../../src/hooks/useDelivery';
+import { OrderCard } from '../../../src/components/OrderCard';
+import colors from '../../../src/theme/colors';
 
 export default function HomeScreen() {
-  const { logout } = useAuth();
+  const { data, isLoading, isError, error } = useGetAllOrders();
 
-  const handleLogout = () => {
-    logout();
-    router.replace('/login');
-  };
+  const orders = data?.data || [];
+
+  if (isLoading) {
+    return (
+      <View className="flex-1 justify-center items-center">
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
+    )
+  }
+
+  if (isError) {
+    return (
+      <View className="flex-1 justify-center items-center">
+        <Text className="text-black font-semibold">{error.message}</Text>
+      </View>
+    )
+  }
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Bienvenido Delivery</Text>
-      <Button title="Cerrar sesión" onPress={handleLogout} />
+    <View className="flex-1 bg-white">
+      <FlatList
+        data={orders}
+        keyExtractor={o => o.order_id}
+        contentContainerStyle={{ padding: 16 }}
+        renderItem={({ item }) => (
+          <OrderCard
+            order={item}
+          />
+        )}
+      />
     </View>
   );
 }

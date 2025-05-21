@@ -20,5 +20,4 @@ const SvgComponent = (props: SvgProps) => (
   </Svg>
 )
 const RescueMemo = memo(SvgComponent)
-export default RescueMemo
-
+export { RescueMemo as Rescue }

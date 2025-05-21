@@ -7,7 +7,8 @@ export class ProductRepository extends BaseRepository {
     const sql = `
       SELECT * FROM products
       WHERE ${isClient ? 'visible = true' : 'TRUE'}
-      ORDER BY display_order`;
+      ORDER BY display_order DESC
+    `;
     return await this.query<Product>(sql);
   }
 
@@ -15,18 +16,30 @@ export class ProductRepository extends BaseRepository {
     const sql = `
       SELECT * FROM products
       WHERE id = $1
-        AND ${isClient ? 'visible = true' : 'TRUE'}`;
+        AND ${isClient ? 'visible = true' : 'TRUE'}
+    `;
     return await this.queryOne<Product>(sql, [id]);
   }
 
-  async findCategoriesByProductId(id: string, isClient = false): Promise<Category[]> {
+  async findCategoriesByProductId(id: string, isClient = false, linked = true): Promise<Category[]> {
+    const condition = linked ? `
+      INNER JOIN product_categories pc ON c.id = pc.category_id
+      WHERE pc.product_id = $1
+      ` : `
+      WHERE NOT EXISTS (
+        SELECT 1
+        FROM product_categories pc
+        WHERE pc.category_id = c.id
+          AND pc.product_id = $1
+      )
+      `;
     const sql = `
       SELECT c.*
       FROM categories c
-      INNER JOIN product_categories pc ON c.id = pc.category_id
-      WHERE pc.product_id = $1
-        AND ${isClient ? 'c.visible = true' : 'TRUE'}
-      ORDER BY c.display_order`;
+      ${condition}
+      AND ${isClient ? 'c.visible = true' : 'TRUE'}
+      ORDER BY c.display_order DESC
+    `;
     return await this.query<Category>(sql, [id]);
   }
 
