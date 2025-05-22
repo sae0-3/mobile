@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Modal, View, Text, TouchableOpacity, Dimensions, Alert } from 'react-native';
-import MapView, { Marker, MapPressEvent } from 'react-native-maps';
-import * as Location from 'expo-location';
-import { Coordinates } from '../types/apiTypes';
+import React from 'react';
+import { Modal, View, Text, TouchableOpacity } from 'react-native';
+import MapView, { MapPressEvent, Marker } from 'react-native-maps';
 import { useCreateLocation } from '../hooks/useLocations';
+import { Icon } from './Icon';
+import { useAddLocation } from '../hooks/useAddLocation';
 
 interface Props {
   visible: boolean;
@@ -11,55 +11,8 @@ interface Props {
 }
 
 export const AddLocationModal = ({ visible, onClose }: Props) => {
-  const [marker, setMarker] = useState<Coordinates | null>(null);
-  const [address, setAddress] = useState<string>('');
+  const { marker, address, region, reset, handleMapPress, handleUseMyLocation } = useAddLocation(visible);
   const { mutate: createLocation, isPending } = useCreateLocation();
-  const [region, setRegion] = useState({
-    latitude: -17.383880385620692,
-    longitude: -66.15733392851239,
-    latitudeDelta: 0.01,
-    longitudeDelta: 0.01,
-  });
-
-  useEffect(() => {
-    if (visible) {
-      (async () => {
-        const { status } = await Location.requestForegroundPermissionsAsync();
-        if (status === 'granted') {
-          const location = await Location.getCurrentPositionAsync({});
-          const coords = {
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-          }
-          setMarker(coords);
-          setRegion({ ...coords, latitudeDelta: 0.01, longitudeDelta: 0.01 });
-          const [place] = await Location.reverseGeocodeAsync(coords);
-          if (place) {
-            setAddress(place.formattedAddress || '')
-          }
-        } else {
-          Alert.alert(
-            'Permiso denegado',
-            'Selecciona tu ubicación manualmente en el mapa.'
-          );
-        }
-      })();
-    } else {
-      setMarker(null);
-      setAddress('');
-    }
-  }, [visible]);
-
-  const handleMapPress = async (event: MapPressEvent) => {
-    const { latitude, longitude } = event.nativeEvent.coordinate;
-    setMarker({ latitude, longitude });
-
-    const [place] = await Location.reverseGeocodeAsync({ latitude, longitude });
-    if (place) {
-      setAddress(place.formattedAddress || '');
-    }
-  };
-
   const handleSave = () => {
     if (marker && address) {
       createLocation({
@@ -68,14 +21,12 @@ export const AddLocationModal = ({ visible, onClose }: Props) => {
         address
       }, {
         onSuccess: () => {
-          setMarker(null);
-          setAddress('');
+          reset();
           onClose();
         }
       });
     }
   };
-
   return (
     <Modal
       transparent
@@ -86,16 +37,24 @@ export const AddLocationModal = ({ visible, onClose }: Props) => {
       <View className="flex-1 justify-center items-center bg-black/50 px-4">
         <View className="bg-white rounded-2xl w-full max-h-[90%] p-4">
           <Text className="text-lg font-semibold mb-2">Selecciona una ubicación</Text>
+          <View>
+            <MapView
+              className="rounded-xl overflow-hidden mb-3"
+              style={{ width: '100%', height: 300 }}
+              initialRegion={region}
+              zoomEnabled
+              onPress={(event: MapPressEvent) => handleMapPress(event.nativeEvent.coordinate)}
+            >
+              {marker && <Marker coordinate={marker} />}
+            </MapView>
 
-          <MapView
-            className="rounded-xl overflow-hidden mb-3"
-            style={{ width: '100%', height: 300 }}
-            initialRegion={region}
-            zoomEnabled
-            onPress={handleMapPress}
-          >
-            {marker && <Marker coordinate={marker} />}
-          </MapView>
+            <TouchableOpacity
+              onPress={handleUseMyLocation}
+              className="absolute bottom-4 right-4 bg-primary rounded-full p-3 shadow-lg"
+            >
+              <Icon name="locate" type="Ionicons" size={24} color="fff" />
+            </TouchableOpacity>
+          </View>
 
           {marker && (
             <View className="p-3">
