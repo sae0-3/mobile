@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Modal, View, Text, TouchableOpacity, Dimensions } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Modal, View, Text, TouchableOpacity, Dimensions, Alert } from 'react-native';
 import MapView, { Marker, MapPressEvent } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { Coordinates } from '../types/apiTypes';
@@ -14,6 +14,41 @@ export const AddLocationModal = ({ visible, onClose }: Props) => {
   const [marker, setMarker] = useState<Coordinates | null>(null);
   const [address, setAddress] = useState<string>('');
   const { mutate: createLocation, isPending } = useCreateLocation();
+  const [region, setRegion] = useState({
+    latitude: -17.383880385620692,
+    longitude: -66.15733392851239,
+    latitudeDelta: 0.01,
+    longitudeDelta: 0.01,
+  });
+
+  useEffect(() => {
+    if (visible) {
+      (async () => {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status === 'granted') {
+          const location = await Location.getCurrentPositionAsync({});
+          const coords = {
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+          }
+          setMarker(coords);
+          setRegion({ ...coords, latitudeDelta: 0.01, longitudeDelta: 0.01 });
+          const [place] = await Location.reverseGeocodeAsync(coords);
+          if (place) {
+            setAddress(place.formattedAddress || '')
+          }
+        } else {
+          Alert.alert(
+            'Permiso denegado',
+            'Selecciona tu ubicación manualmente en el mapa.'
+          );
+        }
+      })();
+    } else {
+      setMarker(null);
+      setAddress('');
+    }
+  }, [visible]);
 
   const handleMapPress = async (event: MapPressEvent) => {
     const { latitude, longitude } = event.nativeEvent.coordinate;
@@ -21,7 +56,7 @@ export const AddLocationModal = ({ visible, onClose }: Props) => {
 
     const [place] = await Location.reverseGeocodeAsync({ latitude, longitude });
     if (place) {
-      setAddress(`${place.formattedAddress}`);
+      setAddress(place.formattedAddress || '');
     }
   };
 
@@ -55,12 +90,7 @@ export const AddLocationModal = ({ visible, onClose }: Props) => {
           <MapView
             className="rounded-xl overflow-hidden mb-3"
             style={{ width: '100%', height: 300 }}
-            initialRegion={{
-              latitude: -17.383880385620692,
-              longitude: -66.15733392851239,
-              latitudeDelta: 0.01,
-              longitudeDelta: 0.01,
-            }}
+            initialRegion={region}
             zoomEnabled
             onPress={handleMapPress}
           >
