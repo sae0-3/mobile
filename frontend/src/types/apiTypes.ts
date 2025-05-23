@@ -190,8 +190,8 @@ export interface Location {
 
 export interface LocationRequest {
   address: string;
-  latitud: string;
-  longitud: string;
+  latitud: number;
+  longitud: number;
 }
 
 export type LocationResponse = ApiResponse<Location>;

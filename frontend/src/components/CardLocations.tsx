@@ -2,12 +2,13 @@ import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 import { useDeleteLocation, useGetAllLocations } from '../hooks/useLocations';
 import colors from '../theme/colors';
 import { Icon } from './Icon';
+import { useState } from 'react';
+import { AddLocationModal } from './AddLocationModal'
 
 export const CardLocations = () => {
+  const [showModal, setShowModal] = useState(false);
   const { data, isLoading } = useGetAllLocations();
   const { mutate: remove, isPending } = useDeleteLocation();
-
-  const handleAddLocation = () => { };
 
   if (isLoading) {
     return (
@@ -66,11 +67,13 @@ export const CardLocations = () => {
 
       <TouchableOpacity
         className="flex-row gap-1 justify-center items-center border border-primary rounded-lg p-2"
-        onPress={handleAddLocation}
+        onPress={() => setShowModal(true)}
       >
         <Text className="text-primary">Agregar Nueva Ubicación</Text>
         <Icon name="plus"></Icon>
       </TouchableOpacity>
+
+      <AddLocationModal visible={showModal} onClose={() => setShowModal(false)} />
     </View>
   );
 };
