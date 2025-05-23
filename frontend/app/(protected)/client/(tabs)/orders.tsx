@@ -2,13 +2,18 @@ import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
 import { Expandable } from '../../../../src/components/Expandable';
 import { ListOrder } from '../../../../src/components/ListOrder';
 import { useGetAllOrders } from '../../../../src/hooks/useClientOrders';
+import colors from '../../../../src/theme/colors';
 
 export default function OrdersScreen() {
   const { data, isError, isLoading, error } = useGetAllOrders();
   const pedidos = data?.data || [];
 
   if (isLoading) {
-    return <ActivityIndicator size="large" />;
+    return (
+      <View className="flex-1 justify-center items-center">
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
+    );
   }
 
   if (isError) {
