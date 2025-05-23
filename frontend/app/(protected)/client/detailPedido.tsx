@@ -3,10 +3,25 @@ import { View, Text, Image, ScrollView } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { useGetByIdOrder } from '../../../src/hooks/useClientOrders';
 
+const statusIcons: Record<string, string> = {
+  pending: 'https://cdn-icons-png.flaticon.com/128/16265/16265301.png',
+  in_progress: 'https://cdn-icons-png.flaticon.com/128/9561/9561688.png',
+  delivered: 'https://cdn-icons-png.flaticon.com/128/7708/7708151.png',
+};
+
+const statusLabels: Record<string, string> = {
+  pending: 'Pendiente',
+  in_progress: 'En camino',
+  delivered: 'Entregado',
+};
+
 export default function DetailPedido() {
   const { orderId } = useLocalSearchParams();
   const { data, isLoading, error } = useGetByIdOrder(String(orderId));
   const order = data?.data;
+  const status = order?.status || 'pending';
+  const statusIcon = statusIcons[status] || statusIcons['pending'];
+  const statusLabel = statusLabels[status] || 'Pendiente';
 
   if (isLoading) return <Text className="text-center mt-4">Cargando...</Text>;
   if (error) return <Text className="text-center mt-4 text-red-500">Error al cargar el pedido</Text>;
@@ -22,13 +37,13 @@ export default function DetailPedido() {
         {/* Estado del pedido */}
         <View className="flex-row items-center p-3 bg-gray-50 rounded-xl shadow-sm">
           <Image
-            source={{ uri: 'https://cdn-icons-png.flaticon.com/512/190/190411.png' }}
+            source={{ uri: statusIcon }}
             className="w-10 h-10 mr-4"
           />
           <View>
             <Text className="text-sm text-gray-500">Estado</Text>
             <Text className="text-base font-semibold text-gray-800">
-              {order?.status || 'Procesando'}
+              {statusLabel}
             </Text>
           </View>
         </View>
@@ -58,14 +73,6 @@ export default function DetailPedido() {
           </Text>
         </View>
       ))}
-
-
-      {/* Detalle de entrega */}
-      <Text className="text-lg font-semibold mt-6 mb-2">Detalle de entrega</Text>
-      <View className="flex-row items-center">
-        <Image className="w-8 h-8 mr-3" />
-        <Text className="text-base font-medium">Delivery</Text>
-      </View>
     </ScrollView>
   );
 }
