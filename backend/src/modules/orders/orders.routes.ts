@@ -13,8 +13,10 @@ const {
 router.use(authenticateJwt);
 
 dealerOrderRouter.get('/', dealerOrderController.getAllAvailableOrders);
+dealerOrderRouter.get('/history', requireRole(['dealer']), dealerOrderController.getHistory);
+dealerOrderRouter.get('/history/:orderId', requireRole(['dealer']), dealerOrderController.getOrderFromHistoryById);
 dealerOrderRouter.patch('/:orderId/accept', requireRole(['dealer']), dealerOrderController.accepOrder);
-dealerOrderRouter.get('/:orderId/location', dealerOrderController.getOrderLocationInfo)
+dealerOrderRouter.get('/:orderId/location', dealerOrderController.getOrderLocationInfo);
 dealerOrderRouter.get('/:orderId', dealerOrderController.getOrderDetails);
 dealerOrderRouter.patch('/:orderId', requireRole(['dealer']), dealerOrderController.markOrderAsDelivered);
 

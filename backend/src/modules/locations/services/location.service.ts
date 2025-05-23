@@ -2,6 +2,7 @@ import { validateDto } from '../../../core/common/validation';
 import { AppError, NotFoundError, ValidationError } from '../../../core/errors/app.error';
 import { LocationInsertDto, LocationInsertSchema } from '../dtos/location.dto';
 import { LocationRepository } from '../repositories/location.repository';
+import { Location } from '../types/location.type';
 
 export class LocationService {
   constructor(

@@ -1,5 +1,5 @@
 import { validateDto } from '../../../core/common/validation';
-import { AppError } from '../../../core/errors/app.error';
+import { AppError, NotFoundError } from '../../../core/errors/app.error';
 import { ProductService } from '../../catalog/services/product.service';
 import { OrderDetailsInsertDto, OrderDetailsInsertSchema } from '../dtos/client-order.dto';
 import { OrderDetailsRepository } from '../repositories/order-details.repository';
@@ -59,5 +59,16 @@ export class OrderDetailsService {
     }
 
     return created;
+  }
+
+  async getDetailsByOrderId(order_id: string): Promise<OrderDetails[]> {
+    if (!order_id) {
+      throw new NotFoundError({
+        publicMessage: 'No se encontro el pedido',
+      });
+    }
+
+    const details = await this.orderDetailsRepository.findAll(order_id);
+    return details;
   }
 }

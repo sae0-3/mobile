@@ -1,5 +1,5 @@
 import { BaseRepository } from '../../../core/common/base.repository';
-import { LocationInsert } from '../types/location.type';
+import { Location, LocationInsert } from '../types/location.type';
 
 export class LocationRepository extends BaseRepository {
   async findAll(user_id: string): Promise<Location[]> {

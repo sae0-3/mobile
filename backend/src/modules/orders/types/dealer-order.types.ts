@@ -1,3 +1,5 @@
+import { OrderWithDetails as OWD } from './order.type';
+
 export interface Order {
   id: string;
   client_id: string;
@@ -27,7 +29,6 @@ export interface OrderLocationInfo {
   delaer_vehicle: 'motorcycle' | 'bicycle' | 'car';
 }
 
-
 export interface OrderDetailRow {
   order_id: string;
   total: number;
@@ -54,3 +55,9 @@ export interface OrderDelivery {
   id: string,
   delivery_id: string;
 }
+
+export type OrderWithDetails = Omit<OWD, 'dealer'>;
+
+export type OrderHistory = Omit<OrderWithDetails, 'items' | 'client'> & {
+  items: number;
+};
