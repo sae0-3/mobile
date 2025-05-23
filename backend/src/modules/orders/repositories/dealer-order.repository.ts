@@ -15,6 +15,7 @@ export class DealerOrderRepository extends BaseRepository {
       JOIN clients c ON o.client_id = c.user_id
       JOIN user_address ua ON o.user_address_id = ua.id
       WHERE o.status = 'pending' AND o.delivery_id IS NULL
+      ORDER BY created_at DESC
     `;
     return await this.query<AvailableOrder>(sql);
   }
@@ -99,6 +100,7 @@ export class DealerOrderRepository extends BaseRepository {
     const sql = `
       SELECT * FROM orders
       WHERE delivery_id = $1
+      ORDER BY created_at DESC
     `;
 
     return await this.query<Order>(sql, [dealer_id]);
