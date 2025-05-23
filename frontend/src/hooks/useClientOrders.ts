@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { create, getAll } from '../services/clientOrders';
 import { useAuth } from '../stores/auth';
-import { OrderRequest, OrderWithItemsResponse, OrderResponse, OrderWithItemResponse} from '../types/apiTypes';
+import { OrderRequest, OrderWithItemsResponse, OrderResponse, OrderWithItemResponse } from '../types/apiTypes';
 import { invalidateQueries } from '../utils/invalidateQueries';
 import { getById } from '../services/clientOrders';
 
@@ -11,6 +11,7 @@ export const useCreateOrder = () => {
   const queriesToInvalidate = [
     ['orders-available'],
     ['delivery-orders'],
+    ['orders', 'client'],
   ];
 
   return useMutation<OrderResponse, AxiosError<OrderResponse>, OrderRequest>({
@@ -36,8 +37,9 @@ export const useGetAllOrders = () => {
 
 export const useGetByIdOrder = (id: string) => {
   const { token } = useAuth();
+
   return useQuery<OrderWithItemResponse, AxiosError>({
     queryKey: ['orders', id],
-    queryFn: () => getById(id,token),
+    queryFn: () => getById(id, token),
   });
 };

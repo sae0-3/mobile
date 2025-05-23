@@ -37,7 +37,7 @@ export const ListOrder = ({ order }: { order: OrderWithItems }) => {
       <View className="flex-row gap-2">
         {order.status === "pending" &&
           <Pressable
-            className="bg-red-400 p-3 rounded-lg items-center"
+            className="bg-red-400 p-3 rounded-md items-center justify-center"
             onPress={() => setShowModal(true)}
           >
             <Text className="text-white font-medium">Cancelar</Text>
