@@ -27,6 +27,10 @@ export const clientOrdersEndpoints = {
   index: '/orders/client',
 };
 
+export const clientOrderEndpoints = {
+  index: (id: string) => `/orders/client/${id}`,
+};
+
 export const clientEndpoints = {
   index: '/users/clients',
 };

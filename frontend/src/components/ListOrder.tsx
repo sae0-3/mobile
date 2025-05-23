@@ -1,13 +1,16 @@
+import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
 import { OrderWithItems } from '../types/apiTypes';
-import { CustomButton } from './CustomButton';
 import { ConfirmModal } from './ConfirmModal';
+import { CustomButton } from './CustomButton';
 
 export const ListOrder = ({ order }: { order: OrderWithItems }) => {
   const [showModal, setShowModal] = useState(false);
   const orderDate = new Date(order.created_at);
   const formattedDate = orderDate.toLocaleDateString();
+  const router = useRouter();
+
   return (
     <View
       className="border-b border-b-gray-300 rounded flex-row justify-between py-3 px-4 items-center"
@@ -20,6 +23,7 @@ export const ListOrder = ({ order }: { order: OrderWithItems }) => {
           <Text>{order.total}</Text>
         </View>
       </View>
+
       {showModal && (
         <ConfirmModal
           visible={showModal}
@@ -29,17 +33,26 @@ export const ListOrder = ({ order }: { order: OrderWithItems }) => {
           onCancel={() => setShowModal(false)}
         />
       )}
+
       <View className="flex-row gap-2">
         {order.status === "pending" &&
           <Pressable
-            className="bg-red-400 p-3 rounded-lg items-center"
+            className="bg-red-400 p-3 rounded-md items-center justify-center"
             onPress={() => setShowModal(true)}
           >
             <Text className="text-white font-medium">Cancelar</Text>
           </Pressable>
         }
+
         <CustomButton
-          onPress={() => { }}
+          onPress={() => {
+            {
+              router.push({
+                pathname: '/client/orderDetails',
+                params: { orderId: order.id }
+              });
+            }
+          }}
           iconRight={{
             name: 'eye',
             size: 30,

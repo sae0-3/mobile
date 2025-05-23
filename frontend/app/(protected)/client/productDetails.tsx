@@ -1,11 +1,11 @@
 import { useLocalSearchParams } from 'expo-router';
 import { ActivityIndicator, Image, ScrollView, Text, View } from 'react-native';
 import { AddToCart } from '../../../src/components/AddToCart';
+import { Icon } from '../../../src/components/Icon';
 import { useGetByIdProduct } from '../../../src/hooks/useProduct';
 import colors from '../../../src/theme/colors';
-import { Icon } from '../../../src/components/Icon';
 
-export default function DetailScreen() {
+export default function ProductDetailsScreen() {
   const { productId } = useLocalSearchParams();
   const { data, isLoading } = useGetByIdProduct(String(productId));
 
