@@ -1,5 +1,5 @@
 import axiosInstance from '../api/axios';
-import { clientOrdersEndpoints } from '../api/endpoints';
+import { clientOrderEndpoints, clientOrdersEndpoints } from '../api/endpoints';
 import { OrderRequest, OrderWithItemsResponse, OrderResponse } from '../types/apiTypes';
 
 export const create = async (body: OrderRequest, token: string | null): Promise<OrderResponse> => {
@@ -14,6 +14,16 @@ export const create = async (body: OrderRequest, token: string | null): Promise<
 
 export const getAll = async (token: string | null): Promise<OrderWithItemsResponse> => {
   const response = await axiosInstance.get<OrderWithItemsResponse>(clientOrdersEndpoints.index, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  return response.data;
+};
+
+export const getById = async (id: string,token: string | null): Promise<OrderResponse> => {
+  const response = await axiosInstance.get<OrderResponse>(clientOrderEndpoints.index(id), {
     headers: {
       Authorization: `Bearer ${token}`
     }
