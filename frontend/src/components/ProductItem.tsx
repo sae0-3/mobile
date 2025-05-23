@@ -1,12 +1,13 @@
-import React from 'react';
 import { View, Text, Image } from 'react-native';
-interface prop{
-    imagen: string,
-    name: string,
-    price: number,
-    cantidad: number
+
+interface ProductItemProps {
+  imagen: string;
+  name: string;
+  price: number;
+  cantidad: number;
 }
-const ProductItem = ({imagen,name,price,cantidad}:prop) => (
+
+export const ProductItem = ({ imagen, name, price, cantidad }: ProductItemProps) => (
   <View className="flex-row items-center justify-between p-4 mb-4 bg-white rounded-2xl shadow-md">
     <Image
       source={{ uri: imagen }}
@@ -19,5 +20,3 @@ const ProductItem = ({imagen,name,price,cantidad}:prop) => (
     <Text className="text-base font-bold text-gray-800">x {cantidad}</Text>
   </View>
 );
-
-export default ProductItem;

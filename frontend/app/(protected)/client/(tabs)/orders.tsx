@@ -1,7 +1,7 @@
-import { Text, View, ActivityIndicator, ScrollView } from 'react-native';
+import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
+import { Expandable } from '../../../../src/components/Expandable';
 import { ListOrder } from '../../../../src/components/ListOrder';
 import { useGetAllOrders } from '../../../../src/hooks/useClientOrders';
-import { Expandable } from '../../../../src/components/Expandable'; // Asegúrate que la ruta sea correcta
 
 export default function OrdersScreen() {
   const { data, isError, isLoading, error } = useGetAllOrders();
