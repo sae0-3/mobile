@@ -1,30 +1,33 @@
-import React from 'react';
-import { View, Text, Image } from 'react-native';
+import { Text, View } from 'react-native';
+import { Icon } from './Icon';
 
 interface StatusBadgeProps {
   status: string;
 }
-const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
+
+export const StatusBadge = ({ status }: StatusBadgeProps) => {
   const statusIcons: Record<string, string> = {
-    pending: 'https://cdn-icons-png.flaticon.com/128/16265/16265301.png',
-    in_progress: 'https://cdn-icons-png.flaticon.com/128/9561/9561688.png',
-    delivered: 'https://cdn-icons-png.flaticon.com/128/7708/7708151.png',
+    pending: 'hourglass-start',
+    in_progress: 'truck-fast',
+    delivered: 'list-check',
+    cancelled: 'circle-xmark'
   };
+
   const statusLabels: Record<string, string> = {
     pending: 'Pendiente',
     in_progress: 'En camino',
     delivered: 'Entregado',
+    cancelled: 'Cancelado'
   };
-  const statusIcon = statusIcons[status] || statusIcons['pending'];
-  const statusLabel = statusLabels[status] || 'Pendiente';
+
   return (
-    <View className="flex-row items-center p-3 bg-gray-50 rounded-xl shadow-sm">
-      <Image source={{ uri: statusIcon }} className="w-10 h-10 mr-4" />
+    <View className="flex-row items-center p-3 bg-white rounded-lg shadow-sm gap-4 justify-end">
+      <Icon name={statusIcons[status]} type="FontAwesome6" size={30} />
+
       <View>
         <Text className="text-sm text-gray-500">Estado</Text>
-        <Text className="text-base font-semibold text-gray-800">{statusLabel}</Text>
+        <Text className="font-semibold text-gray-800">{statusLabels[status]}</Text>
       </View>
     </View>
   );
 };
-export default StatusBadge;

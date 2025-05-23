@@ -28,7 +28,7 @@ export default function OrdersScreen() {
   ];
 
   return (
-    <ScrollView className="flex-1 bg-white px-4 py-2">
+    <ScrollView className="flex-1 px-4 py-2">
       {SECTIONS.map(({ title, key }) => {
         const filtered = pedidos.filter((p) => p.status === key);
 
