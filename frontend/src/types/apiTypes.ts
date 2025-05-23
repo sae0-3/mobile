@@ -232,5 +232,5 @@ export interface OrderRequest {
 }
 
 export type OrderResponse = ApiResponse<Order>;
-
 export type OrderWithItemsResponse = ApiResponse<OrderWithItems[]>;
+export type OrderWithItemResponse = ApiResponse<OrderWithItems>; 
