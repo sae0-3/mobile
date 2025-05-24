@@ -28,6 +28,7 @@ export class ClientOrderRepository extends BaseRepository {
   async cancelById(order_id: string): Promise<Order | null> {
     return await this.updateById<Order>('orders', order_id, {
       status: 'cancelled',
+      updated_at: 'now()',
     });
   }
 }

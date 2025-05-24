@@ -20,6 +20,7 @@ export class AdminOrderRepository extends BaseRepository {
   async cancelById(id: string): Promise<Order | null> {
     return await this.updateById<Order>('orders', id, {
       status: 'cancelled',
+      updated_at: 'now()',
     });
   }
 }
