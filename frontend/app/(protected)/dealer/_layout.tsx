@@ -1,5 +1,4 @@
 import { Stack } from 'expo-router';
-import { LogoutButton } from '../../../src/components/LogoutButton';
 import colors from '../../../src/theme/colors';
 
 export default function DealerLayout() {
@@ -10,11 +9,8 @@ export default function DealerLayout() {
       }}
     >
       <Stack.Screen
-        name="home"
-        options={{
-          title: 'Pedidos disponibles',
-          headerRight: () => <LogoutButton />,
-        }}
+        name="(tabs)"
+        options={{ headerShown: false }}
       />
 
       <Stack.Screen

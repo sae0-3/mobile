@@ -1,8 +1,7 @@
-import React from 'react';
 import { ActivityIndicator, FlatList, Text, View } from 'react-native';
-import { useGetAllOrders } from '../../../src/hooks/useDelivery';
-import { OrderCard } from '../../../src/components/OrderCard';
-import colors from '../../../src/theme/colors';
+import { OrderCard } from '../../../../src/components/OrderCard';
+import { useGetAllOrders } from '../../../../src/hooks/useDelivery';
+import colors from '../../../../src/theme/colors';
 
 export default function HomeScreen() {
   const { data, isLoading, isError, error } = useGetAllOrders();
