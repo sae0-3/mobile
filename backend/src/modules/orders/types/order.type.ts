@@ -43,5 +43,5 @@ export type OrderWithDetails = Omit<Order, 'client_id' | 'user_address_id' | 'de
   items: OrderDetailsWithProduct[];
   client: Omit<Client, 'created_at' | 'updated_at'>;
   location: Omit<Location, 'id' | 'user_id' | 'created_at'>;
-  dealer: Omit<Dealer, 'created_at' | 'updated_at'>;
+  dealer: Omit<Dealer, 'created_at' | 'updated_at'> | null;
 };
