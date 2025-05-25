@@ -1,6 +1,6 @@
 import axiosInstance from "../api/axios";
 import { deliveryEndpoints } from "../api/endpoints";
-import { DeliveryResponse, OrderDeliveryDetailResponse, OrderHistoryDealerResponse, OrderLocationResponse, UpdatedOrderResponse } from "../types/apiTypes";
+import { DeliveryResponse, OrderDeliveryDetailResponse, OrdersHistoryDealerResponse, OrderLocationResponse, UpdatedOrderResponse } from "../types/apiTypes";
 
 export const getAll = async (token: string | null): Promise<DeliveryResponse> => {
   const response = await axiosInstance.get<DeliveryResponse>(deliveryEndpoints.index, {
@@ -48,7 +48,7 @@ export const confirmDelivery = async (orderId: string, token: string | null): Pr
 }
 
 export const getHistory = async (token: string | null) => {
-  const response = await axiosInstance.get<OrderHistoryDealerResponse>(`${deliveryEndpoints.index}/history`, {
+  const response = await axiosInstance.get<OrdersHistoryDealerResponse>(`${deliveryEndpoints.index}/history`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
