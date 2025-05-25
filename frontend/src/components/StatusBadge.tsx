@@ -21,7 +21,7 @@ export const StatusBadge = ({ status }: StatusBadgeProps) => {
   };
 
   return (
-    <View className="flex-row items-center p-3 bg-white rounded-lg shadow-sm gap-4 justify-end">
+    <View className="flex-row items-center rounded-lg gap-2">
       <Icon name={statusIcons[status]} type="FontAwesome6" size={30} />
 
       <View>

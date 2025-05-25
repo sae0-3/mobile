@@ -1,3 +1,5 @@
+import { OrderHistoryDealer, OrderWithDetailsDealer } from './api/orders.types';
+
 export interface ApiResponse<T> {
   success: boolean;
   statusCode: number;
@@ -233,4 +235,7 @@ export interface OrderRequest {
 
 export type OrderResponse = ApiResponse<Order>;
 export type OrderWithItemsResponse = ApiResponse<OrderWithItems[]>;
-export type OrderWithItemResponse = ApiResponse<OrderWithItems>; 
+export type OrderWithItemResponse = ApiResponse<OrderWithItems>;
+
+export type OrderWithDetailsDealerResponse = ApiResponse<OrderWithDetailsDealer>;
+export type OrdersHistoryDealerResponse = ApiResponse<OrderHistoryDealer[]>;
