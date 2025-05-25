@@ -1,7 +1,6 @@
-import { Product } from '../../catalog/types/product.type';
-import { Location } from '../../locations/types/location.type';
-import { Client } from '../../users/types/client.type';
-import { Dealer } from '../../users/types/dealer.type';
+import { Location } from '../apiTypes';
+import { Product } from './catalog.types';
+import { Client, Dealer } from './users.types';
 
 export interface Order {
   id: string;
@@ -44,4 +43,9 @@ export type OrderWithDetails = Omit<Order, 'client_id' | 'user_address_id' | 'de
   client: Omit<Client, 'created_at' | 'updated_at'>;
   location: Omit<Location, 'id' | 'user_id' | 'created_at'>;
   dealer: Omit<Dealer, 'created_at' | 'updated_at'> | null;
+};
+
+export type OrderWithDetailsDealer = Omit<OrderWithDetails, 'dealer'>;
+export type OrderHistoryDealer = Omit<OrderWithDetailsDealer, 'items' | 'client'> & {
+  items: number;
 };

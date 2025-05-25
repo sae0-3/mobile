@@ -12,8 +12,9 @@ export default function AdminLayout() {
       <Stack.Screen
         name="home"
         options={{
-          title: 'Inicio',
+          title: 'Dashboard',
           headerRight: () => <LogoutButton />,
+          headerBackVisible: false,
         }}
       />
 
@@ -70,6 +71,13 @@ export default function AdminLayout() {
         name="dealers/add"
         options={{
           title: 'Agregar repartidor',
+        }}
+      />
+
+      <Stack.Screen
+        name="orders/index"
+        options={{
+          title: 'Lista de Pedidos',
         }}
       />
     </Stack>

@@ -31,7 +31,9 @@ export default function OrderDetailsScreen() {
   return (
     <ScrollView>
       <View className="w-11/12 mx-auto py-4 gap-6">
-        <StatusBadge status={order?.status || 'pending'} />
+        <View className="bg-white items-end p-3 rounded-lg">
+          <StatusBadge status={order?.status || 'pending'} />
+        </View>
 
         <View className="gap-3">
           {order?.items.map((item, index) => (

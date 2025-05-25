@@ -6,7 +6,7 @@ export class DealerRepository extends BaseRepository {
     const sql = `
       SELECT 
         u.id, u.email, u.created_at, u.updated_at,
-        d.vehicle
+        d.vehicle, d.name
       FROM dealers d
       JOIN users u ON u.id = d.user_id
     `;
@@ -17,7 +17,7 @@ export class DealerRepository extends BaseRepository {
     const sql = `
       SELECT 
         u.id, u.email, u.created_at, u.updated_at,
-        d.vehicle
+        d.vehicle, d.name
       FROM dealers d
       JOIN users u ON u.id = d.user_id
       WHERE u.id = $1

@@ -18,6 +18,11 @@ const tiles = [
     title: 'Repartidores',
     onPress: () => router.push('/admin/dealers'),
   },
+  {
+    icon: 'list',
+    title: 'Pedidos',
+    onPress: () => router.push('/admin/orders'),
+  },
   // {
   //   icon: 'archive',
   //   title: 'Sucursales',

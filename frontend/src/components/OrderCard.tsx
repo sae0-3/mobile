@@ -1,9 +1,9 @@
-import { View, Text, Alert } from 'react-native';
-import { Delivery } from '../types/apiTypes';
-import { Icon } from './Icon';
-import { CustomButton } from './CustomButton';
 import { useRouter } from 'expo-router';
+import { Alert, Text, View } from 'react-native';
 import { useAcceptOrder } from '../hooks/useDelivery';
+import { Delivery } from '../types/apiTypes';
+import { CustomButton } from './CustomButton';
+import { Icon } from './Icon';
 
 interface Props {
   order: Delivery;
@@ -22,9 +22,9 @@ export const OrderCard = ({ order }: Props) => {
       },
     })
   }
+
   return (
     <View className="bg-white rounded-2xl p-5 mb-4 shadow-md border border-gray-200">
-
       <View className="flex-row items-center mb-1">
         <Icon name="person" type="Ionicons" size={18} color="gray" />
         <Text className="ml-2 text-gray-800">{order.client_name}</Text>
@@ -48,5 +48,5 @@ export const OrderCard = ({ order }: Props) => {
         title="Aceptar pedido"
       />
     </View>
-  )
-}
+  );
+};
