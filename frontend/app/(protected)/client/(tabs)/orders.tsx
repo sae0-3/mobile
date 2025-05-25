@@ -3,10 +3,15 @@ import { Expandable } from '../../../../src/components/Expandable';
 import { ListOrder } from '../../../../src/components/ListOrder';
 import { useGetAllOrders } from '../../../../src/hooks/useClientOrders';
 import colors from '../../../../src/theme/colors';
+import { useState } from 'react';
+import { CustomButton } from '../../../../src/components/CustomButton';
+import { filterOrderByDate, FilterType } from '../../../../src/utils/orderFilter';
 
 export default function OrdersScreen() {
   const { data, isError, isLoading, error } = useGetAllOrders();
   const pedidos = data?.data || [];
+
+  const [selectFilter, setSelectFilter] = useState<FilterType>('Todos');
 
   if (isLoading) {
     return (
@@ -27,10 +32,26 @@ export default function OrdersScreen() {
     { title: 'Cancelados', key: 'cancelled' },
   ];
 
+  const OPTIONS: FilterType[] = [
+    'Todos', 'Hoy', 'Semana', 'Mes'
+  ]
+
   return (
-    <ScrollView className="flex-1 px-4 py-2">
+    <ScrollView className="flex-1 px-4 py-3">
+      <View className="flex-row justify-around mb-4 flex-wrap gap-2">
+        {OPTIONS.map((selected) => (
+          <CustomButton
+            key={selected}
+            title={selected}
+            onPress={() => setSelectFilter(selected)}
+            className="py-1 px-3"
+          />
+        ))}
+      </View>
+
       {SECTIONS.map(({ title, key }) => {
-        const filtered = pedidos.filter((p) => p.status === key);
+        const porEstado = pedidos.filter((p) => p.status === key);
+        const filtered = filterOrderByDate(porEstado, selectFilter);
 
         if (filtered.length === 0) return null;
 
