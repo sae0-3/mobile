@@ -13,7 +13,7 @@ export class AdminOrderService {
     private orderDetailsService: OrderDetailsService,
     private clientService: ClientService,
     private dealerService: DealerService,
-    private LocationService: LocationService,
+    private locationService: LocationService,
   ) { }
 
   async findAll(): Promise<OrderWithDetails[]> {
@@ -22,6 +22,7 @@ export class AdminOrderService {
     const ordersWithQuantity: OrderWithDetails[] = await Promise.all(
       orders.map(async (order) => {
         const items = await this.orderDetailsService.getDetailsByOrderId(order.id);
+        const location = await this.locationService.findById(order.user_address_id, order.client_id);
 
         return {
           id: order.id,
@@ -30,6 +31,11 @@ export class AdminOrderService {
           items: items.length,
           created_at: order.created_at,
           updated_at: order.updated_at,
+          location: {
+            address: location.address,
+            latitud: location.latitud,
+            longitud: location.longitud,
+          },
         };
       })
     );
@@ -47,7 +53,7 @@ export class AdminOrderService {
 
     const details = await this.orderDetailsService.getDetailsWithProduct(id);
     const client = await this.clientService.findById(order.client_id);
-    const location = await this.LocationService.findById(order.user_address_id, order.client_id);
+    const location = await this.locationService.findById(order.user_address_id, order.client_id);
 
     let dealer;
     if (order.delivery_id) {
