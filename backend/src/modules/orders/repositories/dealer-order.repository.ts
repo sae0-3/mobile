@@ -100,7 +100,7 @@ export class DealerOrderRepository extends BaseRepository {
     const sql = `
       SELECT * FROM orders
       WHERE delivery_id = $1
-      ORDER BY created_at DESC
+      ORDER BY updated_at DESC
     `;
 
     return await this.query<Order>(sql, [dealer_id]);
