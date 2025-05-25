@@ -30,7 +30,7 @@ export const OrderHistoryDealerItem = (props: OrderHistoryItemProps) => {
           </Text>
 
           <Text className="text-sm">
-            {new Date(order.created_at).toLocaleDateString('es-ES', { dateStyle: 'full' })}
+            {new Date(order.updated_at).toLocaleDateString('es-ES', { dateStyle: 'full' })}
           </Text>
         </View>
 

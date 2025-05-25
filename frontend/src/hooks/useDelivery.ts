@@ -14,9 +14,10 @@ export const useGetAllOrders = () => {
 }
 
 export const useAcceptOrder = () => {
-  const { token } = useAuth();
+  const { token, id } = useAuth();
   const queriesToInvalidate = [
-    ['delivery-orders']
+    ['delivery-orders'],
+    ['orders', 'history', id]
   ];
 
   return useMutation<UpdatedOrderResponse, AxiosError<UpdatedOrderResponse>, string>({
