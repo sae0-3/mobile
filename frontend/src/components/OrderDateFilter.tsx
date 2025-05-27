@@ -1,25 +1,32 @@
 import { View } from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
 import { FilterType } from '../hooks/useFilter';
-import { CustomButton } from './CustomButton';
 
 interface Props {
   selected: FilterType;
   onChange: (value: FilterType) => void;
 }
 
-const OPTIONS: FilterType[] = ['Todos', 'Hoy', 'Semana', 'Mes'];
+const OPTIONS: FilterType[] = ['Hoy', 'Semana', 'Mes', 'Todos'];
 
 export const OrderDateFilter = ({ selected, onChange }: Props) => {
   return (
-    <View className="flex-row justify-around flex-wrap gap-2">
-      {OPTIONS.map((option) => (
-        <CustomButton
-          key={option}
-          title={option}
-          onPress={() => onChange(option)}
-          className={`py-1 px-3 ${option === selected ? 'bg-primary text-white' : ''}`}
-        />
-      ))}
+    <View className="border-2 border-primary rounded-lg">
+      <RNPickerSelect
+        value={selected}
+        onValueChange={(value) => onChange(value)}
+        placeholder={{ label: 'Seleccionar filtro...', value: null, color: 'gray' }}
+        items={OPTIONS.map((option) => ({
+          label: option,
+          value: option,
+        }))}
+        style={{
+          inputIOS: {
+          },
+          inputAndroid: {
+          },
+        }}
+      />
     </View>
   );
-}
+};
