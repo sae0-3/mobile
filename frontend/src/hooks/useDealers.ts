@@ -3,8 +3,9 @@ import { AxiosError } from 'axios';
 import { registerDealer } from '../services/authService';
 import { getAll, remove } from '../services/dealerService';
 import { useAuth } from '../stores/auth';
-import { DealerRespose, DealersResponse, RegisterDealerRequest, RegisterDealerResponse } from '../types/apiTypes';
+import { DealerRespose, DealersDetailResponse, DealersResponse, RegisterDealerRequest, RegisterDealerResponse } from '../types/apiTypes';
 import { invalidateQueries } from '../utils/invalidateQueries';
+import { getById } from '../services/dealerService';
 
 export const useGetAllDealers = () => {
   const { token } = useAuth();
@@ -49,3 +50,10 @@ export const useDeleteDealer = (id: string) => {
     },
   });
 };
+export const useGetDealerOrder = (id:string)=>{
+  const { token } = useAuth();
+  return useQuery<DealersDetailResponse, AxiosError<DealersDetailResponse>>({
+    queryKey: ['orders', id],
+    queryFn: () => getById(id,token),
+  });
+}

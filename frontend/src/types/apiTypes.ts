@@ -41,6 +41,17 @@ export interface Dealer {
   created_at: string;
   updated_at: string;
 }
+export interface DealerDetail {
+  order_id: string;
+  total: number;
+  client_name: string;
+  client_phone: string;
+  products: {
+    name: string;
+    quantity: number;
+    subtotal: number;
+  }[];
+}
 
 export interface Client {
   id: string;
@@ -51,6 +62,7 @@ export interface Client {
   updated_at: string;
 }
 
+export type DealersDetailResponse = ApiResponse<DealerDetail>;
 export type DealerRespose = ApiResponse<Dealer>;
 export type DealersResponse = ApiResponse<Dealer[]>;
 

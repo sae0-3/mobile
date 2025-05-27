@@ -12,15 +12,6 @@ export const OrderHistoryDealerItem = (props: OrderHistoryItemProps) => {
   const router = useRouter();
   const { order } = props;
 
-  const handlePress = () => {
-    router.navigate({
-      pathname: '#',
-      params: {
-        orderId: order.id,
-      },
-    });
-  };
-
   return (
     <View className="w-full py-4 px-5 rounded-2xl bg-white shadow-md border border-gray-200 gap-3">
       <View className="flex-row items-center gap-2">
@@ -38,7 +29,7 @@ export const OrderHistoryDealerItem = (props: OrderHistoryItemProps) => {
       </View>
 
       <TouchableOpacity
-        onPress={handlePress}
+        onPress={() => router.push(`/dealer/detail/${order.id}`)}
         className="items-center justify-center px-4 py-3 bg-primary rounded-xl"
       >
         <Text className="text-white">Ver detalles</Text>
