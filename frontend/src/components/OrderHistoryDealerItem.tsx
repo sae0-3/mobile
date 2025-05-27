@@ -29,7 +29,7 @@ export const OrderHistoryDealerItem = (props: OrderHistoryItemProps) => {
       </View>
 
       <TouchableOpacity
-        onPress={() => router.push(`/dealer/detail/${order.id}`)}
+        onPress={() => router.push(`/admin/detail/${order.id}`)}
         className="items-center justify-center px-4 py-3 bg-primary rounded-xl"
       >
         <Text className="text-white">Ver detalles</Text>

@@ -251,3 +251,65 @@ export type OrderWithItemResponse = ApiResponse<OrderWithItems>;
 
 export type OrderWithDetailsDealerResponse = ApiResponse<OrderWithDetailsDealer>;
 export type OrdersHistoryDealerResponse = ApiResponse<OrderHistoryDealer[]>;
+
+export interface OrderClientDetail {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+}
+export interface OrderDealerDetail {
+  id: string;
+  name: string;
+  email: string;
+  vehicle: 'motorcycle' | 'bicycle' | 'car';
+}
+export interface OrderLocationDetail {
+  address: string;
+  latitud: string;
+  longitud: string;
+}
+export interface OrderProductDetail {
+  id: string;
+  name: string;
+  description: string;
+  img_reference: string;
+  price: string;
+  available: boolean;
+  ingredients: string[];
+  created_at: string;
+  updated_at: string;
+  visible: boolean;
+  display_order: number;
+}
+export interface OrderItemDetail {
+  id: string;
+  quantity: number;
+  subtotal: string;
+  product: OrderProductDetail;
+}
+export interface OrderCompleteDetail {
+  id: string;
+  status: 'pending' | 'in_progress' | 'delivered' | 'cancelled';
+  total: string;
+  created_at: string;
+  updated_at: string;
+  client: OrderClientDetail;
+  dealer: OrderDealerDetail;
+  location: OrderLocationDetail;
+  items: OrderItemDetail[];
+}
+export type OrderCompleteDetailResponse = ApiResponse<OrderCompleteDetail>;
+export interface OrderCompleteDetailParsed extends Omit<OrderCompleteDetail, 'total' | 'location' | 'items'> {
+  total: number;
+  location: Omit<OrderLocationDetail, 'latitud' | 'longitud'> & {
+    latitud: number;
+    longitud: number;
+  };
+  items: Array<Omit<OrderItemDetail, 'subtotal' | 'product'> & {
+    subtotal: number;
+    product: Omit<OrderProductDetail, 'price'> & {
+      price: number;
+    };
+  }>;
+}

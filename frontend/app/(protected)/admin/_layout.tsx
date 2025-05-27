@@ -80,6 +80,13 @@ export default function AdminLayout() {
           title: 'Lista de Pedidos',
         }}
       />
+
+      <Stack.Screen
+        name="detail/[id]"
+        options={{
+          title: 'Detalle de Pedido',
+        }}
+      />
     </Stack>
   );
 }
