@@ -4,7 +4,7 @@ import { ListOrder } from '../../../../src/components/ListOrder';
 import { useGetAllOrders } from '../../../../src/hooks/useClientOrders';
 import colors from '../../../../src/theme/colors';
 import { useState } from 'react';
-import { useFilteredOrders, FilterType } from '../../../../src/hooks/useFilter';
+import { useFilteredByDate, FilterType } from '../../../../src/hooks/useFilter';
 import { OrderDateFilter } from '../../../../src/components/OrderDateFilter';
 
 export default function OrdersScreen() {
@@ -12,7 +12,7 @@ export default function OrdersScreen() {
   const pedidos = data?.data || [];
 
   const [selectFilter, setSelectFilter] = useState<FilterType>('Todos');
-  const filteredOrders = useFilteredOrders(pedidos, selectFilter);
+  const filteredOrders = useFilteredByDate(pedidos, selectFilter, 'created_at');
 
   if (isLoading) {
     return (

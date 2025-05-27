@@ -1,14 +1,19 @@
 import { isThisMonth, isThisWeek, isToday, parseISO } from 'date-fns';
 import { useMemo } from 'react';
-import { OrderWithItems } from '../types/apiTypes';
 
 export type FilterType = 'Todos' | 'Hoy' | 'Semana' | 'Mes';
 
-export const useFilteredOrders = (orders: OrderWithItems[], filter: FilterType) => {
+export const useFilteredByDate = <T>(
+  items: T[],
+  filter: FilterType,
+  dateKey: keyof T
+) => {
   return useMemo(() => {
-    return orders.filter(order => {
-      const date = parseISO(order.created_at);
+    return items.filter((item) => {
+      const dateStr = item[dateKey];
+      if (typeof dateStr !== 'string') return false;
 
+      const date = parseISO(dateStr);
       switch (filter) {
         case 'Hoy':
           return isToday(date);
@@ -20,5 +25,5 @@ export const useFilteredOrders = (orders: OrderWithItems[], filter: FilterType) 
           return true;
       }
     });
-  }, [orders, filter]);
-}
+  }, [items, filter, dateKey]);
+};
