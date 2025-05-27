@@ -4,14 +4,15 @@ import { ListOrder } from '../../../../src/components/ListOrder';
 import { useGetAllOrders } from '../../../../src/hooks/useClientOrders';
 import colors from '../../../../src/theme/colors';
 import { useState } from 'react';
-import { CustomButton } from '../../../../src/components/CustomButton';
-import { filterOrderByDate, FilterType } from '../../../../src/utils/orderFilter';
+import { useFilteredOrders, FilterType } from '../../../../src/hooks/useFilter';
+import { OrderDateFilter } from '../../../../src/components/OrderDateFilter';
 
 export default function OrdersScreen() {
   const { data, isError, isLoading, error } = useGetAllOrders();
   const pedidos = data?.data || [];
 
   const [selectFilter, setSelectFilter] = useState<FilterType>('Todos');
+  const filteredOrders = useFilteredOrders(pedidos, selectFilter);
 
   if (isLoading) {
     return (
@@ -32,39 +33,28 @@ export default function OrdersScreen() {
     { title: 'Cancelados', key: 'cancelled' },
   ];
 
-  const OPTIONS: FilterType[] = [
-    'Todos', 'Hoy', 'Semana', 'Mes'
-  ]
-
   return (
-    <ScrollView className="flex-1 px-4 py-3">
-      <View className="flex-row justify-around mb-4 flex-wrap gap-2">
-        {OPTIONS.map((selected) => (
-          <CustomButton
-            key={selected}
-            title={selected}
-            onPress={() => setSelectFilter(selected)}
-            className="py-1 px-3"
-          />
-        ))}
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <View className="w-11/12 mx-auto pt-6 pb-4 gap-6">
+        <OrderDateFilter selected={selectFilter} onChange={setSelectFilter} />
+
+        <View>
+          {SECTIONS.map(({ title, key }) => {
+            const filtered = filteredOrders.filter((p) => p.status === key);
+            if (filtered.length === 0) return null;
+
+            return (
+              <Expandable key={key} title={title}>
+                <View className="gap-3 mt-2">
+                  {filtered.map((item) => (
+                    <ListOrder key={item.id} order={item} />
+                  ))}
+                </View>
+              </Expandable>
+            );
+          })}
+        </View>
       </View>
-
-      {SECTIONS.map(({ title, key }) => {
-        const porEstado = pedidos.filter((p) => p.status === key);
-        const filtered = filterOrderByDate(porEstado, selectFilter);
-
-        if (filtered.length === 0) return null;
-
-        return (
-          <Expandable key={key} title={title}>
-            <View className="gap-3 mt-2">
-              {filtered.map((item) => (
-                <ListOrder key={item.id} order={item} />
-              ))}
-            </View>
-          </Expandable>
-        );
-      })}
     </ScrollView>
   );
 }
