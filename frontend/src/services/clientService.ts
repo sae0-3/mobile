@@ -1,6 +1,6 @@
 import axiosInstance from '../api/axios';
 import { clientEndpoints } from '../api/endpoints';
-import { ClientResponse, ClientsResponse } from '../types/apiTypes';
+import { ClientResponse, ClientsResponse, ClientInsert } from '../types/apiTypes';
 
 export const getAll = async (token: string | null): Promise<ClientsResponse> => {
   const response = await axiosInstance.get<ClientsResponse>(clientEndpoints.index, {
@@ -19,3 +19,12 @@ export const getById = async (id: string, token: string | null): Promise<ClientR
   });
   return response.data;
 };
+
+export const updateById = async (id: string, body: ClientInsert, token: string | null): Promise<ClientResponse> => {
+  const response = await axiosInstance.put<ClientResponse>(`${clientEndpoints.index}/${id}`, body, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+  return response.data;
+}

@@ -1,7 +1,10 @@
+import { useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { Icon } from './Icon';
+import { EditProfileModal } from './EditProfileModal';
 
 type CardProfileProps = {
+  id: string;
   name: string;
   email: string;
   phone: string | null;
@@ -9,7 +12,8 @@ type CardProfileProps = {
 };
 
 export const CardProfile = (props: CardProfileProps) => {
-  const handleEditProfile = () => { };
+  const [showModal, setShowModal] = useState(false);
+  const handleEditProfile = () => { setShowModal(true); };
 
   return (
     <View className="bg-gray-50 shadow-lg shadow-black p-4 rounded-xl gap-2">
@@ -30,10 +34,9 @@ export const CardProfile = (props: CardProfileProps) => {
             </Text>
           ) : (
             <Text className="italic text-gray-400">
-              No se registro número de celular
+              No se registró número de celular
             </Text>
           )}
-
         </View>
       </View>
 
@@ -55,11 +58,19 @@ export const CardProfile = (props: CardProfileProps) => {
         <TouchableOpacity
           className="border border-primary p-2 rounded-lg disabled:opacity-50"
           onPress={handleEditProfile}
-        // disabled
         >
           <Text className="text-primary">Editar</Text>
         </TouchableOpacity>
       </View>
+      {showModal && (
+        <EditProfileModal
+          onClose={() => setShowModal(false)}
+          id={props.id}
+          name={props.name}
+          email={props.email}
+          phone={props.phone ?? ''}
+        />
+      )}
     </View>
   );
 };
