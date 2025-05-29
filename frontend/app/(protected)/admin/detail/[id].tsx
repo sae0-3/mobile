@@ -15,6 +15,7 @@ export default function DetailAdmin() {
   if (error) return <Text className="mt-32 text-center text-base text-red-600">Error al cargar la orden</Text>;
   if (!orders) return <Text className="mt-32 text-center text-base text-red-600">No se encontró la orden</Text>;
 
+  
   return (
     <ScrollView contentContainerStyle={{ padding: 16 }}>
       {/* Repartidor */}
