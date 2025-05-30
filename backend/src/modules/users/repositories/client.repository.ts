@@ -31,7 +31,20 @@ export class ClientRepository extends BaseRepository {
   }
 
   async update(id: string, updates: ClientUpdate): Promise<Client | null> {
-    await this.updateById<Client>('clients', id, updates);
+    const fields = Object.keys(updates);
+    if (fields.length === 0) return await this.findById(id);
+
+    const setClause = fields.map((field, i) => `${field} = $${i + 1}`).join(', ');
+    const values = Object.values(updates);
+    values.push(id);
+
+    const sql = `
+    UPDATE clients
+    SET ${setClause}
+    WHERE user_id = $${values.length}
+    RETURNING *
+    `;
+    await this.queryOne<Client>(sql, values);
     return await this.findById(id);
   }
 }
