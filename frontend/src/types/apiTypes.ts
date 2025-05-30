@@ -51,6 +51,12 @@ export interface Client {
   updated_at: string;
 }
 
+export interface ClientInsert {
+  email?: string;
+  name?: string;
+  phone?: string | null;
+}
+
 export type DealerRespose = ApiResponse<Dealer>;
 export type DealersResponse = ApiResponse<Dealer[]>;
 
