@@ -49,3 +49,8 @@ export type OrderWithDetailsDealer = Omit<OrderWithDetails, 'dealer'>;
 export type OrderHistoryDealer = Omit<OrderWithDetailsDealer, 'items' | 'client'> & {
   items: number;
 };
+
+export type OrderWithDetailsAdmin = OrderWithDetails;
+export type OrderHistoryAdmin = Omit<OrderWithDetailsAdmin, 'items' | 'client' | 'dealer'> & {
+  items: number;
+};

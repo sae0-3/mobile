@@ -1,15 +1,13 @@
-import { useRouter } from 'expo-router';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { OrderHistoryDealer } from '../types/api/orders.types';
-import { Icon } from './Icon';
 import { StatusBadge } from './StatusBadge';
 
 interface OrderHistoryItemProps {
   order: OrderHistoryDealer;
+  handleViewDetails: () => void;
 }
 
 export const OrderHistoryDealerItem = (props: OrderHistoryItemProps) => {
-  const router = useRouter();
   const { order } = props;
 
   return (
@@ -29,7 +27,7 @@ export const OrderHistoryDealerItem = (props: OrderHistoryItemProps) => {
       </View>
 
       <TouchableOpacity
-        onPress={() => router.push(`/admin/detail/${order.id}`)}
+        onPress={props.handleViewDetails}
         className="items-center justify-center px-4 py-3 bg-primary rounded-xl"
       >
         <Text className="text-white">Ver detalles</Text>

@@ -1,6 +1,6 @@
 import axiosInstance from '../api/axios';
-import { dealerEndpoints, dealerOrderEndpoints } from '../api/endpoints';
-import { DealerRespose, DealersDetailResponse, DealersResponse } from '../types/apiTypes';
+import { dealerEndpoints } from '../api/endpoints';
+import { DealersResponse } from '../types/apiTypes';
 
 export const getAll = async (token: string | null): Promise<DealersResponse> => {
   const response = await axiosInstance.get<DealersResponse>(dealerEndpoints.index, {
@@ -17,14 +17,4 @@ export const remove = async (id: string, token: string | null): Promise<void> =>
       Authorization: `Bearer ${token}`
     }
   });
-};
-
-export const getById = async (id: string,token: string | null): Promise<DealersDetailResponse> => {
-  const response = await axiosInstance.get<DealersDetailResponse>(dealerOrderEndpoints.index(id), {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
-
-  return response.data;
 };

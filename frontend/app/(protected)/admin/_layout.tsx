@@ -82,9 +82,9 @@ export default function AdminLayout() {
       />
 
       <Stack.Screen
-        name="detail/[id]"
+        name="orders/[id]"
         options={{
-          title: 'Detalle de Pedido',
+          title: 'Detalle del Pedido',
         }}
       />
     </Stack>

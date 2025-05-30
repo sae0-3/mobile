@@ -1,9 +1,9 @@
 import axiosInstance from '../api/axios';
 import { adminOrdersEndpoints, infoDealerOrderEndpoints } from '../api/endpoints';
-import { OrderCompleteDetail, OrderCompleteDetailResponse, OrderResponse, OrdersHistoryDealerResponse } from '../types/apiTypes';
+import { OrderWithDetailsAdminResponse, OrdersHistoryAdminResponse } from '../types/apiTypes';
 
 export const getAll = async (token: string | null) => {
-  const response = await axiosInstance.get<OrdersHistoryDealerResponse>(adminOrdersEndpoints.index, {
+  const response = await axiosInstance.get<OrdersHistoryAdminResponse>(adminOrdersEndpoints.index, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -11,8 +11,9 @@ export const getAll = async (token: string | null) => {
 
   return response.data;
 };
-export const getById = async (id: string,token: string | null) => {
-  const response = await axiosInstance.get<OrderCompleteDetailResponse>(infoDealerOrderEndpoints.index(id), {
+
+export const getById = async (id: string, token: string | null) => {
+  const response = await axiosInstance.get<OrderWithDetailsAdminResponse>(infoDealerOrderEndpoints.index(id), {
     headers: {
       Authorization: `Bearer ${token}`
     }

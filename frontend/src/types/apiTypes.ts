@@ -1,4 +1,10 @@
-import { OrderHistoryDealer, OrderWithDetailsDealer } from './api/orders.types';
+import {
+  Order,
+  OrderHistoryAdmin,
+  OrderHistoryDealer,
+  OrderWithDetailsAdmin,
+  OrderWithDetailsDealer,
+} from './api/orders.types';
 
 export interface ApiResponse<T> {
   success: boolean;
@@ -216,17 +222,6 @@ export interface LocationRequest {
 export type LocationResponse = ApiResponse<Location>;
 export type LocationsResponse = ApiResponse<Location[]>;
 
-export interface Order {
-  id: string;
-  client_id: string;
-  user_address_id: string;
-  delivery_id: string | null;
-  status: 'pending' | 'in_progress' | 'delivered' | 'cancelled';
-  created_at: string;
-  updated_at: string;
-  total: number;
-}
-
 export interface OrderItem {
   id: string;
   quantity: number;
@@ -251,70 +246,12 @@ export interface OrderRequest {
 }
 
 export type OrderResponse = ApiResponse<Order>;
+
 export type OrderWithItemsResponse = ApiResponse<OrderWithItems[]>;
 export type OrderWithItemResponse = ApiResponse<OrderWithItems>;
 
 export type OrderWithDetailsDealerResponse = ApiResponse<OrderWithDetailsDealer>;
 export type OrdersHistoryDealerResponse = ApiResponse<OrderHistoryDealer[]>;
 
-export interface OrderClientDetail {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-}
-export interface OrderDealerDetail {
-  id: string;
-  name: string;
-  email: string;
-  vehicle: 'motorcycle' | 'bicycle' | 'car';
-}
-export interface OrderLocationDetail {
-  address: string;
-  latitud: string;
-  longitud: string;
-}
-export interface OrderProductDetail {
-  id: string;
-  name: string;
-  description: string;
-  img_reference: string;
-  price: string;
-  available: boolean;
-  ingredients: string[];
-  created_at: string;
-  updated_at: string;
-  visible: boolean;
-  display_order: number;
-}
-export interface OrderItemDetail {
-  id: string;
-  quantity: number;
-  subtotal: string;
-  product: OrderProductDetail;
-}
-export interface OrderCompleteDetail {
-  id: string;
-  status: 'pending' | 'in_progress' | 'delivered' | 'cancelled';
-  total: string;
-  created_at: string;
-  updated_at: string;
-  client: OrderClientDetail;
-  dealer: OrderDealerDetail;
-  location: OrderLocationDetail;
-  items: OrderItemDetail[];
-}
-export type OrderCompleteDetailResponse = ApiResponse<OrderCompleteDetail>;
-export interface OrderCompleteDetailParsed extends Omit<OrderCompleteDetail, 'total' | 'location' | 'items'> {
-  total: number;
-  location: Omit<OrderLocationDetail, 'latitud' | 'longitud'> & {
-    latitud: number;
-    longitud: number;
-  };
-  items: Array<Omit<OrderItemDetail, 'subtotal' | 'product'> & {
-    subtotal: number;
-    product: Omit<OrderProductDetail, 'price'> & {
-      price: number;
-    };
-  }>;
-}
+export type OrderWithDetailsAdminResponse = ApiResponse<OrderWithDetailsAdmin>;
+export type OrdersHistoryAdminResponse = ApiResponse<OrderHistoryAdmin[]>;
