@@ -1,11 +1,11 @@
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
-import { OrderWithItems } from '../types/apiTypes';
+import { OrderHistoryClient } from '../types/api/orders.types';
 import { ConfirmModal } from './ConfirmModal';
 import { CustomButton } from './CustomButton';
 
-export const ListOrder = ({ order }: { order: OrderWithItems }) => {
+export const ListOrder = ({ order }: { order: OrderHistoryClient }) => {
   const [showModal, setShowModal] = useState(false);
   const orderDate = new Date(order.created_at);
   const formattedDate = orderDate.toLocaleDateString();

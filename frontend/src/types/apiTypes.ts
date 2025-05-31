@@ -1,8 +1,10 @@
 import {
   Order,
   OrderHistoryAdmin,
+  OrderHistoryClient,
   OrderHistoryDealer,
   OrderWithDetailsAdmin,
+  OrderWithDetailsClient,
   OrderWithDetailsDealer,
 } from './api/orders.types';
 
@@ -247,8 +249,8 @@ export interface OrderRequest {
 
 export type OrderResponse = ApiResponse<Order>;
 
-export type OrderWithItemsResponse = ApiResponse<OrderWithItems[]>;
-export type OrderWithItemResponse = ApiResponse<OrderWithItems>;
+export type OrderWithDetailsClientResponse = ApiResponse<OrderWithDetailsClient>;
+export type OrdersHistoryClientResponse = ApiResponse<OrderHistoryClient[]>;
 
 export type OrderWithDetailsDealerResponse = ApiResponse<OrderWithDetailsDealer>;
 export type OrdersHistoryDealerResponse = ApiResponse<OrderHistoryDealer[]>;
