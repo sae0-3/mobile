@@ -1,29 +1,32 @@
-import { SafeAreaView, ScrollView, View } from 'react-native';
-import { Category } from '../../../../src/components/Category';
+import { SafeAreaView, ScrollView, Text, View } from 'react-native';
+import { Loading } from '../../../../src/components/Loading';
 import { SliderDishItem } from '../../../../src/components/SliderDishItem';
 import { useGetAllCategories } from '../../../../src/hooks/useCategories';
 
 export default function HomeScreen() {
-  const { data } = useGetAllCategories();
+  const { data, isLoading, isError, error } = useGetAllCategories();
+
+  if (isLoading) return <Loading />
+
+  if (isError) {
+    return (
+      <View className="flex-1 justify-center items-center">
+        <Text className="text-red-500 italic">Error: {error.response?.data.message}</Text>
+      </View>
+    );
+  }
+
+  if (data?.data.length === 0) {
+    return (
+      <View className="flex-1 justify-center items-center">
+        <Text className="text-gray-500 italic">No se encontro información</Text>
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView>
       <View className="mx-auto w-11/12 py-5 gap-4">
-        {/* <ScrollView
-          showsHorizontalScrollIndicator={false}
-          horizontal={true}
-        >
-          <View className="flex-row gap-4">
-            {data?.data.map(category => (
-              <Category
-                id={category.id}
-                name={category.name}
-                key={category.id}
-              />
-            ))}
-          </View>
-        </ScrollView> */}
-
         <ScrollView
           showsVerticalScrollIndicator={false}
           horizontal={false}
