@@ -1,6 +1,7 @@
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
+import { useCancelOrderById } from '../hooks/useClientOrders';
 import { OrderHistoryClient } from '../types/api/orders.types';
 import { ConfirmModal } from './ConfirmModal';
 import { CustomButton } from './CustomButton';
@@ -10,6 +11,12 @@ export const ListOrder = ({ order }: { order: OrderHistoryClient }) => {
   const orderDate = new Date(order.created_at);
   const formattedDate = orderDate.toLocaleDateString();
   const router = useRouter();
+  const { mutate } = useCancelOrderById();
+
+  const handleCancelOrder = () => {
+    mutate(order.id);
+    setShowModal(false);
+  };
 
   return (
     <View
@@ -29,7 +36,7 @@ export const ListOrder = ({ order }: { order: OrderHistoryClient }) => {
           visible={showModal}
           title="Cancelar pedido"
           message="¿Estás seguro de que deseas cancelar este pedido?"
-          onConfirm={() => { setShowModal(false); }}
+          onConfirm={() => handleCancelOrder()}
           onCancel={() => setShowModal(false)}
         />
       )}

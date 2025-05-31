@@ -31,3 +31,13 @@ export const getById = async (id: string, token: string | null) => {
 
   return response.data;
 };
+
+export const cancelById = async (id: string, token: string | null) => {
+  const response = await axiosInstance.patch<OrderResponse>(clientOrderEndpoints.index(id), {}, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  return response.data;
+};

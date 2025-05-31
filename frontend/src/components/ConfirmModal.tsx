@@ -1,4 +1,3 @@
-import React from 'react';
 import { Modal, Text, View, Pressable } from 'react-native';
 
 interface ConfirmModalProps {

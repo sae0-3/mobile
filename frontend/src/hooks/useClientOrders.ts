@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { create, getAll, getById } from '../services/clientOrdersService';
+import { cancelById, create, getAll, getById } from '../services/clientOrdersService';
 import { useAuth } from '../stores/auth';
 import { ApiResponse, OrderRequest, OrderResponse, OrdersHistoryClientResponse, OrderWithDetailsClientResponse } from '../types/apiTypes';
 import { invalidateQueries } from '../utils/invalidateQueries';
@@ -11,6 +11,7 @@ export const useCreateOrder = () => {
     ['orders-available'],
     ['delivery-orders'],
     ['orders', 'client'],
+    ['orders', 'admin'],
   ];
 
   return useMutation<OrderResponse, AxiosError<OrderResponse>, OrderRequest>({
@@ -40,5 +41,26 @@ export const useGetByIdOrder = (id: string) => {
   return useQuery<OrderWithDetailsClientResponse, AxiosError<ApiResponse<undefined>>>({
     queryKey: ['orders', id],
     queryFn: () => getById(id, token),
+  });
+};
+
+export const useCancelOrderById = () => {
+  const { token } = useAuth();
+  const queriesToInvalidate = [
+    ['orders-available'],
+    ['delivery-orders'],
+    ['orders', 'client'],
+    ['orders', 'admin'],
+  ];
+
+  return useMutation<OrderResponse, AxiosError<ApiResponse<undefined>>, string>({
+    mutationFn: (id) => cancelById(id, token),
+    onSuccess: (data) => {
+      invalidateQueries(queriesToInvalidate);
+      console.log(data);
+    },
+    onError: (error) => {
+      console.error(error.response?.data.message);
+    },
   });
 };
