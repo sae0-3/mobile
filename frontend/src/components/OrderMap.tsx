@@ -4,7 +4,7 @@ import { Coordinates } from '../types/apiTypes';
 
 type Props = {
   mapRegion: any;
-  origin: Coordinates;
+  origin: Coordinates | null;
   destination: Coordinates;
 };
 
@@ -14,12 +14,13 @@ export const OrderMap = ({ mapRegion, origin, destination }: Props) => {
       <MapView
         style={style.map}
         initialRegion={mapRegion}
-      >
+      >{ origin && (
         <Marker
           coordinate={origin}
           title="Tu ubicación"
           description="Ubicación actual del repartidor"
         />
+      )}
         <Marker
           coordinate={destination}
           title="cliente"

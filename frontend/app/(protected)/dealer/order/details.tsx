@@ -1,9 +1,10 @@
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { ScrollView, Text, View } from 'react-native';
 import { Icon } from '../../../../src/components/Icon';
 import { Loading } from '../../../../src/components/Loading';
 import { StatusBadge } from '../../../../src/components/StatusBadge';
 import { useGetOrderFromsHistoryById } from '../../../../src/hooks/useDelivery';
+import { CustomButton } from '../../../../src/components/CustomButton';
 
 export default function OrderDetailsScreen() {
   const { id } = useLocalSearchParams();
@@ -101,6 +102,16 @@ export default function OrderDetailsScreen() {
 
           <Text className="text-lg font-semibold">Total: Bs {order.total}</Text>
         </View>
+        {
+          order.status === 'in_progress' && 
+          (
+          <CustomButton
+            className="py-4 rounded-xl"
+            onPress={() => router.push(`/dealer/order/${id}`)}
+            title="Continuar con la entrega"
+          />
+          )
+        }
       </View>
     </ScrollView>
   );
