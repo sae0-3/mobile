@@ -7,9 +7,7 @@ import colors from '../../../../src/theme/colors';
 
 export default function OrderDetailsScreen() {
   const { id } = useLocalSearchParams();
-  console.log(id);
-
-  const { data, isError, isLoading } = useGetOrderFromsHistoryById("b3b5eea7-351e-4e2e-9710-69d7faae852e"); // TODO
+  const { data, isError, isLoading } = useGetOrderFromsHistoryById(String(id));
   const order = data?.data;
   const created_at = new Date(String(order?.created_at));
   const updated_at = new Date(String(order?.updated_at));
