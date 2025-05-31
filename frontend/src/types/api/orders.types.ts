@@ -45,7 +45,17 @@ export type OrderWithDetails = Omit<Order, 'client_id' | 'user_address_id' | 'de
   dealer: Omit<Dealer, 'created_at' | 'updated_at'> | null;
 };
 
+export type OrderWithDetailsClient = Omit<OrderWithDetails, 'dealer' | 'client'>;
+export type OrderHistoryClient = Omit<OrderWithDetailsClient, 'items'> & {
+  items: number;
+};
+
 export type OrderWithDetailsDealer = Omit<OrderWithDetails, 'dealer'>;
 export type OrderHistoryDealer = Omit<OrderWithDetailsDealer, 'items' | 'client'> & {
+  items: number;
+};
+
+export type OrderWithDetailsAdmin = OrderWithDetails;
+export type OrderHistoryAdmin = Omit<OrderWithDetailsAdmin, 'items' | 'client' | 'dealer'> & {
   items: number;
 };

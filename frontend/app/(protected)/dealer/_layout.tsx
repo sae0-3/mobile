@@ -14,6 +14,13 @@ export default function DealerLayout() {
       />
 
       <Stack.Screen
+        name="order/details"
+        options={{
+          title: 'Detalle del pedido'
+        }}
+      />
+
+      <Stack.Screen
         name="order/[id]"
         options={{
           title: 'Ruta hacia el cliente'

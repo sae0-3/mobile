@@ -3,8 +3,7 @@ import { AppError, NotFoundError } from '../../../core/errors/app.error';
 import { ProductService } from '../../catalog/services/product.service';
 import { OrderDetailsInsertDto, OrderDetailsInsertSchema } from '../dtos/client-order.dto';
 import { OrderDetailsRepository } from '../repositories/order-details.repository';
-import { OrderDetailsWithProduct } from '../types/client-order.types';
-import { OrderDetails } from '../types/order.type';
+import { OrderDetails, OrderDetailsWithProduct } from '../types/order.type';
 
 export class OrderDetailsService {
   constructor(

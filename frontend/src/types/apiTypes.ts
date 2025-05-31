@@ -1,4 +1,12 @@
-import { OrderHistoryDealer, OrderWithDetailsDealer } from './api/orders.types';
+import {
+  Order,
+  OrderHistoryAdmin,
+  OrderHistoryClient,
+  OrderHistoryDealer,
+  OrderWithDetailsAdmin,
+  OrderWithDetailsClient,
+  OrderWithDetailsDealer,
+} from './api/orders.types';
 
 export interface ApiResponse<T> {
   success: boolean;
@@ -40,6 +48,17 @@ export interface Dealer {
   vehicle: 'motorcycle' | 'bicycle' | 'car';
   created_at: string;
   updated_at: string;
+}
+export interface DealerDetail {
+  order_id: string;
+  total: number;
+  client_name: string;
+  client_phone: string;
+  products: {
+    name: string;
+    quantity: number;
+    subtotal: number;
+  }[];
 }
 
 export interface Client {
@@ -205,17 +224,6 @@ export interface LocationRequest {
 export type LocationResponse = ApiResponse<Location>;
 export type LocationsResponse = ApiResponse<Location[]>;
 
-export interface Order {
-  id: string;
-  client_id: string;
-  user_address_id: string;
-  delivery_id: string | null;
-  status: 'pending' | 'in_progress' | 'delivered' | 'cancelled';
-  created_at: string;
-  updated_at: string;
-  total: number;
-}
-
 export interface OrderItem {
   id: string;
   quantity: number;
@@ -240,8 +248,12 @@ export interface OrderRequest {
 }
 
 export type OrderResponse = ApiResponse<Order>;
-export type OrderWithItemsResponse = ApiResponse<OrderWithItems[]>;
-export type OrderWithItemResponse = ApiResponse<OrderWithItems>;
+
+export type OrderWithDetailsClientResponse = ApiResponse<OrderWithDetailsClient>;
+export type OrdersHistoryClientResponse = ApiResponse<OrderHistoryClient[]>;
 
 export type OrderWithDetailsDealerResponse = ApiResponse<OrderWithDetailsDealer>;
 export type OrdersHistoryDealerResponse = ApiResponse<OrderHistoryDealer[]>;
+
+export type OrderWithDetailsAdminResponse = ApiResponse<OrderWithDetailsAdmin>;
+export type OrdersHistoryAdminResponse = ApiResponse<OrderHistoryAdmin[]>;

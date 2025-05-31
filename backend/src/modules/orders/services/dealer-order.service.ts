@@ -4,7 +4,8 @@ import { LocationService } from '../../locations/services/location.service';
 import { ClientService } from '../../users/services/client.service';
 import { DealerOrderDeliveryDto, DealerOrderDeliverySchema } from '../dtos/dealer-order.dto';
 import { DealerOrderRepository } from '../repositories/dealer-order.repository';
-import { AvailableOrder, Order, OrderDetail, OrderHistory, OrderLocationInfo, OrderWithDetails } from '../types/dealer-order.types';
+import { AvailableOrder, Order, OrderDetail, OrderLocationInfo, OrderWithDetails } from '../types/dealer-order.types';
+import { OrderHistory } from '../types/order.type';
 import { OrderDetailsService } from './order-details.service';
 
 export class DealerOrderService {

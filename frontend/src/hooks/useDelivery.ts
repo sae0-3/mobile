@@ -1,8 +1,8 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { accepOrder, confirmDelivery, getAll, getHistory, getOrderLocation, orderDeliveryDetail } from '../services/deliveryService';
+import { accepOrder, confirmDelivery, getAll, getHistory, getOrderFromHistoryById, getOrderLocation, orderDeliveryDetail } from '../services/deliveryService';
 import { useAuth } from '../stores/auth';
-import { DeliveryResponse, OrderDeliveryDetailResponse, OrderLocationResponse, OrdersHistoryDealerResponse, UpdatedOrderResponse } from '../types/apiTypes';
+import { ApiResponse, DeliveryResponse, OrderDeliveryDetailResponse, OrderLocationResponse, OrdersHistoryDealerResponse, OrderWithDetailsDealerResponse, UpdatedOrderResponse } from '../types/apiTypes';
 import { invalidateQueries } from '../utils/invalidateQueries';
 
 export const useGetAllOrders = () => {
@@ -74,5 +74,15 @@ export const useGetHistory = () => {
   return useQuery<OrdersHistoryDealerResponse, AxiosError<OrdersHistoryDealerResponse>>({
     queryKey: ['orders', 'history', id],
     queryFn: () => getHistory(token),
+  });
+};
+
+export const useGetOrderFromsHistoryById = (id: string) => {
+  const { token } = useAuth();
+
+  return useQuery<OrderWithDetailsDealerResponse, AxiosError<ApiResponse<undefined>>>({
+    queryKey: ['orders', 'history', 'dealer', id],
+    queryFn: () => getOrderFromHistoryById(id, token),
+    enabled: !!id,
   });
 };

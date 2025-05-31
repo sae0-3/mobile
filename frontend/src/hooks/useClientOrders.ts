@@ -1,10 +1,9 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { create, getAll } from '../services/clientOrders';
+import { create, getAll, getById } from '../services/clientOrdersService';
 import { useAuth } from '../stores/auth';
-import { OrderRequest, OrderWithItemsResponse, OrderResponse, OrderWithItemResponse } from '../types/apiTypes';
+import { ApiResponse, OrderRequest, OrderResponse, OrdersHistoryClientResponse, OrderWithDetailsClientResponse } from '../types/apiTypes';
 import { invalidateQueries } from '../utils/invalidateQueries';
-import { getById } from '../services/clientOrders';
 
 export const useCreateOrder = () => {
   const { token } = useAuth();
@@ -29,7 +28,7 @@ export const useCreateOrder = () => {
 export const useGetAllOrders = () => {
   const { token } = useAuth();
 
-  return useQuery<OrderWithItemsResponse, AxiosError>({
+  return useQuery<OrdersHistoryClientResponse, AxiosError<ApiResponse<undefined>>>({
     queryKey: ['orders', 'client'],
     queryFn: () => getAll(token),
   });
@@ -38,7 +37,7 @@ export const useGetAllOrders = () => {
 export const useGetByIdOrder = (id: string) => {
   const { token } = useAuth();
 
-  return useQuery<OrderWithItemResponse, AxiosError>({
+  return useQuery<OrderWithDetailsClientResponse, AxiosError<ApiResponse<undefined>>>({
     queryKey: ['orders', id],
     queryFn: () => getById(id, token),
   });

@@ -43,7 +43,11 @@ export function createOrderController() {
     clientService,
     locationService,
   );
-  const clientOrderService = new ClientOrderService(clientOrderRepository, orderDetailsService);
+  const clientOrderService = new ClientOrderService(
+    clientOrderRepository,
+    orderDetailsService,
+    locationService,
+  );
   const adminOrderService = new AdminOrderService(
     adminOrderRepository,
     orderDetailsService,
