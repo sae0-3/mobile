@@ -45,3 +45,7 @@ export type OrderWithDetails = Omit<Order, 'client_id' | 'user_address_id' | 'de
   location: Omit<Location, 'id' | 'user_id' | 'created_at'>;
   dealer: Omit<Dealer, 'created_at' | 'updated_at'> | null;
 };
+
+export type OrderHistory = Pick<OrderWithDetails, 'location'> & {
+  items: number;
+};

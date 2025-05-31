@@ -57,7 +57,3 @@ export interface OrderDelivery {
 }
 
 export type OrderWithDetails = Omit<OWD, 'dealer'>;
-
-export type OrderHistory = Omit<OrderWithDetails, 'items' | 'client'> & {
-  items: number;
-};

@@ -3,8 +3,7 @@ import { LocationService } from '../../locations/services/location.service';
 import { ClientService } from '../../users/services/client.service';
 import { DealerService } from '../../users/services/dealer.service';
 import { AdminOrderRepository } from '../repositories/admin-order.repository';
-import { OrderWithDetails } from '../types/admin-order.types';
-import { Order, OrderWithDetails as OWD } from '../types/order.type';
+import { Order, OrderHistory, OrderWithDetails } from '../types/order.type';
 import { OrderDetailsService } from './order-details.service';
 
 export class AdminOrderService {
@@ -16,10 +15,10 @@ export class AdminOrderService {
     private locationService: LocationService,
   ) { }
 
-  async findAll(): Promise<OrderWithDetails[]> {
+  async findAll(): Promise<OrderHistory[]> {
     const orders = await this.adminOrderRepository.findAll();
 
-    const ordersWithQuantity: OrderWithDetails[] = await Promise.all(
+    const ordersWithQuantity: OrderHistory[] = await Promise.all(
       orders.map(async (order) => {
         const items = await this.orderDetailsService.getDetailsByOrderId(order.id);
         const location = await this.locationService.findById(order.user_address_id, order.client_id);
@@ -43,7 +42,7 @@ export class AdminOrderService {
     return ordersWithQuantity;
   }
 
-  async findById(id: string): Promise<OWD> {
+  async findById(id: string): Promise<OrderWithDetails> {
     const order = await this.adminOrderRepository.findById(id);
     if (!order) {
       throw new NotFoundError({
@@ -69,7 +68,7 @@ export class AdminOrderService {
       dealer = null;
     }
 
-    const orderWithDetails: OWD = {
+    const orderWithDetails: OrderWithDetails = {
       id: order.id,
       status: order.status,
       total: order.total,
