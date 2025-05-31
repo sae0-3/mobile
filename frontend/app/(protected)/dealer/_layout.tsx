@@ -14,6 +14,13 @@ export default function DealerLayout() {
       />
 
       <Stack.Screen
+        name="order/details"
+        options={{
+          title: 'Detalle del pedido'
+        }}
+      />
+
+      <Stack.Screen
         name="order/[id]"
         options={{
           title: 'Ruta hacia el cliente'
@@ -24,12 +31,6 @@ export default function DealerLayout() {
         name="delivery/[id]"
         options={{
           title: 'Detalle y entrega'
-        }}
-      />
-      <Stack.Screen
-        name="detail/[id]"
-        options={{
-          title: 'Detalle de pedido'
         }}
       />
     </Stack>

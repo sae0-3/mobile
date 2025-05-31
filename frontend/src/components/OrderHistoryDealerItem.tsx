@@ -8,7 +8,7 @@ interface OrderHistoryItemProps {
 }
 
 export const OrderHistoryDealerItem = (props: OrderHistoryItemProps) => {
-  const { order } = props;
+  const { order, handleViewDetails } = props;
 
   return (
     <View className="w-full py-4 px-5 rounded-2xl bg-white shadow-md border border-gray-200 gap-3">
@@ -27,7 +27,7 @@ export const OrderHistoryDealerItem = (props: OrderHistoryItemProps) => {
       </View>
 
       <TouchableOpacity
-        onPress={props.handleViewDetails}
+        onPress={() => handleViewDetails()}
         className="items-center justify-center px-4 py-3 bg-primary rounded-xl"
       >
         <Text className="text-white">Ver detalles</Text>

@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { ActivityIndicator, FlatList, Text, View } from 'react-native';
 import { OrderDateFilter } from '../../../../src/components/OrderDateFilter';
@@ -9,6 +10,7 @@ import colors from '../../../../src/theme/colors';
 export default function OrdersScreen() {
   const { data, isLoading, isError } = useGetHistory();
   const orders = data?.data || [];
+  const router = useRouter();
 
   const [selectFilter, setSelectFilter] = useState<FilterType>('Todos');
   const filteredOrders = useFilteredByDate(orders, selectFilter, 'created_at');
@@ -41,7 +43,13 @@ export default function OrdersScreen() {
           <OrderDateFilter selected={selectFilter} onChange={setSelectFilter} />
         )}
         renderItem={({ item }) => (
-          <OrderHistoryDealerItem order={item} />
+          <OrderHistoryDealerItem
+            order={item}
+            handleViewDetails={() => router.push({
+              pathname: '/dealer/order/details',
+              params: { id: item.id }
+            })}
+          />
         )}
       />
     </View>
