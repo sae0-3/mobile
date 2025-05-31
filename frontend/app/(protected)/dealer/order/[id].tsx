@@ -33,11 +33,10 @@ export default function OrderDetailScreen() {
     );
   }
 
-  if (isLoading || !location || !orderLocation) return <Loading />;
+  if (isLoading || !orderLocation) return <Loading />;
 
   const mapRegion = getMapCenter(
-    location.latitude,
-    location.longitude,
+    location,
     parseFloat(orderLocation.latitud),
     parseFloat(orderLocation.longitud)
   );
