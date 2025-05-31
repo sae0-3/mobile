@@ -107,7 +107,7 @@ export default function OrderDetailsScreen() {
             </View>
           </View>
 
-          <Text className="text-lg font-semibold">Total: {order.total}</Text>
+          <Text className="text-lg font-semibold">Total: Bs {order.total}</Text>
         </View>
       </View>
     </ScrollView>
