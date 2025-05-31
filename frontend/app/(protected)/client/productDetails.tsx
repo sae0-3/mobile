@@ -32,7 +32,7 @@ export default function ProductDetailsScreen() {
       <View className="w-11/12 mx-auto pb-6 pt-4 gap-4">
         <Image
           source={{ uri: product.img_reference || '' }}
-          className="h-64 w-64 rounded-lg"
+          className="w-64 aspect-square rounded-lg mx-auto"
         />
 
         <View className="flex-row justify-between items-center flex-wrap">
