@@ -12,7 +12,7 @@ import { getTravelMode, getVehicleIconName } from '../../../../src/utils/travelH
 export default function OrderDetailScreen() {
   const { id } = useLocalSearchParams();
   const { data, isLoading } = useOrderLocation(id.toString());
-  const { location, errorMsg } = useCurrentLocation();
+  const { location } = useCurrentLocation();
   const router = useRouter();
 
   const orderLocation = data?.data;
@@ -24,14 +24,6 @@ export default function OrderDetailScreen() {
 
   const { data: routeData, isLoading: isRouteLoading } = useRouteToClient({ origin, destination, mode: travelMode });
 
-
-  if (errorMsg) {
-    return (
-      <View className="flex-1 justify-center items-center bg-white px-4">
-        <Text className="text-black text-lg">{errorMsg}</Text>
-      </View>
-    );
-  }
 
   if (isLoading || !orderLocation) return <Loading />;
 

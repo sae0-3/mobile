@@ -3,16 +3,13 @@ import * as Location from 'expo-location';
 
 export const useCurrentLocation = () => {
   const [location, setLocation] = useState<Location.LocationObjectCoords | null>(null);
-  const [errorMsg, setErrorMsg] = useState('');
-
-
+  
   useEffect(() => {
     let subscriber: Location.LocationSubscription;
 
     const getLocation = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
-        setErrorMsg('Permiso denegado para acceder a la ubicación');
         return;
       }
 
@@ -30,5 +27,5 @@ export const useCurrentLocation = () => {
     return () => subscriber && subscriber.remove();
   }, []);
 
-  return { location, errorMsg }
+  return { location }
 }
