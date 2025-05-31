@@ -10,9 +10,9 @@ export default function ClientTabsLayout() {
         tabBarActiveTintColor: colors.primary,
         headerTintColor: colors.primary,
         tabBarStyle: {
-          paddingBottom: 5,
-          paddingTop: 5,
-          height: 60,
+          paddingBottom: 10,
+          paddingTop: 10,
+          height: 70,
         },
       }}
     >

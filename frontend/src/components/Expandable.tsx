@@ -17,7 +17,7 @@ export const Expandable = ({ title, children, className, presableClassName }: Ex
     <View className={`${className} mb-4`}>
       <Pressable
         onPress={() => setExpanded(!expanded)}
-        className={`${presableClassName} flex-row justify-between items-center border-b-2 px-3 mx-2 border-primary py-3`}
+        className={`${presableClassName} flex-row justify-between items-center border-b-2 mx-2 border-primary py-3`}
       >
         <Text className="text-lg font-bold">{title}</Text>
         <Icon

@@ -42,8 +42,8 @@ export default function ProfileScreen() {
 
         <CardLocations />
 
-        <View className="flex-row justify-between items-center">
-          <TouchableOpacity
+        <View className="flex-row justify-end items-center">
+          {/* <TouchableOpacity
             className="bg-red-500 flex-row gap-2 rounded-lg p-2 items-center justify-center"
             onPress={handleRemoveAccount}
           >
@@ -51,7 +51,7 @@ export default function ProfileScreen() {
               Eliminar Cuenta
             </Text>
             <Icon name="trash-alt" type="FontAwesome5" color="white" />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <TouchableOpacity
             className="bg-primary flex-row gap-2 rounded-lg p-2 items-center justify-center"

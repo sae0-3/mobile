@@ -1,11 +1,11 @@
-import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
+import { useState } from 'react';
+import { ActivityIndicator, FlatList, Text, View } from 'react-native';
 import { Expandable } from '../../../../src/components/Expandable';
 import { ListOrder } from '../../../../src/components/ListOrder';
-import { useGetAllOrders } from '../../../../src/hooks/useClientOrders';
-import colors from '../../../../src/theme/colors';
-import { useState } from 'react';
-import { useFilteredByDate, FilterType } from '../../../../src/hooks/useFilter';
 import { OrderDateFilter } from '../../../../src/components/OrderDateFilter';
+import { useGetAllOrders } from '../../../../src/hooks/useClientOrders';
+import { FilterType, useFilteredByDate } from '../../../../src/hooks/useFilter';
+import colors from '../../../../src/theme/colors';
 
 export default function OrdersScreen() {
   const { data, isError, isLoading, error } = useGetAllOrders();
@@ -33,28 +33,38 @@ export default function OrdersScreen() {
     { title: 'Cancelados', key: 'cancelled' },
   ];
 
+  const sectionsWithData = SECTIONS.map(section => ({
+    ...section,
+    data: filteredOrders.filter(p => p.status === section.key)
+  })).filter(section => section.data.length > 0);
+
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <View className="w-11/12 mx-auto pt-6 pb-4 gap-6">
-        <OrderDateFilter selected={selectFilter} onChange={setSelectFilter} />
-
-        <View>
-          {SECTIONS.map(({ title, key }) => {
-            const filtered = filteredOrders.filter((p) => p.status === key);
-            if (filtered.length === 0) return null;
-
-            return (
-              <Expandable key={key} title={title}>
-                <View className="gap-3 mt-2">
-                  {filtered.map((item) => (
-                    <ListOrder key={item.id} order={item} />
-                  ))}
-                </View>
-              </Expandable>
-            );
-          })}
-        </View>
-      </View>
-    </ScrollView>
+    <View className="flex-1 bg-white">
+      <FlatList
+        data={sectionsWithData}
+        showsVerticalScrollIndicator={false}
+        keyExtractor={item => item.key}
+        className="mx-auto w-11/12 my-6"
+        ListHeaderComponent={() => (
+          <View className="mb-4">
+            <OrderDateFilter selected={selectFilter} onChange={setSelectFilter} />
+          </View>
+        )}
+        ListEmptyComponent={
+          <View className="flex-1 justify-center items-center">
+            <Text>No hay pedidos para mostrar</Text>
+          </View>
+        }
+        renderItem={({ item: { key, title, data } }) => (
+          <Expandable key={key} title={title}>
+            <View className="gap-3 mt-2">
+              {data.map((item) => (
+                <ListOrder key={item.id} order={item} />
+              ))}
+            </View>
+          </Expandable>
+        )}
+      />
+    </View>
   );
 }

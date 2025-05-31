@@ -5,7 +5,6 @@ import colors from '../../../../src/theme/colors';
 
 export default function HomeScreen() {
   const { data, isLoading, isError, error } = useGetAllOrders();
-
   const orders = data?.data || [];
 
   if (isLoading) {
@@ -22,6 +21,14 @@ export default function HomeScreen() {
         <Text className="text-black font-semibold">{error.message}</Text>
       </View>
     )
+  }
+
+  if (orders?.length === 0) {
+    return (
+      <View className="flex-1 justify-center items-center">
+        <Text>No existen pedidos disponibles</Text>
+      </View>
+    );
   }
 
   return (

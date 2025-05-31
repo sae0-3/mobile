@@ -32,7 +32,7 @@ export default function OrdersScreen() {
   }
 
   return (
-    <View className="bg-white">
+    <View className="flex-1 bg-white">
       <FlatList
         data={filteredOrders}
         className="mx-auto w-11/12 my-6"
@@ -41,6 +41,11 @@ export default function OrdersScreen() {
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={() => (
           <OrderDateFilter selected={selectFilter} onChange={setSelectFilter} />
+        )}
+        ListEmptyComponent={() => (
+          <View className="flex-1 justify-center items-center">
+            <Text>No tiene pedidos registrados</Text>
+          </View>
         )}
         renderItem={({ item }) => (
           <OrderHistoryDealerItem
