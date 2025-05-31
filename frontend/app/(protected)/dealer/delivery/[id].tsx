@@ -1,10 +1,8 @@
-import React from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
-import { useOrderDeliveryDetail } from '../../../../src/hooks/useDelivery';
+import { Text, View } from 'react-native';
 import { DetailCard } from '../../../../src/components/DetailCard';
-import colors from '../../../../src/theme/colors';
-
+import { Loading } from '../../../../src/components/Loading';
+import { useOrderDeliveryDetail } from '../../../../src/hooks/useDelivery';
 
 export default function DeliveryScreen() {
   const { id } = useLocalSearchParams();
@@ -12,13 +10,7 @@ export default function DeliveryScreen() {
 
   const order = data?.data;
 
-  if (isLoading) {
-    return (
-      <View className="flex-1 justify-center items-center">
-        <ActivityIndicator size="large" color={colors.primary} />
-      </View>
-    );
-  }
+  if (isLoading) return <Loading />;
 
   if (!order) {
     return (

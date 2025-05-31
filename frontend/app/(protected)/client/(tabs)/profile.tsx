@@ -1,10 +1,10 @@
-import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { CardLocations } from '../../../../src/components/CardLocations';
 import { CardProfile } from '../../../../src/components/CardProfile';
 import { Icon } from '../../../../src/components/Icon';
+import { Loading } from '../../../../src/components/Loading';
 import { useGetByIdClient } from '../../../../src/hooks/useClients';
 import { useAuth } from '../../../../src/stores/auth';
-import colors from '../../../../src/theme/colors';
 
 export default function ProfileScreen() {
   const { id, logout } = useAuth();
@@ -16,13 +16,7 @@ export default function ProfileScreen() {
     logout();
   };
 
-  if (isLoading) {
-    return (
-      <View className="flex-1 items-center justify-center">
-        <ActivityIndicator size="large" color={colors.primary} />
-      </View>
-    );
-  }
+  if (isLoading) return <Loading />;
 
   if (!data) {
     return (

@@ -1,26 +1,18 @@
-import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
-import { useDeleteLocation, useGetAllLocations } from '../hooks/useLocations';
-import colors from '../theme/colors';
-import { Icon } from './Icon';
 import { useState } from 'react';
-import { AddLocationModal } from './AddLocationModal'
+import { Text, TouchableOpacity, View } from 'react-native';
+import { useDeleteLocation, useGetAllLocations } from '../hooks/useLocations';
+import { AddLocationModal } from './AddLocationModal';
+import { Icon } from './Icon';
+import { Loading } from './Loading';
 
 export const CardLocations = () => {
   const [showModal, setShowModal] = useState(false);
   const { data, isLoading } = useGetAllLocations();
   const { mutate: remove, isPending } = useDeleteLocation();
 
-  if (isLoading) {
-    return (
-      <View className="flex-1 items-center justify-center">
-        <ActivityIndicator color={colors.primary} />
-      </View>
-    );
-  }
+  if (isLoading) return <Loading />;
 
-  if (!data) {
-    return null;
-  }
+  if (!data) return null;
 
   return (
     <View className="gap-4">

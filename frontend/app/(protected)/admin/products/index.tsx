@@ -1,7 +1,8 @@
 import { router } from 'expo-router';
-import { ActivityIndicator, FlatList, Text, View } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 import { CustomButton } from '../../../../src/components/CustomButton';
 import { EditProductItem } from '../../../../src/components/EditProductItem';
+import { Loading } from '../../../../src/components/Loading';
 import { useGetAllProducts } from '../../../../src/hooks/useProduct';
 
 export default function ProductsScreen() {
@@ -12,9 +13,7 @@ export default function ProductsScreen() {
     router.push('/admin/products/add');
   }
 
-  if (isLoading) {
-    return <ActivityIndicator size="large" />;
-  }
+  if (isLoading) return <Loading />;
 
   if (isError) {
     return <Text>Error: {error?.message}</Text>;

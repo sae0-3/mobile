@@ -1,14 +1,13 @@
-import React from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import colors from '../../../../src/theme/colors';
-import { useRouteToClient } from '../../../../src/hooks/useRouteToClient';
-import { useOrderLocation } from '../../../../src/hooks/useDelivery';
-import { getTravelMode, getVehicleIconName } from '../../../../src/utils/travelHelpers';
-import { useCurrentLocation } from '../../../../src/hooks/useCurrentLocation';
-import { getMapCenter } from '../../../../src/utils/mapUtils';
-import { OrderMap } from '../../../../src/components/OrderMap';
+import { Text, View } from 'react-native';
+import { Loading } from '../../../../src/components/Loading';
 import { OrderInfo } from '../../../../src/components/OrderInfo';
+import { OrderMap } from '../../../../src/components/OrderMap';
+import { useCurrentLocation } from '../../../../src/hooks/useCurrentLocation';
+import { useOrderLocation } from '../../../../src/hooks/useDelivery';
+import { useRouteToClient } from '../../../../src/hooks/useRouteToClient';
+import { getMapCenter } from '../../../../src/utils/mapUtils';
+import { getTravelMode, getVehicleIconName } from '../../../../src/utils/travelHelpers';
 
 export default function OrderDetailScreen() {
   const { id } = useLocalSearchParams();
@@ -19,7 +18,6 @@ export default function OrderDetailScreen() {
   const orderLocation = data?.data;
 
   const travelMode = getTravelMode(orderLocation?.dealer_vehicle);
-
 
   const origin = location ? `${location.latitude},${location.longitude}` : '';
   const destination = orderLocation ? `${orderLocation.latitud},${orderLocation.longitud}` : '';
@@ -35,13 +33,7 @@ export default function OrderDetailScreen() {
     );
   }
 
-  if (isLoading || !location || !orderLocation) {
-    return (
-      <View className="flex-1 justify-center items-center">
-        <ActivityIndicator size="large" color={colors.primary} />
-      </View>
-    );
-  }
+  if (isLoading || !location || !orderLocation) return <Loading />;
 
   const mapRegion = getMapCenter(
     location.latitude,
@@ -71,4 +63,3 @@ export default function OrderDetailScreen() {
     </View>
   );
 }
-

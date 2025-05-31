@@ -1,8 +1,9 @@
 import { router } from 'expo-router';
-import { ActivityIndicator, FlatList, Text, View } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 import { CustomButton } from '../../../../src/components/CustomButton';
 import { DealerItem } from '../../../../src/components/DealerItem';
 import { useGetAllDealers } from '../../../../src/hooks/useDealers';
+import { Loading } from '../../../../src/components/Loading';
 
 export default function DealersScreen() {
   const { data, isLoading, isError, error } = useGetAllDealers();
@@ -12,9 +13,7 @@ export default function DealersScreen() {
     router.push('/admin/dealers/add');
   }
 
-  if (isLoading) {
-    return <ActivityIndicator size="large" />;
-  }
+  if (isLoading) return <Loading />;
 
   if (isError) {
     return <Text>Error: {error?.message}</Text>;

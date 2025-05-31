@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
-import { Modal, Text, View, Pressable, ActivityIndicator } from 'react-native';
-import { Icon } from './Icon';
-import { FormTextField } from './FormTextField';
-import { useUpdateByIdClient } from '../hooks/useClients';
 import { useForm } from '@tanstack/react-form';
+import { useEffect } from 'react';
+import { ActivityIndicator, Modal, Pressable, Text, View } from 'react-native';
 import { ClientUpdateProfileSchema } from '../dtos/clientDto';
+import { useUpdateByIdClient } from '../hooks/useClients';
+import { FormTextField } from './FormTextField';
+import { Icon } from './Icon';
 
 type EditProfileModalProps = {
   onClose: () => void;

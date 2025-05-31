@@ -1,11 +1,11 @@
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { ActivityIndicator, FlatList, Text, View } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
+import { Loading } from '../../../../src/components/Loading';
 import { OrderDateFilter } from '../../../../src/components/OrderDateFilter';
 import { OrderHistoryDealerItem } from '../../../../src/components/OrderHistoryDealerItem';
 import { useGetHistory } from '../../../../src/hooks/useAdminOrders';
 import { FilterType, useFilteredByDate } from '../../../../src/hooks/useFilter';
-import colors from '../../../../src/theme/colors';
 
 export default function OrdersScreen() {
   const { data, isLoading, isError } = useGetHistory();
@@ -15,13 +15,7 @@ export default function OrdersScreen() {
   const [selectFilter, setSelectFilter] = useState<FilterType>('Todos');
   const filteredOrders = useFilteredByDate(orders, selectFilter, 'created_at');
 
-  if (isLoading) {
-    return (
-      <View className="flex-1 justify-center items-center">
-        <ActivityIndicator color={colors.primary} size="large" />
-      </View>
-    );
-  }
+  if (isLoading) return <Loading />;
 
   if (isError) {
     return (

@@ -1,21 +1,15 @@
 import { useLocalSearchParams } from 'expo-router';
-import { ActivityIndicator, Image, ScrollView, Text, View } from 'react-native';
+import { Image, ScrollView, Text, View } from 'react-native';
 import { AddToCart } from '../../../src/components/AddToCart';
 import { Icon } from '../../../src/components/Icon';
+import { Loading } from '../../../src/components/Loading';
 import { useGetByIdProduct } from '../../../src/hooks/useProduct';
-import colors from '../../../src/theme/colors';
 
 export default function ProductDetailsScreen() {
   const { productId } = useLocalSearchParams();
   const { data, isLoading } = useGetByIdProduct(String(productId));
 
-  if (isLoading) {
-    return (
-      <View className="flex-1 items-center justify-center">
-        <ActivityIndicator size="large" color={colors.primary} />
-      </View>
-    );
-  }
+  if (isLoading) return <Loading />;
 
   if (!data) {
     return (

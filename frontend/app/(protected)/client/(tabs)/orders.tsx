@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { ActivityIndicator, FlatList, Text, View } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 import { Expandable } from '../../../../src/components/Expandable';
 import { ListOrder } from '../../../../src/components/ListOrder';
+import { Loading } from '../../../../src/components/Loading';
 import { OrderDateFilter } from '../../../../src/components/OrderDateFilter';
 import { useGetAllOrders } from '../../../../src/hooks/useClientOrders';
 import { FilterType, useFilteredByDate } from '../../../../src/hooks/useFilter';
-import colors from '../../../../src/theme/colors';
 
 export default function OrdersScreen() {
   const { data, isError, isLoading, error } = useGetAllOrders();
@@ -14,13 +14,7 @@ export default function OrdersScreen() {
   const [selectFilter, setSelectFilter] = useState<FilterType>('Todos');
   const filteredOrders = useFilteredByDate(pedidos, selectFilter, 'created_at');
 
-  if (isLoading) {
-    return (
-      <View className="flex-1 justify-center items-center">
-        <ActivityIndicator size="large" color={colors.primary} />
-      </View>
-    );
-  }
+  if (isLoading) return <Loading />;
 
   if (isError) {
     return <Text>Error: {error?.message}</Text>;

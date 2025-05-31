@@ -1,9 +1,9 @@
 import { useLocalSearchParams } from 'expo-router';
-import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import { Icon } from '../../../../src/components/Icon';
+import { Loading } from '../../../../src/components/Loading';
 import { StatusBadge } from '../../../../src/components/StatusBadge';
 import { useGetOrderFromsHistoryById } from '../../../../src/hooks/useDelivery';
-import colors from '../../../../src/theme/colors';
 
 export default function OrderDetailsScreen() {
   const { id } = useLocalSearchParams();
@@ -12,13 +12,7 @@ export default function OrderDetailsScreen() {
   const created_at = new Date(String(order?.created_at));
   const updated_at = new Date(String(order?.updated_at));
 
-  if (isLoading) {
-    return (
-      <View className="flex-1 items-center justify-center">
-        <ActivityIndicator size="large" color={colors.primary} />
-      </View>
-    );
-  }
+  if (isLoading) return <Loading />;
 
   if (isError) {
     return (
