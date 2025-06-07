@@ -36,6 +36,7 @@ describe('DealerService', () => {
 
   const createdDealer = {
     ...createdUser,
+    name: "Dealer",
     vehicle: 'motorcycle' as const,
   };
 
@@ -73,6 +74,7 @@ describe('DealerService', () => {
 
   describe('create()', () => {
     const createDto: CreateDealerDto = {
+      name: "Dealer",
       email: 'dealer@example.com',
       vehicle: 'motorcycle',
     };
@@ -86,6 +88,7 @@ describe('DealerService', () => {
       expect(userService.create).toHaveBeenCalledWith({ email: createDto.email });
       expect(repository.create).toHaveBeenCalledWith({
         user_id: createdUser.id,
+        name: createDto.name,
         vehicle: createDto.vehicle,
       });
       expect(result).toEqual(createdDealer);
