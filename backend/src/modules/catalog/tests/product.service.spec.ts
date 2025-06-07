@@ -246,18 +246,17 @@ describe('ProductService', () => {
 
       repository.findCategoriesByProductId.mockResolvedValue(categories);
 
-      const result = await service.findCategoriesByProductId('prod-1', false);
-
-      expect(repository.findCategoriesByProductId).toHaveBeenCalledWith('prod-1', false);
+      const result = await service.findCategoriesByProductId('prod-1', false, true);
+      expect(repository.findCategoriesByProductId).toHaveBeenCalledWith('prod-1', false, true);
       expect(result).toEqual(categories);
     });
 
     it('devuelve lista vacía si no hay categorías asociadas', async () => {
       repository.findCategoriesByProductId.mockResolvedValue([]);
 
-      const result = await service.findCategoriesByProductId('prod-x', false);
+      const result = await service.findCategoriesByProductId('prod-x', false, true);
 
-      expect(repository.findCategoriesByProductId).toHaveBeenCalledWith('prod-x', false);
+      expect(repository.findCategoriesByProductId).toHaveBeenCalledWith('prod-x', false, true);
       expect(result).toEqual([]);
     });
   });
