@@ -22,9 +22,17 @@ export default function ClientLayout() {
       />
 
       <Stack.Screen
-        name="detail"
+        name="productDetails"
         options={{
           title: 'Detalles del producto',
+          headerRight: () => <Cart />,
+        }}
+      />
+
+      <Stack.Screen
+        name="orderDetails"
+        options={{
+          title: 'Detalle de pedido',
           headerRight: () => <Cart />,
         }}
       />

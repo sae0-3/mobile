@@ -1,25 +1,18 @@
-import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
+import { useState } from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { useDeleteLocation, useGetAllLocations } from '../hooks/useLocations';
-import colors from '../theme/colors';
+import { AddLocationModal } from './AddLocationModal';
 import { Icon } from './Icon';
+import { Loading } from './Loading';
 
 export const CardLocations = () => {
+  const [showModal, setShowModal] = useState(false);
   const { data, isLoading } = useGetAllLocations();
   const { mutate: remove, isPending } = useDeleteLocation();
 
-  const handleAddLocation = () => { };
+  if (isLoading) return <Loading />;
 
-  if (isLoading) {
-    return (
-      <View className="flex-1 items-center justify-center">
-        <ActivityIndicator color={colors.primary} />
-      </View>
-    );
-  }
-
-  if (!data) {
-    return null;
-  }
+  if (!data) return null;
 
   return (
     <View className="gap-4">
@@ -66,11 +59,13 @@ export const CardLocations = () => {
 
       <TouchableOpacity
         className="flex-row gap-1 justify-center items-center border border-primary rounded-lg p-2"
-        onPress={handleAddLocation}
+        onPress={() => setShowModal(true)}
       >
         <Text className="text-primary">Agregar Nueva Ubicación</Text>
         <Icon name="plus"></Icon>
       </TouchableOpacity>
+
+      <AddLocationModal visible={showModal} onClose={() => setShowModal(false)} />
     </View>
   );
 };

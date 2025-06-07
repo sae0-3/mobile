@@ -15,6 +15,7 @@ export class DealerOrderRepository extends BaseRepository {
       JOIN clients c ON o.client_id = c.user_id
       JOIN user_address ua ON o.user_address_id = ua.id
       WHERE o.status = 'pending' AND o.delivery_id IS NULL
+      ORDER BY created_at DESC
     `;
     return await this.query<AvailableOrder>(sql);
   }
@@ -48,7 +49,6 @@ export class DealerOrderRepository extends BaseRepository {
   `;
     return await this.queryOne<OrderLocationInfo>(sql, [order_delivery.id, order_delivery.delivery_id]);
   }
-
 
   async getOrderDetails(id: string): Promise<OrderDetail | null> {
     const sql = `
@@ -94,5 +94,24 @@ export class DealerOrderRepository extends BaseRepository {
       RETURNING *
     `;
     return await this.queryOne<Order>(sql, [order_delivery.id, order_delivery.delivery_id]);
+  }
+
+  async findAll(dealer_id: string): Promise<Order[]> {
+    const sql = `
+      SELECT * FROM orders
+      WHERE delivery_id = $1
+      ORDER BY updated_at DESC
+    `;
+
+    return await this.query<Order>(sql, [dealer_id]);
+  }
+
+  async findById(order_id: string, dealer_id: string): Promise<Order | null> {
+    const sql = `
+      SELECT * FROM orders
+      WHERE id = $1 AND delivery_id = $2
+    `;
+
+    return await this.queryOne<Order>(sql, [order_id, dealer_id]);
   }
 }

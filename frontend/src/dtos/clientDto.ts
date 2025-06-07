@@ -39,3 +39,26 @@ export const defaultValues: ClientRegisterDto = {
   password: '',
   phone: undefined,
 };
+
+export const ClientUpdateProfileSchema = z.object({
+  name: z
+    .string()
+    .min(1, { message: 'El nombre es obligatorio' }),
+
+  email: z
+    .string()
+    .min(1, { message: 'El correo electrónico es obligatorio' })
+    .email({ message: 'Ingresa un correo electrónico válido (ejemplo: usuario@dominio.com)' }),
+
+  phone: z
+    .union([
+      z.literal('').transform(() => undefined),
+      z.string()
+        .length(8, { message: 'El teléfono debe tener exactamente 8 dígitos' })
+        .regex(/^\d+$/, { message: 'El teléfono solo puede contener números (0-9)' })
+    ], {
+      errorMap: () => ({ message: 'El teléfono debe estar vacío o tener 8 dígitos numéricos' })
+    })
+});
+
+export type ClientUpdateProfileDto = z.infer<typeof ClientUpdateProfileSchema>;

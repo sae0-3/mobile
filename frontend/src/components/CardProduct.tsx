@@ -19,7 +19,7 @@ export const CardProduct = (props: CardProductProps) => {
       onPress={() => {
         {
           router.push({
-            pathname: '/client/detail',
+            pathname: '/client/productDetails',
             params: { productId: props.id }
           });
         }

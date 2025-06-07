@@ -1,21 +1,13 @@
-import React from 'react';
-import { ActivityIndicator, FlatList, Text, View } from 'react-native';
-import { useGetAllOrders } from '../../../src/hooks/useDelivery';
-import { OrderCard } from '../../../src/components/OrderCard';
-import colors from '../../../src/theme/colors';
+import { FlatList, Text, View } from 'react-native';
+import { Loading } from '../../../../src/components/Loading';
+import { OrderCard } from '../../../../src/components/OrderCard';
+import { useGetAllOrders } from '../../../../src/hooks/useDelivery';
 
 export default function HomeScreen() {
   const { data, isLoading, isError, error } = useGetAllOrders();
-
   const orders = data?.data || [];
 
-  if (isLoading) {
-    return (
-      <View className="flex-1 justify-center items-center">
-        <ActivityIndicator size="large" color={colors.primary} />
-      </View>
-    )
-  }
+  if (isLoading) return <Loading />;
 
   if (isError) {
     return (
@@ -23,6 +15,14 @@ export default function HomeScreen() {
         <Text className="text-black font-semibold">{error.message}</Text>
       </View>
     )
+  }
+
+  if (orders?.length === 0) {
+    return (
+      <View className="flex-1 justify-center items-center">
+        <Text>No existen pedidos disponibles</Text>
+      </View>
+    );
   }
 
   return (

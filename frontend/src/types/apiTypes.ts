@@ -1,3 +1,13 @@
+import {
+  Order,
+  OrderHistoryAdmin,
+  OrderHistoryClient,
+  OrderHistoryDealer,
+  OrderWithDetailsAdmin,
+  OrderWithDetailsClient,
+  OrderWithDetailsDealer,
+} from './api/orders.types';
+
 export interface ApiResponse<T> {
   success: boolean;
   statusCode: number;
@@ -39,6 +49,17 @@ export interface Dealer {
   created_at: string;
   updated_at: string;
 }
+export interface DealerDetail {
+  order_id: string;
+  total: number;
+  client_name: string;
+  client_phone: string;
+  products: {
+    name: string;
+    quantity: number;
+    subtotal: number;
+  }[];
+}
 
 export interface Client {
   id: string;
@@ -47,6 +68,12 @@ export interface Client {
   phone: string | null;
   created_at: string;
   updated_at: string;
+}
+
+export interface ClientInsert {
+  email?: string;
+  name?: string;
+  phone?: string | null;
 }
 
 export type DealerRespose = ApiResponse<Dealer>;
@@ -190,22 +217,22 @@ export interface Location {
 
 export interface LocationRequest {
   address: string;
-  latitud: string;
-  longitud: string;
+  latitud: number;
+  longitud: number;
 }
 
 export type LocationResponse = ApiResponse<Location>;
 export type LocationsResponse = ApiResponse<Location[]>;
 
-export interface Order {
+export interface OrderItem {
   id: string;
-  client_id: string;
-  user_address_id: string;
-  delivery_id: string | null;
-  status: 'pending' | 'in_progress' | 'delivered' | 'cancelled';
-  created_at: string;
-  updated_at: string;
-  total: number;
+  quantity: number;
+  subtotal: number;
+  product: Product;
+}
+
+export interface OrderWithItems extends Order {
+  items: OrderItem[];
 }
 
 export interface OrderDetailsInsert {
@@ -221,3 +248,12 @@ export interface OrderRequest {
 }
 
 export type OrderResponse = ApiResponse<Order>;
+
+export type OrderWithDetailsClientResponse = ApiResponse<OrderWithDetailsClient>;
+export type OrdersHistoryClientResponse = ApiResponse<OrderHistoryClient[]>;
+
+export type OrderWithDetailsDealerResponse = ApiResponse<OrderWithDetailsDealer>;
+export type OrdersHistoryDealerResponse = ApiResponse<OrderHistoryDealer[]>;
+
+export type OrderWithDetailsAdminResponse = ApiResponse<OrderWithDetailsAdmin>;
+export type OrdersHistoryAdminResponse = ApiResponse<OrderHistoryAdmin[]>;

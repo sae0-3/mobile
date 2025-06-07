@@ -1,12 +1,13 @@
 import { useForm } from '@tanstack/react-form';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, ScrollView, Text, TextInput, View } from 'react-native';
+import { ScrollView, Text, TextInput, View } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { CustomButton } from '../../../../src/components/CustomButton';
 import { FormMultiField } from '../../../../src/components/FormMultiField';
 import { FormSwitchField } from '../../../../src/components/FormSwitchField';
 import { FormTextField } from '../../../../src/components/FormTextField';
+import { Loading } from '../../../../src/components/Loading';
 import { ProductUpdateSchema } from '../../../../src/dtos/productDto';
 import {
   useGetByIdProduct,
@@ -71,9 +72,7 @@ export default function EditProductScreen() {
     }
   }, [isSuccess]);
 
-  if (isLoading) {
-    return <ActivityIndicator size="large" />;
-  }
+  if (isLoading) return <Loading />;
 
   if (isError) {
     return <Text>Error: {error?.message}</Text>;

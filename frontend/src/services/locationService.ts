@@ -28,4 +28,3 @@ export const remove = async (location_id: string, token: string | null): Promise
   });
   return response.data;
 };
-

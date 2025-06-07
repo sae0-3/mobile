@@ -1,21 +1,13 @@
 import { Redirect, Stack } from 'expo-router';
-import { ActivityIndicator, View } from 'react-native';
+import { Loading } from '../../src/components/Loading';
 import { useAuth } from '../../src/stores/auth';
 
 export default function ProtectedLayout() {
   const { isAuthenticated, rehydrated } = useAuth();
 
-  if (!rehydrated) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator />
-      </View>
-    );
-  }
+  if (!rehydrated) return <Loading />;
 
-  if (!isAuthenticated) {
-    return <Redirect href="/login" />;
-  }
+  if (!isAuthenticated) return <Redirect href="/login" />;
 
   return (
     <Stack

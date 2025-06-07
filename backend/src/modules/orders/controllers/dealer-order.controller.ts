@@ -78,4 +78,33 @@ export class DealerOrderController {
       next(error);
     }
   }
-}
+
+  getHistory: RequestHandler = async (req, res, next) => {
+    try {
+      const dealer_id = String(req.user?.id);
+      const data = await this.orderService.getHistory(dealer_id);
+
+      responseBuilder(res, {
+        statusCode: 200,
+        data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  getOrderFromHistoryById: RequestHandler = async (req, res, next) => {
+    try {
+      const dealer_id = String(req.user?.id);
+      const order_id = req.params.orderId
+      const data = await this.orderService.getOrderFromHistoryById(order_id, dealer_id);
+
+      responseBuilder(res, {
+        statusCode: 200,
+        data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+} 

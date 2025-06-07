@@ -1,21 +1,15 @@
 import { useLocalSearchParams } from 'expo-router';
-import { ActivityIndicator, Image, ScrollView, Text, View } from 'react-native';
+import { Image, ScrollView, Text, View } from 'react-native';
 import { AddToCart } from '../../../src/components/AddToCart';
-import { useGetByIdProduct } from '../../../src/hooks/useProduct';
-import colors from '../../../src/theme/colors';
 import { Icon } from '../../../src/components/Icon';
+import { Loading } from '../../../src/components/Loading';
+import { useGetByIdProduct } from '../../../src/hooks/useProduct';
 
-export default function DetailScreen() {
+export default function ProductDetailsScreen() {
   const { productId } = useLocalSearchParams();
   const { data, isLoading } = useGetByIdProduct(String(productId));
 
-  if (isLoading) {
-    return (
-      <View className="flex-1 items-center justify-center">
-        <ActivityIndicator size="large" color={colors.primary} />
-      </View>
-    );
-  }
+  if (isLoading) return <Loading />;
 
   if (!data) {
     return (
@@ -38,7 +32,7 @@ export default function DetailScreen() {
       <View className="w-11/12 mx-auto pb-6 pt-4 gap-4">
         <Image
           source={{ uri: product.img_reference || '' }}
-          className="h-64 w-full rounded-lg"
+          className="w-64 aspect-square rounded-lg mx-auto"
         />
 
         <View className="flex-row justify-between items-center flex-wrap">

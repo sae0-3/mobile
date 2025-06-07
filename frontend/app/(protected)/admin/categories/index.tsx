@@ -1,7 +1,8 @@
 import { router } from 'expo-router';
-import { ActivityIndicator, FlatList, Text, View } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 import { CustomButton } from '../../../../src/components/CustomButton';
 import { EditCategoryItem } from '../../../../src/components/EditCategoryItem';
+import { Loading } from '../../../../src/components/Loading';
 import { useGetAllCategories } from '../../../../src/hooks/useCategories';
 
 export default function CategoriesScreen() {
@@ -12,9 +13,7 @@ export default function CategoriesScreen() {
     router.push('/admin/categories/add');
   }
 
-  if (isLoading) {
-    return <ActivityIndicator size="large" />;
-  }
+  if (isLoading) return <Loading />;
 
   if (isError) {
     return <Text>Error: {error?.message}</Text>;
