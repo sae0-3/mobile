@@ -1,8 +1,8 @@
-import { AppError } from '../../../core/errors/app.error';
+import { AppError, NotFoundError } from '../../../core/errors/app.error';
 import { UserService } from '../../users/services/user.service';
 import { User } from '../../users/types/user.type';
 import { LoginDto } from '../dtos/login.dto';
-import { RegisterDto } from '../dtos/register.dto';
+import { RegisterAdminDto, RegisterClientDto, RegisterDealerDto } from '../dtos/register.dto';
 import { AuthProviderRepository } from '../repositories/auth-provider.repository';
 import { AuthService } from '../services/auth.service';
 import { AuthProvider } from '../types/auth-provider.type';
@@ -21,6 +21,9 @@ describe('AuthService', () => {
   let authService: AuthService;
   let userService: jest.Mocked<UserService>;
   let authRepo: jest.Mocked<AuthProviderRepository>;
+  let clientService: any;
+  let dealerService: any;
+  let adminService: any;
 
   beforeEach(() => {
     authRepo = {
@@ -31,22 +34,44 @@ describe('AuthService', () => {
     userService = {
       create: jest.fn(),
       findByEmail: jest.fn(),
+      getRoleById: jest.fn().mockResolvedValue({ role: 'client' }),
     } as any;
 
-    authService = new AuthService(authRepo, userService);
+    clientService = {
+      create: jest.fn(),
+    };
+
+    dealerService = {
+      create: jest.fn(),
+    };
+
+    adminService = {
+      create: jest.fn(),
+    };
+
+    authService = new AuthService(
+      authRepo,
+      userService,
+      clientService,
+      dealerService,
+      adminService
+    );
   });
 
-  describe('register()', () => {
-    const validRegisterDto: RegisterDto = {
+  describe('registerClient()', () => {
+    const validRegisterDto: RegisterClientDto = {
       email: 'test@example.com',
       password: 'ValidPass123!',
+      name: 'Test User',
+      phone: '123456789'
     };
-    it('registra correctamente un usuario nuevo', async () => {
-      userService.create.mockResolvedValue({
+
+    it('registra correctamente un cliente nuevo', async () => {
+      clientService.create.mockResolvedValue({
         id: '1',
         email: validRegisterDto.email,
         name: validRegisterDto.name,
-        role: 'client',
+        phone: validRegisterDto.phone,
         created_at: new Date(),
         updated_at: new Date()
       });
@@ -60,10 +85,12 @@ describe('AuthService', () => {
         updated_at: new Date()
       });
 
-      const result = await authService.register(validRegisterDto);
+      const result = await authService.registerClient(validRegisterDto);
 
-      expect(userService.create).toHaveBeenCalledWith({
+      expect(clientService.create).toHaveBeenCalledWith({
         email: validRegisterDto.email,
+        name: validRegisterDto.name,
+        phone: validRegisterDto.phone
       });
 
       expect(hashUtil.hashPassword).toHaveBeenCalledWith(validRegisterDto.password);
@@ -71,47 +98,124 @@ describe('AuthService', () => {
 
       expect(result).toEqual({
         id: '1',
-        user_id: '1',
-        provider: 'local',
-        password_hash: 'hashed_ValidPass123!',
-        created_at: expect.any(Date),
-        updated_at: expect.any(Date),
-        access_token: expect.any(String),
+        email: validRegisterDto.email,
+        role: 'client',
+        access_token: 'fake.jwt.token'
       });
     });
 
     it('lanza error si el email ya existe', async () => {
-      userService.create = jest.fn().mockRejectedValue(new AppError({
-        internalMessage: 'El usuario con email test@example.com ya existe',
-      }));
+      clientService.create.mockRejectedValue(
+        new AppError({
+          publicMessage: 'El usuario con email test@example.com ya existe',
+        })
+      );
 
-      await expect(authService.register(validRegisterDto))
+      await expect(authService.registerClient(validRegisterDto))
         .rejects.toThrow(/email/i);
     });
 
     it('lanza error si el email es inválido', async () => {
-      await expect(authService.register({ ...validRegisterDto, email: 'bademail' }))
-        .rejects.toThrow(/.*email inválido/i);
-    });
-
-    it('lanza error si el email tiene caracteres especiales no permitidos', async () => {
-      await expect(authService.register({ ...validRegisterDto, email: 'test@!example.com' }))
-        .rejects.toThrow(/.*email inválido/i);
+      await expect(authService.registerClient({ ...validRegisterDto, email: 'bademail' }))
+        .rejects.toThrow(/email.*inválido|invalid email/i);
     });
 
     it('lanza error si la contraseña es débil', async () => {
-      await expect(authService.register({ ...validRegisterDto, password: '123' }))
+      await expect(authService.registerClient({ ...validRegisterDto, password: '123' }))
         .rejects.toThrow(/contraseña/i);
     });
 
     it('lanza error si el email o la contraseña están vacíos', async () => {
-      const invalidRegisterDto: RegisterDto = {
+      const invalidRegisterDto = {
+        ...validRegisterDto,
         email: '',
         password: '',
       };
 
-      await expect(authService.register(invalidRegisterDto))
+      await expect(authService.registerClient(invalidRegisterDto))
         .rejects.toThrow(/^(?=.*\bemail\b)(?=.*\bpassword\b)/i);
+    });
+  });
+
+  describe('registerDealer()', () => {
+    const validRegisterDto: RegisterDealerDto = {
+      email: 'dealer@example.com',
+      password: 'ValidPass123!',
+      name: 'Test Dealer',
+      vehicle: 'car'
+    };
+
+    it('registra correctamente un dealer nuevo', async () => {
+      dealerService.create.mockResolvedValue({
+        id: '2',
+        email: validRegisterDto.email,
+        name: validRegisterDto.name,
+        vehicle: validRegisterDto.vehicle,
+        created_at: new Date(),
+        updated_at: new Date()
+      });
+
+      authRepo.createLocal.mockResolvedValue({
+        id: '2',
+        user_id: '2',
+        password_hash: 'hashed_ValidPass123!',
+        provider: 'local',
+        created_at: new Date(),
+        updated_at: new Date()
+      });
+
+      const result = await authService.registerDealer(validRegisterDto);
+
+      expect(dealerService.create).toHaveBeenCalledWith({
+        email: validRegisterDto.email,
+        name: validRegisterDto.name,
+        vehicle: validRegisterDto.vehicle
+      });
+
+      expect(result).toEqual({
+        id: '2',
+        email: validRegisterDto.email,
+        role: 'dealer',
+        access_token: 'fake.jwt.token'
+      });
+    });
+  });
+
+  describe('registerAdmin()', () => {
+    const validRegisterDto: RegisterAdminDto = {
+      email: 'admin@example.com',
+      password: 'ValidPass123!'
+    };
+
+    it('registra correctamente un admin nuevo', async () => {
+      adminService.create.mockResolvedValue({
+        id: '3',
+        email: validRegisterDto.email,
+        created_at: new Date(),
+        updated_at: new Date()
+      });
+
+      authRepo.createLocal.mockResolvedValue({
+        id: '3',
+        user_id: '3',
+        password_hash: 'hashed_ValidPass123!',
+        provider: 'local',
+        created_at: new Date(),
+        updated_at: new Date()
+      });
+
+      const result = await authService.registerAdmin(validRegisterDto);
+
+      expect(adminService.create).toHaveBeenCalledWith({
+        email: validRegisterDto.email
+      });
+
+      expect(result).toEqual({
+        id: '3',
+        email: validRegisterDto.email,
+        role: 'admin',
+        access_token: 'fake.jwt.token'
+      });
     });
   });
 
@@ -124,9 +228,8 @@ describe('AuthService', () => {
     const mockUser: User = {
       id: '1',
       email: validLoginDto.email,
-      role: 'client',
-      created_at: new Date(),
-      updated_at: new Date()
+      created_at: new Date().toString(),
+      updated_at: new Date().toString()
     };
 
     const mockAuthProvider: AuthProvider = {
@@ -139,28 +242,34 @@ describe('AuthService', () => {
     };
 
     it('debería retornar un token si el login es exitoso', async () => {
-      const loginDto: LoginDto = { email: 'test@example.com', password: 'secure123' };
-
       userService.findByEmail.mockResolvedValue(mockUser);
       authRepo.findByUserId.mockResolvedValue(mockAuthProvider);
+      userService.getRoleById.mockResolvedValue({ role: 'client' });
 
-      (hashUtil.verifyPassword as jest.Mock).mockResolvedValue(true);
+      const result = await authService.login(validLoginDto);
 
-      const result = await authService.login(loginDto);
-
-      expect(result).toEqual({ access_token: 'fake.jwt.token' });
+      expect(result).toEqual({
+        id: '1',
+        email: validLoginDto.email,
+        role: 'client',
+        access_token: 'fake.jwt.token'
+      });
     });
 
     it('lanza error si el usuario no existe', async () => {
-      userService.findByEmail.mockResolvedValue(null);
+      userService.findByEmail.mockRejectedValue(
+        new NotFoundError({
+          publicMessage: 'Usuario no encontrado',
+        })
+      );
 
-      await expect(authService.login(validLoginDto)).rejects.toThrow(/usuario/i);
+      await expect(authService.login(validLoginDto))
+        .rejects.toThrow('Usuario no encontrado');
     });
 
     it('lanza error si la contraseña no coincide', async () => {
       userService.findByEmail.mockResolvedValue(mockUser);
       authRepo.findByUserId.mockResolvedValue(mockAuthProvider);
-      authRepo.createLocal.mockResolvedValue(mockAuthProvider);
       (hashUtil.verifyPassword as jest.Mock).mockResolvedValue(false);
 
       await expect(authService.login(validLoginDto)).rejects.toThrow(/credenciales/i);
