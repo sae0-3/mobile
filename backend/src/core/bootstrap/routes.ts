@@ -11,4 +11,8 @@ export const registerRoutes = (app: Express) => {
   app.use('/api/users', usersRoutes);
   app.use('/api/orders', ordersRoutes);
   app.use('/api/locations', locationsRoutes);
+
+  app.get('/api/health', (req, res) => {
+    res.status(200).json({ status: 'ok' });
+  });
 };

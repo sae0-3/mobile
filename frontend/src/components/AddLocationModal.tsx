@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, View, Text, TouchableOpacity } from 'react-native';
-import MapView, { MapPressEvent, Marker } from 'react-native-maps';
+import MapView, { MapPressEvent, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useCreateLocation } from '../hooks/useLocations';
 import { Icon } from './Icon';
 import { useAddLocation } from '../hooks/useAddLocation';
@@ -44,6 +44,7 @@ export const AddLocationModal = ({ visible, onClose }: Props) => {
               initialRegion={region}
               zoomEnabled
               onPress={(event: MapPressEvent) => handleMapPress(event.nativeEvent.coordinate)}
+              provider={PROVIDER_GOOGLE}
             >
               {marker && <Marker coordinate={marker} />}
             </MapView>
