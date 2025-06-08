@@ -1,5 +1,5 @@
 import { View, StyleSheet } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { Coordinates } from '../types/apiTypes';
 
 type Props = {
@@ -14,7 +14,8 @@ export const OrderMap = ({ mapRegion, origin, destination }: Props) => {
       <MapView
         style={style.map}
         initialRegion={mapRegion}
-      >{ origin && (
+        provider={PROVIDER_GOOGLE}
+      >{origin && (
         <Marker
           coordinate={origin}
           title="Tu ubicación"
