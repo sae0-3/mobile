@@ -3,7 +3,7 @@ import 'dotenv/config';
 export default {
   "expo": {
     "owner": "movil_progra",
-    "name": "mobil-frontend",
+    "name": "RescueFood",
     "slug": "mobil-frontend",
     "scheme": "mobil-frontend",
     "version": "1.0.0",
@@ -22,7 +22,7 @@ export default {
     "android": {
       "package": "com.mobile.rescuefood",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#ffffff"
       },
       "permissions": [
