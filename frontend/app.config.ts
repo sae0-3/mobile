@@ -2,6 +2,7 @@ import 'dotenv/config';
 
 export default {
   "expo": {
+    "owner": "movil_progra",
     "name": "mobil-frontend",
     "slug": "mobil-frontend",
     "scheme": "mobil-frontend",
@@ -19,6 +20,7 @@ export default {
       "supportsTablet": true
     },
     "android": {
+      "package": "com.mobile.rescuefood",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -33,8 +35,11 @@ export default {
       "bundler": "metro"
     },
     "extra": {
-      "API_URL": process.env.API_URL,
+      "API_URL": process.env.EXPO_PUBLIC_API_URL,
       "GOOGLE_MAPS_API_KEY": process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY,
+      "eas": {
+        "projectId": "e36ecd17-4d64-4449-828c-ca52b7932254",
+      },
     },
   }
 };
